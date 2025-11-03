@@ -1,31 +1,36 @@
-import { type Metadata } from 'next'
-import { ClerkProvider } from '@clerk/nextjs'
-import { Geist, Geist_Mono, Poppins } from 'next/font/google'
-import './globals.css'
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
+import { RouteProvider } from "@/providers/route-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
+import "@/styles/globals.css";
 
-const poppins = Poppins({
-  variable: '--font-poppins',
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-})
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
-  title: 'VaultIQ',
-  description: 'Secure vault management',
-}
+  title: "Your App Name",
+  description: "Your app description",
+};
+
+export const viewport: Viewport = {
+  colorScheme: "light",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={`${poppins.variable} antialiased`}>
-          {children}
-        </body>
-      </html>
-    </ClerkProvider>
-  )
+    <html lang="en" className={`${inter.variable} scroll-smooth`}>
+      <body className="bg-primary antialiased">
+        <RouteProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </RouteProvider>
+      </body>
+    </html>
+  );
 }
