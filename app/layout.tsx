@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 import { RouteProvider } from "@/providers/route-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
@@ -27,9 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} scroll-smooth`}>
       <body className="bg-primary antialiased">
-        <RouteProvider>
-          <ThemeProvider>{children}</ThemeProvider>
-        </RouteProvider>
+        <ClerkProvider>
+          <RouteProvider>
+            <ThemeProvider>{children}</ThemeProvider>
+          </RouteProvider>
+        </ClerkProvider>
       </body>
     </html>
   );
