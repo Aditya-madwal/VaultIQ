@@ -12,8 +12,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Your App Name",
-  description: "Your app description",
+  title: "VaultIQ",
+  description: "Secure document management and collaboration platform",
 };
 
 export const viewport: Viewport = {
