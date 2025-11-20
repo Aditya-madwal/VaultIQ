@@ -1,9 +1,10 @@
 'use client';
 
-import { UserProfile } from '@clerk/nextjs';
+import { UserProfile, useClerk } from '@clerk/nextjs';
 import { useState, useEffect } from 'react';
 
 export default function DashboardPage() {
+  const { signOut } = useClerk();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -34,12 +35,21 @@ export default function DashboardPage() {
       <div className="text-center">
         <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
         
-        <button
-          onClick={openProfile}
-          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
-        >
-          Open User Profile
-        </button>
+        <div className="flex gap-4 justify-center">
+          <button
+            onClick={openProfile}
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
+          >
+            Open User Profile
+          </button>
+          
+          <button
+            onClick={() => signOut()}
+            className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
+          >
+            Logout
+          </button>
+        </div>
       </div>
 
       {/* Modal Overlay */}
