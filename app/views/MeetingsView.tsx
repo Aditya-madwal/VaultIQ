@@ -17,20 +17,20 @@ const MeetingsView: React.FC<MeetingsViewProps> = ({ meetings, onNavigateToMeeti
           <input 
             type="text" 
             placeholder="Search archive..." 
-            className="w-full pl-11 pr-4 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-xs focus:ring-1 focus:ring-zinc-600 outline-none shadow-sm text-zinc-200 placeholder-zinc-700"
+            className="w-full pl-11 pr-4 py-2 bg-black/50 border border-zinc-800 rounded-xl text-xs focus:ring-1 focus:ring-zinc-600 focus:border-zinc-600 outline-none shadow-sm text-zinc-200 placeholder-zinc-600"
           />
         </div>
         <div className="flex gap-2">
-          <button className="flex items-center gap-2 px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-xs font-bold text-zinc-500 hover:text-white transition-all">
+          <button className="flex items-center gap-2 px-4 py-2 bg-black/50 border border-zinc-800 rounded-xl text-xs font-bold text-zinc-400 hover:text-white hover:border-zinc-700 transition-all">
             <Filter size={14} /> FILTERS
           </button>
         </div>
       </div>
 
-      <div className="bg-zinc-900 rounded-3xl border border-zinc-800 shadow-sm overflow-hidden">
+      <div className="bg-black rounded-3xl border border-zinc-800/50 shadow-lg overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-black text-zinc-600 text-[9px] font-bold uppercase tracking-widest border-b border-zinc-800">
+            <thead className="bg-zinc-950/50 text-zinc-500 text-[9px] font-bold uppercase tracking-widest border-b border-zinc-800/50">
               <tr>
                 <th className="px-6 py-4 text-left">TITLE</th>
                 <th className="px-6 py-4 text-left">DATE</th>

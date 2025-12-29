@@ -24,14 +24,14 @@ const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({ meetings, onNavig
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="e.g. What did we decide about onboarding flow?" 
-            className="w-full pl-16 pr-8 py-5 bg-slate-900 border border-slate-800 rounded-3xl text-lg shadow-2xl focus:ring-4 focus:ring-blue-500/10 outline-none transition-all text-white placeholder-slate-600"
+            className="w-full pl-16 pr-8 py-5 bg-black/60 border border-slate-800/50 rounded-3xl text-lg shadow-xl focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500/30 outline-none transition-all text-white placeholder-slate-500"
           />
         </div>
       </div>
 
       <div className="flex flex-wrap gap-2 justify-center mb-8">
         {tags.map(tag => (
-          <button key={tag} className="px-4 py-2 bg-slate-900 border border-slate-800 rounded-full text-xs font-bold text-slate-400 hover:bg-blue-500/10 hover:text-blue-400 hover:border-blue-500/20 transition-all flex items-center gap-1.5 shadow-sm">
+          <button key={tag} className="px-4 py-2 bg-black/60 border border-slate-800/50 rounded-full text-xs font-bold text-slate-400 hover:bg-blue-500/20 hover:text-blue-400 hover:border-blue-500/40 transition-all flex items-center gap-1.5 shadow-sm">
             <Hash size={14} className="text-slate-500" /> {tag}
           </button>
         ))}
@@ -49,7 +49,7 @@ const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({ meetings, onNavig
         {query.length > 2 ? (
           <div className="space-y-4">
              {meetings.map(m => (
-               <div key={m.id} className="bg-slate-900 p-6 rounded-3xl border border-slate-800 shadow-sm hover:border-slate-700 transition-all flex flex-col md:flex-row gap-6 group cursor-pointer" onClick={() => onNavigateToMeeting(m.id)}>
+               <div key={m.id} className="bg-black p-6 rounded-3xl border border-slate-800 shadow-sm hover:border-slate-700 transition-all flex flex-col md:flex-row gap-6 group cursor-pointer" onClick={() => onNavigateToMeeting(m.id)}>
                  <div className="md:w-48 space-y-2">
                     <div className="bg-blue-500/10 text-blue-400 text-[10px] font-bold px-2 py-1 rounded inline-block uppercase tracking-wider border border-blue-500/20">{m.date}</div>
                     <h4 className="font-bold text-white group-hover:text-blue-400 transition-colors">{m.title}</h4>
@@ -83,7 +83,7 @@ const KnowledgeBaseView: React.FC<KnowledgeBaseViewProps> = ({ meetings, onNavig
                <p className="text-blue-100 text-sm opacity-80 leading-relaxed">Catch up on all discussions about product architecture from the last 30 days.</p>
                <button className="px-6 py-2.5 bg-white text-blue-600 rounded-xl text-sm font-bold shadow-lg hover:bg-slate-100 transition-colors">Generate Digest</button>
             </div>
-            <div className="p-8 rounded-3xl bg-slate-900 border border-slate-800 space-y-4 relative overflow-hidden group">
+            <div className="p-8 rounded-3xl bg-black border border-slate-800 space-y-4 relative overflow-hidden group">
                <h4 className="text-xl font-bold text-white">Quick Filters</h4>
                <div className="space-y-3">
                  <button className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-800 border border-transparent hover:border-slate-700 transition-all group">

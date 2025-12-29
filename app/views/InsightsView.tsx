@@ -15,7 +15,7 @@ const InsightsView: React.FC = () => {
   return (
     <div className="space-y-8 animate-in slide-in-from-bottom-4 duration-500">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-sm">
+        <div className="bg-black p-8 rounded-3xl border border-zinc-800/50 shadow-lg">
           <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-8">Task Frequency</h3>
           <div className="h-[280px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -34,7 +34,7 @@ const InsightsView: React.FC = () => {
           </div>
         </div>
 
-        <div className="bg-zinc-900 p-8 rounded-3xl border border-zinc-800 shadow-sm">
+        <div className="bg-black p-8 rounded-3xl border border-zinc-800/50 shadow-lg">
           <h3 className="text-xs font-bold text-zinc-500 uppercase tracking-widest mb-8">Follow-through Trend</h3>
           <div className="h-[280px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -51,8 +51,8 @@ const InsightsView: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-zinc-900 rounded-3xl border border-zinc-800 shadow-sm overflow-hidden">
-        <div className="p-6 border-b border-zinc-800 flex items-center justify-between bg-black/20">
+      <div className="bg-black rounded-3xl border border-zinc-800/50 shadow-lg overflow-hidden">
+        <div className="p-6 border-b border-zinc-800/50 flex items-center justify-between bg-zinc-950/30">
           <h3 className="text-sm font-bold text-white tracking-tight">Performance Index</h3>
           <div className="flex gap-2">
             <button className="px-3 py-1.5 text-[10px] font-bold bg-zinc-800 text-zinc-300 rounded-lg hover:bg-zinc-700 transition-colors uppercase tracking-widest">7 Days</button>

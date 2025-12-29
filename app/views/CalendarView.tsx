@@ -20,8 +20,8 @@ const CalendarView: React.FC = () => {
   ];
 
   return (
-    <div className="bg-zinc-900 rounded-3xl border border-zinc-800 shadow-sm flex flex-col h-[calc(100vh-200px)] animate-in fade-in duration-500 overflow-hidden">
-      <div className="p-8 border-b border-zinc-800 flex items-center justify-between bg-black/20">
+    <div className="bg-black rounded-3xl border border-zinc-800/50 shadow-lg flex flex-col h-[calc(100vh-200px)] animate-in fade-in duration-500 overflow-hidden">
+      <div className="p-8 border-b border-zinc-800/50 flex items-center justify-between bg-zinc-950/30">
         <div className="flex items-center gap-6">
           <h2 className="text-xl font-bold text-white tracking-tight">{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</h2>
           <div className="flex gap-1">

@@ -16,7 +16,7 @@ const SettingsView: React.FC = () => {
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in slide-in-from-right-4 duration-500">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {settingsSections.map((section) => (
-          <div key={section.label} className="bg-zinc-900 p-6 rounded-3xl border border-zinc-800 shadow-sm hover:border-zinc-500 transition-all cursor-pointer group">
+          <div key={section.label} className="bg-black p-6 rounded-3xl border border-zinc-800/50 shadow-lg hover:border-zinc-600 hover:shadow-xl transition-all cursor-pointer group">
             <div className="flex flex-col gap-4">
               <div className="w-10 h-10 bg-zinc-950 rounded-xl flex items-center justify-center text-zinc-500 group-hover:text-white transition-all border border-zinc-800">
                 <section.icon size={20} />
@@ -30,8 +30,8 @@ const SettingsView: React.FC = () => {
         ))}
       </div>
 
-      <div className="bg-zinc-900 rounded-3xl border border-zinc-800 shadow-sm overflow-hidden">
-        <div className="p-8 border-b border-zinc-800 bg-black/10">
+      <div className="bg-black rounded-3xl border border-zinc-800/50 shadow-lg overflow-hidden">
+        <div className="p-8 border-b border-zinc-800/50 bg-zinc-950/30">
           <h3 className="text-sm font-bold text-white tracking-tight">Post-Meeting Automation</h3>
           <p className="text-xs text-zinc-500 mt-1">Global workspace automation triggers.</p>
         </div>

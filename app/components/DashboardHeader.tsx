@@ -19,7 +19,7 @@ const DashboardHeader: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between px-6 py-3 bg-black/40 backdrop-blur-xl border-b border-white/5">
+    <header className="sticky top-0 z-30 flex items-center justify-between px-6 py-3 bg-zinc-950/80 backdrop-blur-xl border-b border-white/5">
       <div className="flex items-center gap-2">
         <h1 className="text-sm font-bold text-white/90 capitalize tracking-tight">
           {getTitle()}

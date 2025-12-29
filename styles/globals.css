@@ -3,3 +3,7 @@
 
 @plugin "tailwindcss-animate";
 @plugin "tailwindcss-react-aria-components";
+
+.glass-card {
+  @apply bg-black/90 backdrop-blur-sm border border-white/10 shadow-lg;
+}

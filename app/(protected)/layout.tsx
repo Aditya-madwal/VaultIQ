@@ -18,13 +18,13 @@ export default async function ProtectedLayout({
   await ensureUserSynced();
 
   return (
-    <div className="flex h-screen w-full bg-black text-zinc-100 selection:bg-zinc-700 selection:text-white overflow-hidden">
+    <div className="flex h-screen w-full bg-zinc-950 text-zinc-100 selection:bg-zinc-700 selection:text-white overflow-hidden">
       <Sidebar />
 
-      <main className="flex-1 overflow-y-auto relative h-screen">
+      <main className="flex-1 overflow-y-auto relative h-screen bg-zinc-950">
         <DashboardHeader />
 
-        <div className="p-5 max-w-7xl mx-auto">{children}</div>
+        <div className="p-5 max-w-7xl mx-auto min-h-full">{children}</div>
 
         <ChatWidgetWrapper />
       </main>
