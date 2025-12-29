@@ -2,6 +2,7 @@
 import React from 'react';
 import { Meeting, Task } from '../types';
 import { UploadCloud, CheckCircle2, Clock, Zap, BarChart3 } from 'lucide-react';
+import TaskCard from '../components/microcomponents/TaskCard';
 
 interface HomeViewProps {
   meetings: Meeting[];
@@ -58,13 +59,7 @@ const HomeView: React.FC<HomeViewProps> = ({ meetings, tasks, onNavigateToMeetin
           </div>
           <div className="space-y-4 flex-1 overflow-y-auto pr-1">
             {tasks.filter(t => t.priority === 'high').slice(0, 4).map((task) => (
-              <div key={task.id} className="flex items-start gap-3 p-3 hover:bg-white/5 rounded-md transition-all group border border-transparent hover:border-white/5 bg-white/[0.01]">
-                <div className="mt-1.5 h-1.5 w-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)] flex-shrink-0"></div>
-                <div>
-                  <p className="text-sm font-bold text-zinc-200 leading-tight group-hover:text-white transition-colors">{task.title}</p>
-                  <p className="text-[10px] text-zinc-500 mt-1 uppercase font-bold tracking-widest">#{task.category} • {task.owner}</p>
-                </div>
-              </div>
+              <TaskCard key={task.id} task={task} />
             ))}
           </div>
         </div>

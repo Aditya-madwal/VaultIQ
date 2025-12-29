@@ -8,7 +8,7 @@ interface TaskCardProps {
 
 const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
   return (
-    <div className="group flex flex-col p-3 rounded-xl border border-zinc-800 bg-zinc-900/30 hover:bg-zinc-900/50 hover:border-zinc-700 transition-all duration-200">
+    <div className="group flex flex-col p-3 rounded-lg border border-zinc-800 bg-zinc-900/30 hover:bg-zinc-900/50 hover:border-zinc-700 transition-all duration-200">
       {/* Header */}
       <div className="flex items-start justify-between gap-3 mb-3">
         <h5 className="text-sm font-medium text-zinc-100 leading-snug line-clamp-2">
