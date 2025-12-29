@@ -1,84 +1,154 @@
-'use client';
+"use client";
 
-import { UserProfile, useClerk } from '@clerk/nextjs';
-import { useState, useEffect } from 'react';
+import React, { useState, useMemo } from "react";
+import { View, Meeting, Task } from "../../types";
+import Sidebar from "../../components/Sidebar";
+import HomeView from "../../views/HomeView";
+import MeetingsView from "../../views/MeetingsView";
+import TasksView from "../../views/TasksView";
+import InsightsView from "../../views/InsightsView";
+import KnowledgeBaseView from "../../views/KnowledgeBaseView";
+import SettingsView from "../../views/SettingsView";
+import CalendarView from "../../views/CalendarView";
+import MeetingDetailView from "../../views/MeetingDetailView";
+import ChatWidget from "../../components/ChatWidget";
+import CreateMeetingModal from "../../components/CreateMeetingModal";
+import { MOCK_MEETINGS, MOCK_TASKS } from "../../constants";
 
 export default function DashboardPage() {
-  const { signOut } = useClerk();
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [activeView, setActiveView] = useState<View>(View.HOME);
+  const [selectedMeetingId, setSelectedMeetingId] = useState<string | null>(
+    null
+  );
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const openProfile = () => {
-    setIsProfileOpen(true);
-    setTimeout(() => setIsAnimating(true), 10);
+  const [meetings] = useState<Meeting[]>(MOCK_MEETINGS);
+  const [tasks, setTasks] = useState<Task[]>(MOCK_TASKS);
+
+  const navigateToMeeting = (id: string) => {
+    setSelectedMeetingId(id);
+    setActiveView(View.MEETING_DETAIL);
   };
 
-  const closeProfile = () => {
-    setIsAnimating(false);
-    setTimeout(() => setIsProfileOpen(false), 300); // Match animation duration
-  };
+  const currentMeeting = useMemo(
+    () => meetings.find((m) => m.id === selectedMeetingId) || null,
+    [meetings, selectedMeetingId]
+  );
 
-  // Prevent body scroll when modal is open
-  useEffect(() => {
-    if (isProfileOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
+  const renderContent = () => {
+    switch (activeView) {
+      case View.HOME:
+        return (
+          <HomeView
+            meetings={meetings}
+            tasks={tasks}
+            onNavigateToMeeting={navigateToMeeting}
+            onOpenUpload={() => setIsCreateModalOpen(true)}
+          />
+        );
+      case View.MEETINGS:
+        return (
+          <MeetingsView
+            meetings={meetings}
+            onNavigateToMeeting={navigateToMeeting}
+          />
+        );
+      case View.TASKS:
+        return <TasksView tasks={tasks} setTasks={setTasks} />;
+      case View.INSIGHTS:
+        return <InsightsView />;
+      case View.KNOWLEDGE:
+        return (
+          <KnowledgeBaseView
+            meetings={meetings}
+            onNavigateToMeeting={navigateToMeeting}
+          />
+        );
+      case View.CALENDAR:
+        return <CalendarView />;
+      case View.SETTINGS:
+        return <SettingsView />;
+      case View.MEETING_DETAIL:
+        return currentMeeting ? (
+          <MeetingDetailView
+            meeting={currentMeeting}
+            onBack={() => setActiveView(View.MEETINGS)}
+          />
+        ) : (
+          <HomeView
+            meetings={meetings}
+            tasks={tasks}
+            onNavigateToMeeting={navigateToMeeting}
+            onOpenUpload={() => setIsCreateModalOpen(true)}
+          />
+        );
+      default:
+        return (
+          <HomeView
+            meetings={meetings}
+            tasks={tasks}
+            onNavigateToMeeting={navigateToMeeting}
+            onOpenUpload={() => setIsCreateModalOpen(true)}
+          />
+        );
     }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isProfileOpen]);
+  };
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-8">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-8">Dashboard</h1>
-        
-        <div className="flex gap-4 justify-center">
-          <button
-            onClick={openProfile}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
-          >
-            Open User Profile
-          </button>
-          
-          <button
-            onClick={() => signOut()}
-            className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg shadow-lg transition-all duration-200 hover:scale-105 active:scale-95"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
+    <div className="flex h-screen w-full bg-black text-zinc-100 selection:bg-zinc-700 selection:text-white overflow-hidden">
+      <Sidebar
+        activeView={activeView}
+        onViewChange={setActiveView}
+        onNewMeeting={() => setIsCreateModalOpen(true)}
+      />
 
-      {/* Modal Overlay */}
-      {isProfileOpen && (
-        <div 
-          className={`fixed inset-0 bg-black flex items-center justify-center z-50 p-4 transition-opacity duration-300 ${
-            isAnimating ? 'opacity-100' : 'opacity-0'
-          }`}
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-          onClick={closeProfile}
-        >
-          <div 
-            className={`relative bg-white rounded-lg shadow-2xl transition-all duration-300 ${
-              isAnimating ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-            }`}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Close Button */}
-            <button
-              onClick={closeProfile}
-              className="absolute -top-4 -right-4 bg-red-500 hover:bg-red-600 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg transition-all duration-200 z-10 hover:scale-110 active:scale-90"
-              aria-label="Close profile"
-            >
-              ✕
-            </button>
-            
-            <UserProfile />
+      <main className="flex-1 overflow-y-auto relative h-screen">
+        <header className="sticky top-0 z-30 flex items-center justify-between px-6 py-3 bg-black/40 backdrop-blur-xl border-b border-white/5">
+          <div className="flex items-center gap-2">
+            <h1 className="text-sm font-bold text-white/90 capitalize tracking-tight">
+              {activeView === View.MEETING_DETAIL
+                ? "Deep Dive"
+                : activeView.replace("-", " ")}
+            </h1>
           </div>
-        </div>
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Jump to..."
+                className="pl-8 pr-3 py-1 bg-white/5 border border-white/10 rounded-md text-[11px] w-48 focus:w-64 transition-all outline-none text-zinc-200 placeholder-zinc-600"
+              />
+              <svg
+                className="absolute left-2.5 top-1.5 w-3.5 h-3.5 text-zinc-600"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+              </svg>
+            </div>
+            <div className="w-7 h-7 rounded-lg bg-zinc-800 flex items-center justify-center text-[10px] font-bold border border-white/5 cursor-pointer hover:bg-zinc-700">
+              JD
+            </div>
+          </div>
+        </header>
+
+        <div className="p-5 max-w-7xl mx-auto">{renderContent()}</div>
+
+        <ChatWidget
+          context={
+            activeView === View.MEETING_DETAIL
+              ? `Meeting: ${currentMeeting?.title}`
+              : "General Workspace"
+          }
+        />
+      </main>
+
+      {isCreateModalOpen && (
+        <CreateMeetingModal onClose={() => setIsCreateModalOpen(false)} />
       )}
     </div>
   );
