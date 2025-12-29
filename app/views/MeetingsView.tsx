@@ -27,7 +27,7 @@ const MeetingsView: React.FC<MeetingsViewProps> = ({ meetings, onNavigateToMeeti
         </div>
       </div>
 
-      <div className="bg-black rounded-3xl border border-zinc-800/50 shadow-lg overflow-hidden">
+      <div className="bg-black rounded-xl border border-zinc-800/50 shadow-lg overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-zinc-950/50 text-zinc-500 text-[9px] font-bold uppercase tracking-widest border-b border-zinc-800/50">

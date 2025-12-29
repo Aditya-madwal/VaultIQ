@@ -81,7 +81,7 @@ const DashboardHeader: React.FC = () => {
 
       {isProfileModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xl animate-in fade-in duration-300">
-          <div className="glass-card w-full max-w-2xl rounded-md shadow-2xl overflow-hidden border border-white/10 animate-in zoom-in-95 duration-300 relative max-h-[90vh] flex flex-col">
+          <div className="glass-card w-fit rounded-md shadow-2xl overflow-hidden border border-white/10 animate-in zoom-in-95 duration-300 relative max-h-[90vh] flex flex-col">
             <button
               onClick={() => setIsProfileModalOpen(false)}
               className="absolute top-4 right-4 z-10 p-2 text-zinc-600 hover:text-white hover:bg-white/10 rounded-xl transition-all">
