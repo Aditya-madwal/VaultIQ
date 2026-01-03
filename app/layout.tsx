@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Inter } from "next/font/google";
+import { Inter } from "next/font/google"; // Re-added Inter
 import { RouteProvider } from "@/providers/route-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
 import "@/styles/globals.css";
@@ -12,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "VaultIQ",
+  title: "MeetingBrain",
   description: "Secure document management and collaboration platform",
 };
 

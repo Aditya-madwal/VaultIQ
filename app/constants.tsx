@@ -22,7 +22,7 @@ export const MOCK_MEETINGS: Meeting[] = [
     date: '2024-05-15',
     duration: '45m',
     participants: ['Alex Rivera', 'Sarah Chen', 'Jordan Smyth'],
-    status: 'processed',
+    status: 'analyzing',
     summary: [
       'Reviewed Q2 deliverables and adjusted the timeline for Q3 based on feedback.',
       'Approved the new dashboard widgets proposal with a focus on real-time data.',

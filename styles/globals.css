@@ -5,6 +5,11 @@
 @plugin "tailwindcss-animate";
 @plugin "tailwindcss-react-aria-components";
 
+h1,
+.font-serif-heading {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
 .glass-card {
   @apply bg-black/90 backdrop-blur-sm border border-white/10 shadow-lg;
 }

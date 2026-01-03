@@ -37,7 +37,6 @@ const Sidebar: React.FC = () => {
     { path: "/dashboard/tasks", label: "Action center", icon: CheckSquare },
     { path: "/dashboard/calendar", label: "Schedule", icon: Calendar },
     { path: "/dashboard/insights", label: "Intelligence", icon: BarChart2 },
-    { path: "/dashboard/knowledge", label: "Knowledge base", icon: Search },
   ];
 
   const isActive = (path: string) => {
@@ -49,7 +48,7 @@ const Sidebar: React.FC = () => {
 
   return (
     <>
-      <aside className="w-60 glass-sidebar h-full flex flex-col text-zinc-400">
+      <aside className="w-60 glass-sidebar h-full flex flex-col text-zinc-400 bg-black">
         <div className="p-6 flex items-center gap-3">
           <div className="w-8 h-8 bg-white rounded-md flex items-center justify-center shadow-lg">
             <Brain size={18} className="text-black" />
@@ -62,7 +61,7 @@ const Sidebar: React.FC = () => {
         <div className="px-4 mb-6">
           <button
             onClick={() => setIsCreateModalOpen(true)}
-            className="w-full flex items-center justify-center gap-2 bg-white hover:bg-zinc-200 text-black py-2.5 rounded-md text-[11px] font-bold uppercase tracking-wider transition-all shadow-xl">
+            className="w-full flex items-center justify-center gap-2 bg-white hover:bg-zinc-200 text-black py-2.5 rounded-md text-[14px] font-semibold tracking-wider transition-all shadow-xl">
             <PlusCircle size={14} />
             Record meeting
           </button>

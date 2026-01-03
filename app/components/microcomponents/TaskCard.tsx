@@ -14,17 +14,21 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
         <h5 className="text-sm font-medium text-zinc-100 leading-snug line-clamp-2">
           {task.title}
         </h5>
-        
+
         {/* Priority Indicator */}
-        <div className={`shrink-0 w-2 h-2 mt-1.5 rounded-full ${
-            task.priority === 'high' ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.4)]' : 
-            task.priority === 'medium' ? 'bg-amber-500' : 'bg-zinc-600'
-        }`} />
+        <div
+          className={`shrink-0 w-2 h-2 mt-1.5 rounded-full ${
+            task.priority === "high"
+              ? "bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.4)]"
+              : task.priority === "medium"
+              ? "bg-amber-500"
+              : "bg-zinc-600"
+          }`}
+        />
       </div>
 
       {/* Footer Info */}
       <div className="mt-auto flex items-center justify-between pt-3 border-t border-zinc-800/50">
-        
         {/* Date */}
         <div className="flex items-center gap-1.5 text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">
           <Calendar className="w-3.5 h-3.5" />
@@ -33,12 +37,12 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
 
         {/* Owner */}
         <div className="flex items-center gap-1.5">
-           <div className="w-5 h-5 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[10px] font-medium text-zinc-300">
-              {task.owner.charAt(0)}
-           </div>
-           <span className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors truncate max-w-[80px]">
-             {task.owner}
-           </span>
+          <div className="w-5 h-5 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center text-[10px] font-medium text-zinc-300">
+            {task.owner.charAt(0)}
+          </div>
+          <span className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors truncate max-w-[80px]">
+            {task.owner}
+          </span>
         </div>
       </div>
     </div>

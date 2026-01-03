@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { Meeting } from '../types';
-import { MoreHorizontal, PlayCircle, Search, Filter } from 'lucide-react';
+import { MoreHorizontal, Video, Search, Filter } from 'lucide-react';
+import { MeetingStatusBadge } from '../components/Badges';
 
 interface MeetingsViewProps {
   meetings: Meeting[];
@@ -49,8 +50,8 @@ const MeetingsView: React.FC<MeetingsViewProps> = ({ meetings, onNavigateToMeeti
                 >
                   <td className="px-6 py-5">
                     <div className="flex items-center gap-4">
-                      <div className="w-9 h-9 bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 group-hover:bg-white group-hover:text-black transition-all border border-zinc-700">
-                        <PlayCircle size={18} />
+                      <div className="w-9 h-9 bg-zinc-800 rounded-lg flex items-center justify-center text-zinc-500 border border-zinc-700">
+                        <Video size={18} />
                       </div>
                       <span className="text-sm font-semibold text-zinc-200 group-hover:text-white transition-colors">{meeting.title}</span>
                     </div>
@@ -71,11 +72,7 @@ const MeetingsView: React.FC<MeetingsViewProps> = ({ meetings, onNavigateToMeeti
                     <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{meeting.tasks.length} ITEMS</span>
                   </td>
                   <td className="px-6 py-5">
-                    <span className={`text-[9px] font-bold uppercase tracking-widest px-2 py-0.5 rounded border ${
-                      meeting.status === 'processed' ? 'bg-zinc-100 text-black border-zinc-100 shadow-[0_0_8px_rgba(255,255,255,0.2)]' : 'bg-zinc-800 text-zinc-500 border-zinc-700'
-                    }`}>
-                      {meeting.status}
-                    </span>
+                    <MeetingStatusBadge status={meeting.status} />
                   </td>
                   <td className="px-6 py-5 text-right">
                     <button className="p-2 text-zinc-700 hover:text-zinc-300">
