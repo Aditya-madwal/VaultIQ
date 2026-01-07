@@ -67,17 +67,17 @@ const GlobalStyles: React.FC = () => (
 
 const Navbar: React.FC = () => (
   <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-black/50 backdrop-blur-xl">
-    <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
       <div className="flex items-center gap-2">
         <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-xl">C</div>
-        <span className="text-xl font-bold tracking-tight">Chronos AI</span>
+        <span className="text-lg font-bold tracking-tight">Chronos AI</span>
       </div>
       <div className="hidden md:flex items-center gap-8 text-sm font-medium text-neutral-400">
         <a href="#features" className="hover:text-white transition-colors">Features</a>
         <a href="#demo" className="hover:text-white transition-colors">Demo</a>
         <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
       </div>
-      <button className="bg-white text-black px-6 py-2 rounded-full text-sm font-semibold hover:bg-neutral-200 transition-colors">
+      <button className="bg-white text-black px-5 py-2 rounded-full text-xs font-semibold hover:bg-neutral-200 transition-colors">
         Get Started
       </button>
     </div>
@@ -85,45 +85,45 @@ const Navbar: React.FC = () => (
 );
 
 const FeatureCard: React.FC<FeatureProps> = ({ title, description, icon }) => (
-  <div className="p-10 rounded-[2.5rem] bg-neutral-900/40 border border-white/5 hover:border-white/10 transition-all group">
-    <div className="mb-8 w-14 h-14 rounded-2xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
+  <div className="p-6 rounded-2xl bg-neutral-900/40 border border-white/5 hover:border-white/10 transition-all group">
+    <div className="mb-4 w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
       {icon}
     </div>
-    <h3 className="text-3xl font-bold mb-4 tracking-tight">{title}</h3>
-    <p className="text-neutral-400 text-lg leading-relaxed">{description}</p>
+    <h3 className="text-xl font-bold mb-3 tracking-tight">{title}</h3>
+    <p className="text-neutral-400 text-sm leading-relaxed">{description}</p>
   </div>
 );
 
 const Footer: React.FC = () => (
-  <footer className="border-t border-white/5 py-32 px-6 bg-black">
-    <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-16">
+  <footer className="border-t border-white/5 py-20 px-6 bg-black">
+    <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
       <div className="col-span-1 md:col-span-2">
-        <div className="flex items-center gap-2 mb-8">
+        <div className="flex items-center gap-2 mb-6">
           <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-xl">C</div>
-          <span className="text-2xl font-bold tracking-tight text-white">Chronos AI</span>
+          <span className="text-xl font-bold tracking-tight text-white">Chronos AI</span>
         </div>
-        <p className="text-neutral-400 text-lg max-w-sm leading-relaxed">
+        <p className="text-neutral-400 text-sm max-w-sm leading-relaxed">
           The next generation of meeting intelligence. Automated, accurate, and deeply integrated into your workflow.
         </p>
       </div>
       <div>
-        <h4 className="font-bold text-white mb-8">Product</h4>
-        <ul className="space-y-4 text-neutral-400">
+        <h4 className="font-bold text-white mb-6 text-sm">Product</h4>
+        <ul className="space-y-3 text-sm text-neutral-400">
           <li><a href="#" className="hover:text-white transition-colors">Meeting Summary</a></li>
           <li><a href="#" className="hover:text-white transition-colors">Team Calendar</a></li>
           <li><a href="#" className="hover:text-white transition-colors">Action Items</a></li>
         </ul>
       </div>
       <div>
-        <h4 className="font-bold text-white mb-8">Company</h4>
-        <ul className="space-y-4 text-neutral-400">
+        <h4 className="font-bold text-white mb-6 text-sm">Company</h4>
+        <ul className="space-y-3 text-sm text-neutral-400">
           <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
           <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
           <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
         </ul>
       </div>
     </div>
-    <div className="max-w-7xl mx-auto mt-32 pt-10 border-t border-white/5 text-neutral-600 text-sm flex flex-col md:flex-row justify-between items-center gap-4">
+    <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 text-neutral-600 text-xs flex flex-col md:flex-row justify-between items-center gap-4">
       <span>&copy; {new Date().getFullYear()} Chronos AI Inc. Crafted for productivity.</span>
       <div className="flex gap-6">
         <a href="#" className="hover:text-neutral-400 transition-colors">Twitter</a>
@@ -192,26 +192,26 @@ const App: React.FC = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-56 pb-32 px-6">
+      <section className="relative pt-32 pb-20 px-6">
         <div className="max-w-7xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-semibold text-indigo-400 mb-12 animate-fade-in shadow-2xl">
-            <span className="relative flex h-2.5 w-2.5">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-indigo-400 mb-8 animate-fade-in shadow-2xl">
+            <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-indigo-500"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
             </span>
             Meet Chronos Intelligence v2.0
           </div>
-          <h1 className="text-6xl md:text-9xl font-extrabold tracking-tighter gradient-text mb-10 leading-[1] md:px-20">
+          <h1 className="text-5xl md:text-8xl font-extrabold tracking-tighter gradient-text mb-8 leading-[1] md:px-20">
             Meetings into Action.
           </h1>
-          <p className="text-xl md:text-3xl text-neutral-400 max-w-4xl mx-auto mb-16 leading-relaxed font-light">
+          <p className="text-lg md:text-2xl text-neutral-400 max-w-4xl mx-auto mb-10 leading-relaxed font-light">
             AI-powered summaries, automated MOM generation, and smart team scheduling. Stop taking notes, start taking action.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <button className="w-full sm:w-auto px-12 py-5 bg-indigo-600 hover:bg-indigo-500 rounded-full text-xl font-bold transition-all shadow-2xl shadow-indigo-600/30">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <button className="w-full sm:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-500 rounded-full text-lg font-bold transition-all shadow-2xl shadow-indigo-600/30">
               Get Started Free
             </button>
-            <button className="w-full sm:w-auto px-12 py-5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-xl font-bold transition-all backdrop-blur-md">
+            <button className="w-full sm:w-auto px-8 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-lg font-bold transition-all backdrop-blur-md">
               Watch Experience
             </button>
           </div>
@@ -219,58 +219,58 @@ const App: React.FC = () => {
       </section>
 
       {/* Features Grid */}
-      <section id="features" className="py-40 px-6">
+      <section id="features" className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-24 text-center md:text-left">
-            <h2 className="text-5xl md:text-7xl font-bold mb-8 tracking-tight">The Modern AI Stack.</h2>
-            <p className="text-2xl text-neutral-400 max-w-3xl leading-relaxed">Everything your team needs to transform unstructured conversations into clear, actionable data points.</p>
+          <div className="mb-16 text-center md:text-left">
+            <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">The Modern AI Stack.</h2>
+            <p className="text-xl text-neutral-400 max-w-3xl leading-relaxed">Everything your team needs to transform unstructured conversations into clear, actionable data points.</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <FeatureCard 
               title="MOM Generator" 
               description="Automatically generate professional Minutes of Meeting with key decisions and discussion points captured instantly."
-              icon={<svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>}
+              icon={<svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>}
             />
             <FeatureCard 
               title="Smart Scheduler" 
               description="Chronos detects potential follow-ups and automatically suggests the best times for your team to regroup."
-              icon={<svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>}
+              icon={<svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>}
             />
             <FeatureCard 
               title="Task Extraction" 
               description="Action items are intelligently identified and assigned to team members based on the meeting context."
-              icon={<svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>}
+              icon={<svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>}
             />
           </div>
         </div>
       </section>
 
       {/* Interactive Demo */}
-      <section id="demo" className="py-40 px-6">
+      <section id="demo" className="py-24 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-24 items-start">
-            <div className="sticky top-32">
-              <h2 className="text-5xl md:text-7xl font-bold mb-10 tracking-tight leading-[1.1]">Experience the intelligence.</h2>
-              <p className="text-2xl text-neutral-400 mb-12 leading-relaxed">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+            <div className="sticky top-24">
+              <h2 className="text-4xl md:text-6xl font-bold mb-8 tracking-tight leading-[1.1]">Experience the intelligence.</h2>
+              <p className="text-lg text-neutral-400 mb-8 leading-relaxed">
                 Paste a meeting transcript snippet to see our proprietary engine extract meaningful, structured data in seconds.
               </p>
-              <div className="p-1 rounded-[2.5rem] bg-neutral-900 border border-white/10 shadow-3xl overflow-hidden">
+              <div className="p-1 rounded-2xl bg-neutral-900 border border-white/10 shadow-3xl overflow-hidden">
                 <textarea 
-                  className="w-full h-64 bg-transparent p-8 text-neutral-300 resize-none outline-none font-mono text-lg leading-relaxed"
+                  className="w-full h-48 bg-transparent p-6 text-neutral-300 resize-none outline-none font-mono text-base leading-relaxed"
                   value={transcript}
                   onChange={(e) => setTranscript(e.target.value)}
                   placeholder="Paste meeting transcript here..."
                 />
-                <div className="p-6 border-t border-white/5 bg-neutral-900/50 flex justify-between items-center">
-                  <span className="text-xs text-neutral-500 font-mono">ENHANCED BY GEMINI FLASH</span>
+                <div className="p-4 border-t border-white/5 bg-neutral-900/50 flex justify-between items-center">
+                  <span className="text-[10px] text-neutral-500 font-mono">ENHANCED BY GEMINI FLASH</span>
                   <button 
                     onClick={handleSummarize}
                     disabled={loading}
-                    className="flex items-center gap-3 px-10 py-4 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 rounded-full font-bold transition-all shadow-xl shadow-indigo-600/20"
+                    className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 rounded-full font-bold transition-all shadow-xl shadow-indigo-600/20 text-sm"
                   >
                     {loading ? (
                       <>
-                        <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                        <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
                           <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
@@ -280,70 +280,70 @@ const App: React.FC = () => {
                   </button>
                 </div>
               </div>
-              {error && <p className="mt-6 text-red-400 text-lg font-medium bg-red-400/10 p-4 rounded-2xl border border-red-400/20">{error}</p>}
+              {error && <p className="mt-4 text-red-400 text-sm font-medium bg-red-400/10 p-3 rounded-xl border border-red-400/20">{error}</p>}
             </div>
 
-            <div className="lg:mt-0 min-h-[600px]">
+            <div className="lg:mt-0 min-h-[400px]">
               {!result && !loading && (
-                <div className="h-[600px] flex flex-col items-center justify-center p-16 border-2 border-dashed border-white/5 rounded-[3rem] text-neutral-600 group hover:border-indigo-500/20 transition-colors">
-                  <div className="w-20 h-20 bg-white/2 rounded-3xl flex items-center justify-center mb-8 group-hover:bg-indigo-500/5 transition-colors">
-                    <svg className="w-10 h-10 opacity-30 group-hover:opacity-60 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="h-[400px] flex flex-col items-center justify-center p-10 border-2 border-dashed border-white/5 rounded-3xl text-neutral-600 group hover:border-indigo-500/20 transition-colors">
+                  <div className="w-16 h-16 bg-white/2 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-indigo-500/5 transition-colors">
+                    <svg className="w-8 h-8 opacity-30 group-hover:opacity-60 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   </div>
-                  <p className="text-center text-xl font-medium">Ready for input. <br/>Paste a transcript to begin extraction.</p>
+                  <p className="text-center text-lg font-medium">Ready for input. <br/>Paste a transcript to begin extraction.</p>
                 </div>
               )}
 
               {loading && (
-                <div className="space-y-8 animate-pulse p-10 border border-white/5 rounded-[3rem] bg-neutral-900/30">
-                  <div className="h-8 bg-white/5 rounded-full w-2/3"></div>
-                  <div className="h-6 bg-white/5 rounded-full w-full"></div>
-                  <div className="h-6 bg-white/5 rounded-full w-5/6"></div>
-                  <div className="h-48 bg-white/5 rounded-[2rem] w-full"></div>
-                  <div className="h-8 bg-white/5 rounded-full w-1/2"></div>
+                <div className="space-y-6 animate-pulse p-8 border border-white/5 rounded-3xl bg-neutral-900/30">
+                  <div className="h-6 bg-white/5 rounded-full w-2/3"></div>
+                  <div className="h-4 bg-white/5 rounded-full w-full"></div>
+                  <div className="h-4 bg-white/5 rounded-full w-5/6"></div>
+                  <div className="h-32 bg-white/5 rounded-xl w-full"></div>
+                  <div className="h-6 bg-white/5 rounded-full w-1/2"></div>
                 </div>
               )}
 
               {result && (
-                <div className="space-y-10 animate-fade-in p-2">
-                  <div className="p-10 rounded-[2.5rem] bg-indigo-500/5 border border-indigo-500/20 shadow-2xl">
-                    <h4 className="text-indigo-400 text-sm font-bold uppercase tracking-[0.2em] mb-6">Summary Analysis</h4>
-                    <p className="text-neutral-200 text-xl leading-relaxed font-light italic">"{result.summary}"</p>
+                <div className="space-y-6 animate-fade-in p-2">
+                  <div className="p-6 rounded-2xl bg-indigo-500/5 border border-indigo-500/20 shadow-xl">
+                    <h4 className="text-indigo-400 text-xs font-bold uppercase tracking-[0.2em] mb-4">Summary Analysis</h4>
+                    <p className="text-neutral-200 text-base leading-relaxed font-light italic">"{result.summary}"</p>
                   </div>
 
-                  <div className="grid grid-cols-1 gap-8">
-                    <div className="p-10 rounded-[2.5rem] bg-neutral-900/60 border border-white/10">
-                      <h4 className="text-neutral-500 text-sm font-bold uppercase tracking-[0.2em] mb-8">Minutes of Meeting</h4>
-                      <ul className="space-y-6">
+                  <div className="grid grid-cols-1 gap-6">
+                    <div className="p-6 rounded-2xl bg-neutral-900/60 border border-white/10">
+                      <h4 className="text-neutral-500 text-xs font-bold uppercase tracking-[0.2em] mb-6">Minutes of Meeting</h4>
+                      <ul className="space-y-4">
                         {result.mom.map((item, i) => (
-                          <li key={i} className="flex gap-4 text-lg text-neutral-300">
-                            <span className="text-indigo-500 text-2xl font-bold">•</span> {item}
+                          <li key={i} className="flex gap-3 text-sm text-neutral-300">
+                            <span className="text-indigo-500 text-lg font-bold">•</span> {item}
                           </li>
                         ))}
                       </ul>
                     </div>
                     
-                    <div className="p-10 rounded-[2.5rem] bg-neutral-900/60 border border-white/10">
-                      <h4 className="text-neutral-500 text-sm font-bold uppercase tracking-[0.2em] mb-8">Generated Task Board</h4>
-                      <ul className="space-y-4">
+                    <div className="p-6 rounded-2xl bg-neutral-900/60 border border-white/10">
+                      <h4 className="text-neutral-500 text-xs font-bold uppercase tracking-[0.2em] mb-6">Generated Task Board</h4>
+                      <ul className="space-y-3">
                         {result.tasks.map((item, i) => (
-                          <li key={i} className="flex items-center gap-5 p-5 rounded-2xl bg-white/2 border border-white/5 hover:border-white/10 transition-all cursor-pointer group">
-                            <div className="w-6 h-6 rounded-md border-2 border-indigo-500/30 group-hover:border-indigo-500 transition-colors"></div>
-                            <span className="text-lg text-neutral-200 font-medium">{item}</span>
+                          <li key={i} className="flex items-center gap-4 p-4 rounded-xl bg-white/2 border border-white/5 hover:border-white/10 transition-all cursor-pointer group">
+                            <div className="w-5 h-5 rounded border-2 border-indigo-500/30 group-hover:border-indigo-500 transition-colors"></div>
+                            <span className="text-sm text-neutral-200 font-medium">{item}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
                   </div>
 
-                  <div className="p-10 rounded-[2.5rem] bg-neutral-900/60 border border-white/10">
-                    <h4 className="text-neutral-500 text-sm font-bold uppercase tracking-[0.2em] mb-8">Extracted Schedule</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="p-6 rounded-2xl bg-neutral-900/60 border border-white/10">
+                    <h4 className="text-neutral-500 text-xs font-bold uppercase tracking-[0.2em] mb-6">Extracted Schedule</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {result.schedule.map((item, i) => (
-                        <div key={i} className="flex flex-col gap-2 px-6 py-5 bg-indigo-600/5 rounded-2xl border border-indigo-500/20">
-                          <span className="text-indigo-400 font-bold text-sm uppercase tracking-wider">{item.time}</span>
-                          <span className="text-lg font-bold text-white leading-tight">{item.event}</span>
+                        <div key={i} className="flex flex-col gap-1 px-5 py-4 bg-indigo-600/5 rounded-xl border border-indigo-500/20">
+                          <span className="text-indigo-400 font-bold text-xs uppercase tracking-wider">{item.time}</span>
+                          <span className="text-sm font-bold text-white leading-tight">{item.event}</span>
                         </div>
                       ))}
                     </div>
@@ -356,18 +356,18 @@ const App: React.FC = () => {
       </section>
 
       {/* CTA Final */}
-      <section className="py-56 px-6">
-        <div className="max-w-7xl mx-auto p-24 rounded-[4rem] bg-indigo-600 text-center relative overflow-hidden shadow-3xl">
+      <section className="py-32 px-6">
+        <div className="max-w-7xl mx-auto p-16 rounded-[2.5rem] bg-indigo-600 text-center relative overflow-hidden shadow-3xl">
           <div className="relative z-10">
-            <h2 className="text-5xl md:text-8xl font-extrabold mb-10 tracking-tight leading-[1]">Ready to focus on <br /> the conversation?</h2>
-            <p className="text-2xl text-indigo-100 mb-16 max-w-2xl mx-auto leading-relaxed">Join the most efficient teams on the planet using Chronos AI to automate their administrative heavy lifting.</p>
-            <button className="px-16 py-6 bg-white text-indigo-600 hover:bg-neutral-100 rounded-full text-2xl font-black transition-all shadow-3xl hover:scale-105 active:scale-95">
+            <h2 className="text-4xl md:text-7xl font-extrabold mb-8 tracking-tight leading-[1]">Ready to focus on <br /> the conversation?</h2>
+            <p className="text-lg text-indigo-100 mb-10 max-w-xl mx-auto leading-relaxed">Join the most efficient teams on the planet using Chronos AI to automate their administrative heavy lifting.</p>
+            <button className="px-10 py-4 bg-white text-indigo-600 hover:bg-neutral-100 rounded-full text-xl font-black transition-all shadow-3xl hover:scale-105 active:scale-95">
               Start Free Trial Now
             </button>
           </div>
           {/* Decorative shapes */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-48 -mt-48 blur-[100px]"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-black/10 rounded-full -ml-48 -mb-48 blur-[100px]"></div>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-[80px]"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full -ml-32 -mb-32 blur-[80px]"></div>
         </div>
       </section>
 

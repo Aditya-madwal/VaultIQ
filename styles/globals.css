@@ -8,6 +8,12 @@
 h1,
 .font-serif-heading {
   font-family: Georgia, "Times New Roman", serif;
+  font-weight: 400;
+  font-size: 20px;
+}
+
+.georgia {
+  font-family: Georgia, "Times New Roman", serif;
 }
 
 .glass-card {
@@ -23,7 +29,6 @@ h1,
     transparent 1.5px
   );
   background-size: 24px 24px;
-  background-position: 0 0;
 }
 
 .auth-content-wrapper {

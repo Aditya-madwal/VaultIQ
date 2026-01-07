@@ -38,9 +38,9 @@ const DashboardHeader: React.FC = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-30 flex items-center justify-between px-6 py-3 bg-zinc-950/80 backdrop-blur-xl border-b border-white/5">
+      <header className="sticky top-4 z-30 mx-4 mb-4 flex items-center justify-between px-6 py-3 rounded-2xl bg-zinc-900/60 backdrop-blur-xl border border-white/10 shadow-2xl">
         <div className="flex items-center gap-2">
-          <h1 className="text-sm font-bold text-white/90 capitalize tracking-tight">
+          <h1 className="text-sm font-bold text-white/90 capitalize tracking-tight georgia">
             {getTitle()}
           </h1>
         </div>
@@ -49,10 +49,10 @@ const DashboardHeader: React.FC = () => {
             <input
               type="text"
               placeholder="Jump to..."
-              className="pl-8 pr-3 py-1 bg-white/5 border border-white/10 rounded-md text-[11px] w-48 focus:w-64 transition-all outline-none text-zinc-200 placeholder-zinc-600"
+              className="pl-9 pr-3 py-1.5 bg-white/5 border border-white/10 rounded-xl text-[11px] w-48 focus:w-64 transition-all outline-none text-zinc-200 placeholder-zinc-600 focus:bg-white/10 font-medium"
             />
             <svg
-              className="absolute left-2.5 top-1.5 w-3.5 h-3.5 text-zinc-600"
+              className="absolute left-3 top-2 w-3.5 h-3.5 text-zinc-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24">
@@ -65,7 +65,7 @@ const DashboardHeader: React.FC = () => {
           </div>
           <button
             onClick={() => setIsProfileModalOpen(true)}
-            className="w-7 h-7 rounded-lg bg-zinc-800 flex items-center justify-center text-[10px] font-bold border border-white/5 cursor-pointer hover:bg-zinc-700 transition-colors overflow-hidden">
+            className="w-8 h-8 rounded-xl bg-zinc-800/50 flex items-center justify-center text-[10px] font-bold border border-white/10 cursor-pointer hover:bg-zinc-700/50 transition-colors overflow-hidden ring-2 ring-transparent hover:ring-white/10">
             {user?.imageUrl ? (
               <img
                 src={user.imageUrl}
