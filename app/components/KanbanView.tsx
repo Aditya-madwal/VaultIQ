@@ -19,7 +19,7 @@ const KanbanView: React.FC<KanbanViewProps> = ({ tasks, onUpdateStatus }) => {
   return (
     <div className="space-y-10 pt-4">
       {/* 1. Protocol Metadata Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between px-2 gap-6 border-b border-brand-border pb-8 mb-4">
+      <div className="flex flex-col md:flex-row md:items-end justify-between px-2 gap-6 pb-8 mb-4">
         <div className="space-y-2">
           <div className="flex items-center gap-3">
              <span className="font-mono text-[10px] text-gray-400 font-bold uppercase tracking-[0.3em]">PIPELINE_ORBIT</span>

@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { GoogleGenAI, Type } from "@google/genai";
+import { generateMeetingSummary } from './actions';
 
 // --- Types ---
 
@@ -160,40 +160,11 @@ const App: React.FC = () => {
     setError(null);
     
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
-      const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: `Analyze the following meeting transcript. Provide a concise summary, a list of MOM (Minutes of Meeting) points, specific action tasks for team members, and any scheduled events found in the text. \n\n${transcript}`,
-        config: {
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: Type.OBJECT,
-            properties: {
-              summary: { type: Type.STRING },
-              mom: { type: Type.ARRAY, items: { type: Type.STRING } },
-              tasks: { type: Type.ARRAY, items: { type: Type.STRING } },
-              schedule: {
-                type: Type.ARRAY,
-                items: {
-                  type: Type.OBJECT,
-                  properties: {
-                    event: { type: Type.STRING },
-                    time: { type: Type.STRING }
-                  },
-                  required: ["event", "time"]
-                }
-              }
-            },
-            required: ["summary", "mom", "tasks", "schedule"]
-          }
-        }
-      });
-
-      const data = JSON.parse(response.text || '{}');
+      const data = await generateMeetingSummary(transcript);
       setResult(data);
     } catch (err) {
       console.error("AI Error:", err);
-      setError("Unable to process transcript. Please ensure the API key is active.");
+      setError("Unable to process transcript. Please ensure the API key is active and configured correctly.");
     } finally {
       setLoading(false);
     }

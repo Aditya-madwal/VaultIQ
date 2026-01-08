@@ -11,7 +11,7 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
-      <div className="absolute inset-0 bg-zinc-950/80 backdrop-blur-sm" onClick={onClose}></div>
+      <div className="absolute inset-0 bg-zinc-950/80" onClick={onClose}></div>
       <div className="relative w-full max-w-lg bg-zinc-900 border border-zinc-800 rounded-3xl p-8 animate-in fade-in zoom-in-95 duration-300">
         <div className="flex items-center justify-between mb-8">
           <h2 className="text-2xl font-extrabold tracking-tighter text-white">NEW_SESSION_CAPTURE</h2>
