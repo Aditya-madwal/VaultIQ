@@ -1,5 +1,6 @@
 'use client'
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { GoogleGenAI, Type } from "@google/genai";
 
 // --- Types ---
@@ -20,6 +21,10 @@ interface SummaryResult {
   }[];
 }
 
+import { Playfair_Display } from 'next/font/google';
+
+const playfair = Playfair_Display({ subsets: ['latin'] });
+
 // --- Global Styles Injected via Component ---
 
 const GlobalStyles: React.FC = () => (
@@ -30,6 +35,9 @@ const GlobalStyles: React.FC = () => (
         color: #ffffff;
         margin: 0;
         overflow-x: hidden;
+    }
+    h1, h2, h3, h4, h5, h6 {
+        font-family: ${playfair.style.fontFamily}, serif;
     }
     .dotted-bg {
         background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
@@ -66,10 +74,10 @@ const GlobalStyles: React.FC = () => (
 // --- Sub-Components ---
 
 const Navbar: React.FC = () => (
-  <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-black/50 backdrop-blur-xl">
-    <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+  <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] md:w-[80%] max-w-7xl border border-white/10 bg-black/70 backdrop-blur-xl rounded-2xl shadow-2xl transition-all">
+    <div className="w-full px-6 h-16 flex items-center justify-between">
       <div className="flex items-center gap-2">
-        <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-xl">C</div>
+        <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center font-bold text-xl text-black">C</div>
         <span className="text-lg font-bold tracking-tight">Chronos AI</span>
       </div>
       <div className="hidden md:flex items-center gap-8 text-sm font-medium text-neutral-400">
@@ -77,16 +85,21 @@ const Navbar: React.FC = () => (
         <a href="#demo" className="hover:text-white transition-colors">Demo</a>
         <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
       </div>
-      <button className="bg-white text-black px-5 py-2 rounded-full text-xs font-semibold hover:bg-neutral-200 transition-colors">
-        Get Started
-      </button>
+      <div className="flex items-center gap-3">
+        <Link href="/sign-in" className="text-neutral-300 hover:text-white text-xs font-semibold transition-colors">
+          Login
+        </Link>
+        <Link href="/sign-up" className="bg-white text-black px-5 py-2 rounded-full text-xs font-semibold hover:bg-neutral-200 transition-colors">
+          Sign Up
+        </Link>
+      </div>
     </div>
   </nav>
 );
 
 const FeatureCard: React.FC<FeatureProps> = ({ title, description, icon }) => (
   <div className="p-6 rounded-2xl bg-neutral-900/40 border border-white/5 hover:border-white/10 transition-all group">
-    <div className="mb-4 w-12 h-12 rounded-xl bg-indigo-500/10 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
+    <div className="mb-4 w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
       {icon}
     </div>
     <h3 className="text-xl font-bold mb-3 tracking-tight">{title}</h3>
@@ -99,7 +112,7 @@ const Footer: React.FC = () => (
     <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
       <div className="col-span-1 md:col-span-2">
         <div className="flex items-center gap-2 mb-6">
-          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center font-bold text-xl">C</div>
+          <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center font-bold text-xl text-black">C</div>
           <span className="text-xl font-bold tracking-tight text-white">Chronos AI</span>
         </div>
         <p className="text-neutral-400 text-sm max-w-sm leading-relaxed">
@@ -187,35 +200,51 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen dotted-bg selection:bg-indigo-500 selection:text-white">
+    <div className="min-h-screen dotted-bg selection:bg-neutral-500 selection:text-white">
       <GlobalStyles />
       <Navbar />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-6">
-        <div className="max-w-7xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-indigo-400 mb-8 animate-fade-in shadow-2xl">
+      <section className="relative pt-32 pb-0 px-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto text-center relative z-10">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-neutral-300 mb-8 animate-fade-in shadow-2xl">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neutral-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-neutral-500"></span>
             </span>
             Meet Chronos Intelligence v2.0
           </div>
-          <h1 className="text-5xl md:text-8xl font-extrabold tracking-tighter gradient-text mb-8 leading-[1] md:px-20">
+          <h1 className="text-5xl md:text-8xl font-extrabold tracking-tighter gradient-text mb-2 leading-tight md:px-20 pb-4">
             Meetings into Action.
           </h1>
           <p className="text-lg md:text-2xl text-neutral-400 max-w-4xl mx-auto mb-10 leading-relaxed font-light">
             AI-powered summaries, automated MOM generation, and smart team scheduling. Stop taking notes, start taking action.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button className="w-full sm:w-auto px-8 py-3 bg-indigo-600 hover:bg-indigo-500 rounded-full text-lg font-bold transition-all shadow-2xl shadow-indigo-600/30">
-              Get Started Free
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
+            <button className="w-full sm:w-auto px-8 py-3 bg-white text-black hover:bg-neutral-200 rounded-full text-lg font-bold transition-all shadow-xl shadow-white/10">
+              Get Started
             </button>
-            <button className="w-full sm:w-auto px-8 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-lg font-bold transition-all backdrop-blur-md">
-              Watch Experience
+            <button className="w-full sm:w-auto px-8 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-lg font-bold transition-all backdrop-blur-md flex items-center justify-center gap-2">
+              Try For Free <span className="text-lg">›</span>
             </button>
           </div>
+
+          {/* Dashboard Preview */}
+          <div className="relative mx-auto max-w-6xl animate-fade-in">
+             <div className="rounded-xl border border-white/10 p-2 bg-neutral-900/50 backdrop-blur-xl shadow-2xl">
+                <img 
+                  src="/dashboard-preview.png" 
+                  alt="App Dashboard" 
+                  className="rounded-lg w-full h-auto shadow-inner"
+                />
+             </div>
+             {/* Fade gradient */}
+             <div className="absolute -bottom-2 left-0 right-0 h-64 bg-gradient-to-t from-[#050505] via-[#050505] to-transparent z-20"></div>
+          </div>
         </div>
+        
+        {/* Background glow for the dashboard */}
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-white/5 blur-[120px] -z-10 rounded-full pointer-events-none"></div>
       </section>
 
       {/* Features Grid */}
@@ -266,7 +295,7 @@ const App: React.FC = () => {
                   <button 
                     onClick={handleSummarize}
                     disabled={loading}
-                    className="flex items-center gap-2 px-6 py-3 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 rounded-full font-bold transition-all shadow-xl shadow-indigo-600/20 text-sm"
+                    className="flex items-center gap-2 px-6 py-3 bg-white text-black hover:bg-neutral-200 disabled:opacity-50 rounded-full font-bold transition-all shadow-xl shadow-white/5 text-sm"
                   >
                     {loading ? (
                       <>
@@ -285,8 +314,8 @@ const App: React.FC = () => {
 
             <div className="lg:mt-0 min-h-[400px]">
               {!result && !loading && (
-                <div className="h-[400px] flex flex-col items-center justify-center p-10 border-2 border-dashed border-white/5 rounded-3xl text-neutral-600 group hover:border-indigo-500/20 transition-colors">
-                  <div className="w-16 h-16 bg-white/2 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-indigo-500/5 transition-colors">
+                <div className="h-[400px] flex flex-col items-center justify-center p-10 border-2 border-dashed border-white/5 rounded-3xl text-neutral-600 group hover:border-white/20 transition-colors">
+                  <div className="w-16 h-16 bg-white/2 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/5 transition-colors">
                     <svg className="w-8 h-8 opacity-30 group-hover:opacity-60 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
@@ -307,9 +336,9 @@ const App: React.FC = () => {
 
               {result && (
                 <div className="space-y-6 animate-fade-in p-2">
-                  <div className="p-6 rounded-2xl bg-indigo-500/5 border border-indigo-500/20 shadow-xl">
-                    <h4 className="text-indigo-400 text-xs font-bold uppercase tracking-[0.2em] mb-4">Summary Analysis</h4>
-                    <p className="text-neutral-200 text-base leading-relaxed font-light italic">"{result.summary}"</p>
+                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10 shadow-xl">
+                    <h4 className="text-white text-xs font-bold uppercase tracking-[0.2em] mb-4">Summary Analysis</h4>
+                    <p className="text-neutral-300 text-base leading-relaxed font-light italic">"{result.summary}"</p>
                   </div>
 
                   <div className="grid grid-cols-1 gap-6">
@@ -318,7 +347,7 @@ const App: React.FC = () => {
                       <ul className="space-y-4">
                         {result.mom.map((item, i) => (
                           <li key={i} className="flex gap-3 text-sm text-neutral-300">
-                            <span className="text-indigo-500 text-lg font-bold">•</span> {item}
+                            <span className="text-white text-lg font-bold">•</span> {item}
                           </li>
                         ))}
                       </ul>
@@ -329,7 +358,7 @@ const App: React.FC = () => {
                       <ul className="space-y-3">
                         {result.tasks.map((item, i) => (
                           <li key={i} className="flex items-center gap-4 p-4 rounded-xl bg-white/2 border border-white/5 hover:border-white/10 transition-all cursor-pointer group">
-                            <div className="w-5 h-5 rounded border-2 border-indigo-500/30 group-hover:border-indigo-500 transition-colors"></div>
+                            <div className="w-5 h-5 rounded border-2 border-white/30 group-hover:border-white transition-colors"></div>
                             <span className="text-sm text-neutral-200 font-medium">{item}</span>
                           </li>
                         ))}
@@ -341,8 +370,8 @@ const App: React.FC = () => {
                     <h4 className="text-neutral-500 text-xs font-bold uppercase tracking-[0.2em] mb-6">Extracted Schedule</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {result.schedule.map((item, i) => (
-                        <div key={i} className="flex flex-col gap-1 px-5 py-4 bg-indigo-600/5 rounded-xl border border-indigo-500/20">
-                          <span className="text-indigo-400 font-bold text-xs uppercase tracking-wider">{item.time}</span>
+                        <div key={i} className="flex flex-col gap-1 px-5 py-4 bg-white/5 rounded-xl border border-white/10">
+                          <span className="text-neutral-400 font-bold text-xs uppercase tracking-wider">{item.time}</span>
                           <span className="text-sm font-bold text-white leading-tight">{item.event}</span>
                         </div>
                       ))}
@@ -357,11 +386,11 @@ const App: React.FC = () => {
 
       {/* CTA Final */}
       <section className="py-32 px-6">
-        <div className="max-w-7xl mx-auto p-16 rounded-[2.5rem] bg-indigo-600 text-center relative overflow-hidden shadow-3xl">
+        <div className="max-w-7xl mx-auto p-16 rounded-[2.5rem] bg-neutral-900 border border-white/10 text-center relative overflow-hidden shadow-3xl">
           <div className="relative z-10">
-            <h2 className="text-4xl md:text-7xl font-extrabold mb-8 tracking-tight leading-[1]">Ready to focus on <br /> the conversation?</h2>
-            <p className="text-lg text-indigo-100 mb-10 max-w-xl mx-auto leading-relaxed">Join the most efficient teams on the planet using Chronos AI to automate their administrative heavy lifting.</p>
-            <button className="px-10 py-4 bg-white text-indigo-600 hover:bg-neutral-100 rounded-full text-xl font-black transition-all shadow-3xl hover:scale-105 active:scale-95">
+            <h2 className="text-4xl md:text-7xl font-extrabold mb-8 tracking-tight leading-[1] text-white">Ready to focus on <br /> the conversation?</h2>
+            <p className="text-lg text-neutral-400 mb-10 max-w-xl mx-auto leading-relaxed">Join the most efficient teams on the planet using Chronos AI to automate their administrative heavy lifting.</p>
+            <button className="px-10 py-4 bg-white text-black hover:bg-neutral-200 rounded-full text-xl font-black transition-all shadow-3xl hover:scale-105 active:scale-95">
               Start Free Trial Now
             </button>
           </div>

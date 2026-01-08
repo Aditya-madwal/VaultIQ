@@ -1,23 +1,21 @@
 import type { Metadata, Viewport } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Inter } from "next/font/google"; // Re-added Inter
-import { RouteProvider } from "@/providers/route-provider";
-import { ThemeProvider } from "@/providers/theme-provider";
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "@/styles/globals.css";
 
-const inter = Inter({
+const sans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
+  variable: "--font-sans",
+});
+
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
-  title: "MeetingBrain",
+  title: "Lumina - Solar-punk AI Protocol",
   description: "Secure document management and collaboration platform",
-};
-
-export const viewport: Viewport = {
-  colorScheme: "light",
 };
 
 export default function RootLayout({
@@ -26,12 +24,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} scroll-smooth`} suppressHydrationWarning>
-      <body className="bg-primary antialiased">
+    <html lang="en" className={`${sans.variable} ${mono.variable} antialiased dark`} suppressHydrationWarning>
+      <body className="bg-black text-gray-100">
         <ClerkProvider>
-          <RouteProvider>
-            <ThemeProvider>{children}</ThemeProvider>
-          </RouteProvider>
+            {children}
         </ClerkProvider>
       </body>
     </html>

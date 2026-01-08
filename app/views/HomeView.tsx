@@ -2,7 +2,7 @@
 import React from 'react';
 import { Meeting, Task } from '../types';
 import { UploadCloud, CheckCircle2, Clock, Zap, BarChart3, MoreHorizontal, Video } from 'lucide-react';
-import TaskCard from '../components/microcomponents/TaskCard';
+import TaskCard from '../microcomponents/TaskCard';
 import { MeetingStatusBadge } from '../components/Badges';
 
 interface HomeViewProps {
@@ -16,7 +16,7 @@ const HomeView: React.FC<HomeViewProps> = ({ meetings, tasks, onNavigateToMeetin
   const stats = [
     { label: 'Analysed', value: meetings.length, icon: Clock },
     { label: 'Tasks', value: tasks.length, icon: CheckCircle2 },
-    { label: 'Pending', value: tasks.filter(t => t.status !== 'completed').length, icon: Zap },
+    { label: 'Pending', value: tasks.filter(t => t.status !== 'Completed').length, icon: Zap },
     { label: 'Resolution', value: '84%', icon: BarChart3 },
   ];
 

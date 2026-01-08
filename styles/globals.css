@@ -1,36 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap");
 @import "tailwindcss";
-@import "./theme.css";
 
 @plugin "tailwindcss-animate";
 @plugin "tailwindcss-react-aria-components";
-
-h1,
-.font-serif-heading {
-  font-family: Georgia, "Times New Roman", serif;
-  font-weight: 400;
-  font-size: 20px;
-}
-
-.georgia {
-  font-family: Georgia, "Times New Roman", serif;
-}
-
-.glass-card {
-  @apply bg-black/90 backdrop-blur-sm border border-white/10 shadow-lg;
-}
-
-.auth-page-container {
-  @apply min-h-screen w-full flex items-center justify-center relative;
-  background-color: #000000;
-  background-image: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.15) 1.5px,
-    transparent 1.5px
-  );
-  background-size: 24px 24px;
-}
-
-.auth-content-wrapper {
-  @apply w-full max-w-md px-4;
-}
