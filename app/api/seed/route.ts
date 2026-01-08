@@ -113,6 +113,7 @@ export async function GET() {
         tags: ["Product", "Strategy"],
         category: "Product",
         tasks: taskIds1,
+        videoUrl: 'https://picsum.photos/seed/meet1/800/450',
         user: userId
     });
     seededMeetings.push(meeting1);
@@ -204,6 +205,7 @@ export async function GET() {
         tags: ["Engineering", "Standup"],
         category: "Engineering",
         tasks: taskIds2,
+        videoUrl: 'https://picsum.photos/seed/meet2/800/450',
         user: userId
     });
     seededMeetings.push(meeting2);
@@ -295,6 +297,7 @@ export async function GET() {
          tags: ["Marketing", "Launch"],
          category: "Marketing",
          tasks: taskIds3,
+         videoUrl: 'https://picsum.photos/seed/meet3/800/450',
          user: userId
     });
     seededMeetings.push(meeting3);
