@@ -2,20 +2,18 @@ import { SignUp } from "@clerk/nextjs";
 
 export default function Page() {
   return (
-    <div className="auth-page-container">
+    <div className="flex min-h-screen w-full flex-col items-center justify-center bg-black bg-[radial-gradient(#333_1px,transparent_1px)] [background-size:16px_16px] relative gap-8">
       <h1
-        className="absolute top-6 left-6 text-2xl font-bold text-white"
-        style={{ fontFamily: "Montserrat, sans-serif" }}>
+        className="text-4xl font-bold text-white"
+        style={{ fontFamily: 'var(--font-playfair), serif' }}>
         WorkNest
       </h1>
-      <div className="auth-content-wrapper">
-        <SignUp
-          path="/sign-up"
-          routing="path"
-          signInUrl="/sign-in"
-          redirectUrl="/dashboard"
-        />
-      </div>
+      <SignUp
+        path="/sign-up"
+        routing="path"
+        signInUrl="/sign-in"
+        redirectUrl="/meetings"
+      />
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { GoogleGenAI, Type } from "@google/genai";
 
 interface SummaryResult {
   summary: string;
-  mom: string[];
+  mom: { type: 'action' | 'decision' | 'info'; content: string }[];
   tasks: string[];
   schedule: {
     event: string;
@@ -32,7 +32,17 @@ export async function generateMeetingSummary(transcript: string): Promise<Summar
         type: Type.OBJECT,
         properties: {
           summary: { type: Type.STRING },
-          mom: { type: Type.ARRAY, items: { type: Type.STRING } },
+          mom: { 
+            type: Type.ARRAY, 
+            items: { 
+              type: Type.OBJECT,
+              properties: {
+                type: { type: Type.STRING, enum: ['action', 'decision', 'info'] },
+                content: { type: Type.STRING }
+              },
+              required: ['type', 'content']
+            } 
+          },
           tasks: { type: Type.ARRAY, items: { type: Type.STRING } },
           schedule: {
             type: Type.ARRAY,

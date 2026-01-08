@@ -10,6 +10,7 @@ export interface Task {
   status: TaskStatus;
   tags: string[];
   sourceMeeting: string;
+  suggested: boolean;
 }
 
 export interface Meeting {
@@ -18,14 +19,12 @@ export interface Meeting {
   date: string;
   duration: string;
   summary: string;
-  transcript: string;
-  mom: string;
+  transcript: { speakername: string; content: string; timestamp: string }[];
+  mom: { type: 'action' | 'decision' | 'info'; content: string }[];
   videoUrl?: string;
   tags: string[];
   category: string;
-  participants: string[];
   tasks: any[]; // specific Task[] type causes circular dep if not careful, but Task is in same file so Task[] is fine
-  status: 'Scheduled' | 'Completed' | 'Cancelled'; // Inferring status types
 }
 
 export type AppTab = 'Meetings' | 'Tasks';

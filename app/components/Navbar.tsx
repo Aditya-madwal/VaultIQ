@@ -1,6 +1,7 @@
 import React from 'react';
 import { AppTab } from '../types';
 import { UserButton } from "@clerk/nextjs";
+import { Plus } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: AppTab;
@@ -21,52 +22,53 @@ const Navbar: React.FC<NavbarProps> = ({ activeTab, onTabChange, onNewCapture })
               </svg>
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold text-sm tracking-tighter text-white leading-none">LUMINA</span>
-              <span className="font-mono text-[9px] text-zinc-500 mt-1 uppercase tracking-widest">protocol.v2</span>
+              <span className="font-extrabold text-sm tracking-tighter text-white leading-none">WORKNEST</span>
+              <span className="font-mono text-[9px] text-zinc-500 mt-1 uppercase tracking-widest">Turn meetings into momentum.</span>
             </div>
           </div>
-          <div className="hidden lg:flex h-6 w-px bg-zinc-800"></div>
-          <div className="hidden lg:flex items-center gap-3">
+          {/* <div className="hidden lg:flex h-6 w-px bg-zinc-800"></div> */}
+          {/* <div className="hidden lg:flex items-center gap-3">
              <div className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-900/20 rounded-md border border-emerald-800/30">
                <div className="w-1 h-1 rounded-full bg-emerald-500"></div>
                <span className="text-[9px] font-black text-emerald-400 uppercase">Synced</span>
              </div>
-          </div>
+          </div> */}
         </div>
 
         {/* Navigation Tabs */}
-        <nav className="flex items-center bg-zinc-800/50 p-1 rounded-xl border border-zinc-700">
+        <nav className="relative flex items-center bg-zinc-950/50 p-1 rounded-xl border border-zinc-800/50 w-[240px]">
+          {/* Sliding Background Pill */}
+          <div
+            className={`
+              absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] 
+              bg-zinc-800 rounded-lg border border-zinc-600/50 shadow-sm
+              transition-transform duration-300 ease-[cubic-bezier(0.2,0,0.2,1)]
+              ${activeTab === 'Tasks' ? 'translate-x-full' : 'translate-x-0'}
+            `}
+          />
+          
           {(['Meetings', 'Tasks'] as AppTab[]).map((tab) => (
             <button
               key={tab}
               onClick={() => onTabChange(tab)}
               className={`
-                px-5 py-1.5 rounded-lg text-[10px] font-black transition-all duration-300 uppercase tracking-[0.15em]
-                ${activeTab === tab 
-                  ? 'bg-zinc-900 text-white border border-zinc-700' 
-                  : 'text-zinc-500 hover:text-zinc-300'
-                }
+                relative z-10 flex-1 py-1.5 text-[10px] font-black uppercase tracking-[0.15em]
+                transition-colors duration-200
+                ${activeTab === tab ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}
               `}
             >
               {tab}
             </button>
           ))}
         </nav>
-
+ 
         {/* Global Controls */}
         <div className="flex items-center gap-4">
-          <div className="flex items-center -space-x-1.5">
-            {[1, 2, 3].map(i => (
-              <div key={i} className="w-7 h-7 rounded-lg border border-zinc-800 overflow-hidden bg-zinc-800">
-                <img src={`https://picsum.photos/seed/user${i}/100/100`} alt="Avatar" />
-              </div>
-            ))}
-          </div>
           <button 
             onClick={onNewCapture}
-            className="px-5 py-2 bg-zinc-100 text-zinc-900 rounded-xl text-[10px] font-black uppercase tracking-wider hover:bg-white transition-all active:scale-95"
+            className="px-5 py-2 bg-green-900/30 text-green-500 rounded-xl text-[12px] font-black uppercase tracking-wider hover:bg-green-800 hover:text-white transition-all active:scale-95 flex items-center gap-2"
           >
-            Capture
+            <Plus size={16} strokeWidth={2.5} />New Meeting
           </button>
           <div className="h-8 w-px bg-zinc-800 mx-1"></div>
           <UserButton 

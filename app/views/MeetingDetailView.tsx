@@ -48,20 +48,7 @@ const MeetingDetailView: React.FC<MeetingDetailViewProps> = ({
               <span className="text-[11px] text-zinc-400 font-bold uppercase tracking-[0.15em] flex items-center gap-1.5">
                 <Clock size={12} /> {meeting.date} • {meeting.duration}
               </span>
-              <div className="flex -space-x-2">
-                {meeting.participants.map((p, i) => (
-                  <div
-                    key={i}
-                    className="w-6 h-6 rounded-md border border-black bg-zinc-800 overflow-hidden shadow-sm"
-                    title={p}>
-                    <img
-                      src={`https://picsum.photos/seed/${p}/100`}
-                      alt={p}
-                      className="opacity-80 rounded-md"
-                    />
-                  </div>
-                ))}
-              </div>
+
             </div>
           </div>
         </div>
@@ -125,14 +112,12 @@ const MeetingDetailView: React.FC<MeetingDetailViewProps> = ({
               report
             </h3>
             <div className="space-y-3">
-              {meeting.summary.map((point, i) => (
-                <div key={i} className="flex gap-3">
-                  <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 flex-shrink-0"></div>
-                  <p className="text-sm text-zinc-300 leading-relaxed font-medium">
-                    {point}
-                  </p>
-                </div>
-              ))}
+              <div className="flex gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 flex-shrink-0"></div>
+                <p className="text-sm text-zinc-300 leading-relaxed font-medium">
+                  {meeting.summary}
+                </p>
+              </div>
             </div>
           </div>
 
@@ -168,17 +153,13 @@ const MeetingDetailView: React.FC<MeetingDetailViewProps> = ({
             <div className="p-6 flex-1 overflow-y-auto">
               {activeTab === "transcript" ? (
                 <div className="space-y-8">
-                  {meeting.transcript.map((line, i) => (
+                  {meeting.transcript.map((item, i) => (
                     <div
                       key={i}
-                      className={`flex gap-5 group ${
-                        line.highlight
-                          ? "bg-white/[0.03] -mx-6 px-6 py-4 border-y border-white/5"
-                          : ""
-                      }`}>
+                      className="flex gap-5 group">
                       <div className="w-10 h-10 rounded-md bg-zinc-900 flex-shrink-0 overflow-hidden border border-white/10">
                         <img
-                          src={`https://picsum.photos/seed/${line.speaker}/50`}
+                          src={`https://picsum.photos/seed/${item.speakername}/50`}
                           alt=""
                           className="opacity-80 rounded-md"
                         />
@@ -186,17 +167,14 @@ const MeetingDetailView: React.FC<MeetingDetailViewProps> = ({
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
                           <span className="text-sm font-bold text-zinc-100">
-                            {line.speaker}
+                            {item.speakername}
                           </span>
                           <span className="text-[10px] font-mono text-zinc-500">
-                            {line.timestamp}
+                            {item.timestamp}
                           </span>
                         </div>
-                        <p
-                          className={`text-[13px] leading-relaxed font-medium ${
-                            line.highlight ? "text-zinc-100" : "text-zinc-400"
-                          }`}>
-                          {line.text}
+                        <p className="text-[13px] leading-relaxed font-medium text-zinc-400">
+                          {item.content}
                         </p>
                       </div>
                     </div>
@@ -204,38 +182,25 @@ const MeetingDetailView: React.FC<MeetingDetailViewProps> = ({
                 </div>
               ) : (
                 <div className="space-y-6 text-zinc-300 p-2">
-                  <div>
-                    <h4 className="text-[11px] font-bold text-indigo-400 uppercase tracking-widest mb-3">
-                      Core Outcomes
-                    </h4>
-                    <ul className="list-disc list-inside space-y-3 text-sm leading-relaxed">
-                      <li>
-                        Strategic alignment on Q3 vision for engineering
-                        velocity.
-                      </li>
-                      <li>
-                        Postponed internal analytics migration to focus on
-                        customer-facing dashboards.
-                      </li>
-                      <li>Quarterly review scheduled for June 22nd.</li>
-                    </ul>
-                  </div>
-                  <div className="p-5 bg-indigo-500/5 border border-indigo-500/10 rounded-md">
-                    <h4 className="text-[11px] font-bold text-white uppercase tracking-widest mb-3">
-                      Key Decisions
-                    </h4>
-                    <div className="flex gap-3">
-                      <CheckCircle
-                        size={18}
-                        className="text-emerald-400 mt-0.5 flex-shrink-0"
-                      />
-                      <p className="text-sm leading-relaxed font-medium">
-                        Approved immediate shift from mobile wireframes to full
-                        fidelity prototyping to reduce stakeholder feedback
-                        loops.
-                      </p>
+                  {meeting.mom.map((item, i) => (
+                    <div key={i} className="flex gap-3">
+                      <div className={`mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0 ${
+                        item.type === 'decision' ? 'bg-indigo-500' :
+                        item.type === 'action' ? 'bg-emerald-500' : 'bg-zinc-500'
+                      }`} />
+                      <div>
+                        <span className={`text-[10px] font-bold uppercase tracking-wider mr-2 ${
+                           item.type === 'decision' ? 'text-indigo-400' :
+                           item.type === 'action' ? 'text-emerald-400' : 'text-zinc-500'
+                        }`}>
+                          {item.type}
+                        </span>
+                        <p className="text-sm leading-relaxed font-medium text-zinc-300 inline">
+                          {item.content}
+                        </p>
+                      </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
               )}
             </div>

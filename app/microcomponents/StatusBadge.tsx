@@ -11,9 +11,9 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ label, type = 'default', vari
   const getStyles = () => {
     if (type === 'priority') {
       switch (variant) {
-        case 'High': return 'text-red-500 bg-zinc-900 border-red-900/30';
-        case 'Medium': return 'text-orange-500 bg-zinc-900 border-orange-900/30';
-        case 'Low': return 'text-blue-500 bg-zinc-900 border-blue-900/30';
+        case 'High': return 'text-red-500 bg-red-900/30 border-red-900/30';
+        case 'Medium': return 'text-orange-500 bg-orange-900/30 border-orange-900/30';
+        case 'Low': return 'text-blue-500 bg-blue-900/30 border-blue-900/30';
         default: return 'text-gray-500 bg-zinc-900 border-zinc-800';
       }
     }
@@ -21,7 +21,7 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({ label, type = 'default', vari
   };
 
   return (
-    <span className={`px-1.5 py-0.5 rounded font-mono text-[8px] font-black uppercase border ${getStyles()} transition-colors`}>
+    <span className={`px-1.5 py-0.5 rounded font-mono text-[10px] font-black uppercase border ${getStyles()} transition-colors`}>
       {label}
     </span>
   );

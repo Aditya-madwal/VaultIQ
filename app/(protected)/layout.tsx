@@ -37,7 +37,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       <footer className="mt-20 border-t border-zinc-900 py-16 px-8 flex flex-col items-center justify-center gap-4 relative overflow-hidden bg-transparent">
         <div className="flex items-center gap-6">
-           <span className="font-mono text-[9px] text-zinc-700 font-bold uppercase tracking-[0.5em]">LUMINA_CORE</span>
+           <span className="font-mono text-[9px] text-zinc-700 font-bold uppercase tracking-[0.5em]">WorkNest_CORE</span>
            <div className="w-1 h-1 rounded-full bg-zinc-800"></div>
            <span className="font-mono text-[9px] text-zinc-700 font-bold uppercase tracking-[0.5em]">ENV_SYNCED</span>
         </div>

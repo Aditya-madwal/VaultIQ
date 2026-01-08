@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { Priority } from '../types';
+import StatusBadge from './StatusBadge';
+import { Plus } from 'lucide-react';
 
 interface SuggestedTaskProps {
   title: string;
@@ -12,29 +14,42 @@ interface SuggestedTaskProps {
 
 const SuggestedTask: React.FC<SuggestedTaskProps> = ({ title, description, priority, tags, onAdd }) => {
   return (
-    <div className="bg-zinc-900 rounded-2xl p-6 border border-zinc-800 group transition-colors hover:bg-zinc-800/80">
-      <div className="flex justify-between items-start mb-4">
-        <div className="flex gap-1.5">
-          {tags.map(tag => (
-            <span key={tag} className="text-[8px] font-black uppercase tracking-widest text-indigo-400 bg-indigo-950 px-1.5 py-0.5 rounded border border-indigo-900/50">
-              {tag}
-            </span>
-          ))}
+    <div className="group relative p-4 bg-zinc-950/40 hover:bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer flex flex-col gap-2">
+      {/* Header: Title + Badges + Add Button */}
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2 flex-wrap min-w-0">
+          <h4 className="text-sm font-bold text-zinc-200 truncate group-hover:text-white transition-colors">
+            {title}
+          </h4>
+          <StatusBadge label={priority} type="priority" variant={priority} />
         </div>
-        <div className={`w-1.5 h-1.5 rounded-full ${priority === 'High' ? 'bg-red-400' : 'bg-orange-400'}`}></div>
+
+        <button 
+            onClick={(e) => {
+                e.stopPropagation();
+                onAdd();
+            }}
+            className="text-zinc-600 hover:text-white transition-colors p-1 rounded-lg hover:bg-zinc-800 cursor-pointer"
+        >
+            <Plus size={16} strokeWidth={2.5} />
+        </button>
       </div>
-      <h4 className="font-extrabold text-base text-zinc-100 leading-tight mb-2 group-hover:text-indigo-400 transition-colors">
-        {title}
-      </h4>
-      <p className="text-[11px] font-medium text-zinc-500 leading-relaxed mb-6 line-clamp-2 italic">
-        "{description}"
+      
+      {/* Content: Description */}
+      <p className="text-[11px] text-zinc-500 line-clamp-2 font-medium leading-relaxed mb-1">
+        {description}
       </p>
-      <button 
-        onClick={onAdd}
-        className="w-full py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] text-white hover:bg-zinc-100 hover:text-zinc-900 hover:border-black transition-all active:scale-95"
-      >
-        Map to Kanban
-      </button>
+
+      {/* Footer: Tags */}
+      <div className="flex items-center justify-between pt-2">
+         <div className="flex flex-wrap gap-1.5">
+            {tags.map((tag, i) => (
+                <span key={i} className="text-[9px] font-bold text-zinc-600 px-2 py-0.5 bg-zinc-900 rounded-full border border-zinc-800">
+                    #{tag}
+                </span>
+            ))}
+        </div>
+      </div>
     </div>
   );
 };

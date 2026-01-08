@@ -42,7 +42,7 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ title, accent, bg, tasks, o
 
         {tasks.length === 0 && (
           <div className="h-24 border border-dashed border-zinc-800 rounded-2xl flex items-center justify-center bg-zinc-900/20">
-            <span className="text-zinc-700 text-[9px] font-black uppercase tracking-[0.4em]">Empty_NODE</span>
+            <span className="text-zinc-700 text-[9px] font-black uppercase tracking-[0.4em]">Empty</span>
           </div>
         )}
       </div>

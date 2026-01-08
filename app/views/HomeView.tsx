@@ -3,7 +3,7 @@ import React from 'react';
 import { Meeting, Task } from '../types';
 import { UploadCloud, CheckCircle2, Clock, Zap, BarChart3, MoreHorizontal, Video } from 'lucide-react';
 import TaskCard from '../microcomponents/TaskCard';
-import { MeetingStatusBadge } from '../components/Badges';
+
 
 interface HomeViewProps {
   meetings: Meeting[];
@@ -62,9 +62,9 @@ const HomeView: React.FC<HomeViewProps> = ({ meetings, tasks, onNavigateToMeetin
                   <tr>
                     <th className="px-6 py-4 text-left">TITLE</th>
                     <th className="px-6 py-4 text-left">DATE</th>
-                    <th className="px-6 py-4 text-left">PARTICIPANTS</th>
+
                     <th className="px-6 py-4 text-left">TASKS</th>
-                    <th className="px-6 py-4 text-left">STATUS</th>
+
                     <th className="px-6 py-4 text-right"></th>
                   </tr>
                 </thead>
@@ -86,21 +86,11 @@ const HomeView: React.FC<HomeViewProps> = ({ meetings, tasks, onNavigateToMeetin
                       <td className="px-6 py-5">
                         <span className="text-xs text-zinc-500 font-bold uppercase tracking-tighter">{meeting.date}</span>
                       </td>
-                      <td className="px-6 py-5">
-                        <div className="flex -space-x-1.5">
-                          {meeting.participants.map((p, i) => (
-                            <div key={i} className="w-6 h-6 rounded-full border border-zinc-900 bg-zinc-800 overflow-hidden" title={p}>
-                              <img src={`https://picsum.photos/seed/${p}/100`} alt={p} />
-                            </div>
-                          ))}
-                        </div>
-                      </td>
+
                       <td className="px-6 py-5">
                         <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">{meeting.tasks.length} ITEMS</span>
                       </td>
-                      <td className="px-6 py-5">
-                        <MeetingStatusBadge status={meeting.status} />
-                      </td>
+
                       <td className="px-6 py-5 text-right">
                         <button className="p-2 text-zinc-700 hover:text-zinc-300">
                           <MoreHorizontal size={16} />

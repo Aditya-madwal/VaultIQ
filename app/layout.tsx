@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono, Playfair_Display } from "next/font/google";
 import "@/styles/globals.css";
 
 const sans = Plus_Jakarta_Sans({
@@ -13,8 +13,13 @@ const mono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+});
+
 export const metadata: Metadata = {
-  title: "Lumina - Solar-punk AI Protocol",
+  title: "WorkNest - Turn meetings into momentum.",
   description: "Secure document management and collaboration platform",
 };
 
@@ -24,7 +29,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable} antialiased dark`} suppressHydrationWarning>
+    <html lang="en" className={`${sans.variable} ${mono.variable} ${playfair.variable} antialiased dark`} suppressHydrationWarning>
       <body className="bg-black text-gray-100">
         <ClerkProvider>
             {children}

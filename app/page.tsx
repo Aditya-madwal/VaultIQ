@@ -13,7 +13,7 @@ interface FeatureProps {
 
 interface SummaryResult {
   summary: string;
-  mom: string[];
+  mom: { type: 'action' | 'decision' | 'info'; content: string }[];
   tasks: string[];
   schedule: {
     event: string;
@@ -318,7 +318,13 @@ const App: React.FC = () => {
                       <ul className="space-y-4">
                         {result.mom.map((item, i) => (
                           <li key={i} className="flex gap-3 text-sm text-neutral-300">
-                            <span className="text-white text-lg font-bold">•</span> {item}
+                            <span className={`text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
+                               item.type === 'decision' ? 'bg-indigo-500/20 text-indigo-300' :
+                               item.type === 'action' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-zinc-500/20 text-zinc-300'
+                            }`}>
+                              {item.type}
+                            </span>
+                            <span className="flex-1">{item.content}</span>
                           </li>
                         ))}
                       </ul>
