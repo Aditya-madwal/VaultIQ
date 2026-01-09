@@ -9,7 +9,7 @@ export interface Task {
   priority: Priority;
   status: TaskStatus;
   tags: string[];
-  sourceMeeting: string;
+  sourceMeeting: string | { title: string; _id: string }; // Can be string (local) or object (populated)
   suggested: boolean;
 }
 
@@ -22,6 +22,7 @@ export interface Meeting {
   transcript: { speakername: string; content: string; timestamp: string }[];
   mom: { type: 'action' | 'decision' | 'info'; content: string }[];
   videoUrl?: string;
+  thumbnail?: string;
   tags: string[];
   category: string;
   tasks: any[]; // specific Task[] type causes circular dep if not careful, but Task is in same file so Task[] is fine

@@ -1,33 +1,56 @@
 
-import React, { useState } from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 import { Meeting, Task } from '../types';
 import SuggestedTask from '../microcomponents/SuggestedTask';
-import { Calendar, Clock, BarChart3, Shield, Play, Download, Share2, MoreHorizontal, Layers, FileText, Activity } from 'lucide-react';
+import { Calendar, Clock, BarChart3, Shield, Play, Download, Share2, MoreHorizontal, Layers, FileText, Activity, Loader } from 'lucide-react';
+import { getMeetingById } from '../services/api/meetings';
 
 interface MeetingViewProps {
-  meeting: Meeting;
+  meetingId: string;
   onAddTask: (task: Omit<Task, 'id' | 'status'>) => void;
 }
 
-const MeetingView: React.FC<MeetingViewProps> = ({ meeting, onAddTask }) => {
+const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
+  const [meeting, setMeeting] = useState<Meeting | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [activeContent, setActiveContent] = useState<'Summary' | 'Transcript' | 'MOM'>('Summary');
 
-  const suggestedTasks = [
-    {
-      title: 'Infrastructure Sync: AWS Lambda',
-      description: 'Align the serverless migration with the Q2 DevOps roadmap specifically for us-east-1 region.',
-      priority: 'High' as const,
-      tags: ['Engineering', 'DevOps'],
-      suggested: true
-    },
-    {
-      title: 'Hifi Prototyping: Analytics V2',
-      description: 'Review the latest high-fidelity dashboard mockups with focus on real-time data streaming.',
-      priority: 'Medium' as const,
-      tags: ['UI/UX', 'Research'],
-      suggested: true
-    }
-  ];
+  useEffect(() => {
+    const fetchMeeting = async () => {
+      try {
+        setIsLoading(true);
+        const data = await getMeetingById(meetingId);
+        setMeeting(data);
+      } catch (err) {
+        console.error('Failed to fetch meeting:', err);
+        setError('Failed to load meeting details');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (meetingId) fetchMeeting();
+  }, [meetingId]);
+
+  if (isLoading) {
+    return (
+      <div className="flex h-full items-center justify-center min-h-[500px]">
+        <Loader className="animate-spin text-zinc-600" size={32} />
+      </div>
+    );
+  }
+
+  if (error || !meeting) {
+    return (
+      <div className="flex h-full items-center justify-center min-h-[500px] text-red-500 font-bold">
+        {error || 'Meeting not found'}
+      </div>
+    );
+  }
+
+  const suggestedTasks = meeting.tasks ? meeting.tasks.filter((t: any) => t.suggested === true) : [];
 
   return (
     <div className="h-full flex flex-col gap-5 max-w-[1600px] mx-auto pt-2 pb-10">
@@ -50,7 +73,7 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meeting, onAddTask }) => {
           <div className="flex items-center gap-4 text-xs text-zinc-500 font-medium pt-1">
               <div className="flex items-center gap-1.5">
                   <Calendar size={13} className="text-zinc-600"/>
-                  {meeting.date}
+                  {new Date(meeting.date).toLocaleDateString()}
               </div>
               <div className="flex items-center gap-1.5">
                   <Clock size={13} className="text-zinc-600"/>
@@ -141,7 +164,7 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meeting, onAddTask }) => {
               
               {activeContent === 'Transcript' && (
                 <div className="animate-in fade-in duration-300 space-y-3">
-                  {meeting.transcript.map((item, i) => (
+                  {meeting.transcript && meeting.transcript.map((item, i) => (
                     <div key={i} className="p-4 border border-zinc-800/60 rounded-xl bg-zinc-800/20 hover:border-zinc-700 hover:bg-zinc-800/40 transition-all">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-3">
@@ -160,7 +183,7 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meeting, onAddTask }) => {
 
               {activeContent === 'MOM' && (
                   <div className="animate-in fade-in duration-300 grid grid-cols-1 gap-3">
-                    {meeting.mom.map((item, i) => {
+                    {meeting.mom && meeting.mom.map((item, i) => {
                       const isDecision = item.type === 'decision';
                       const isAction = item.type === 'action';
                       return (
@@ -187,7 +210,7 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meeting, onAddTask }) => {
           <div className="group rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950 relative shadow-lg">
             <div className="aspect-video relative cursor-pointer">
               <img 
-                src={meeting.videoUrl} 
+                src={meeting.videoUrl || `https://picsum.photos/seed/${meeting.id}/800/450`} 
                 alt="Thumbnail" 
                 className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-all duration-500" 
               />
@@ -215,7 +238,7 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meeting, onAddTask }) => {
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-2">
                 <Layers size={16} className="text-zinc-500"/>
-                <h2 className="text-sm font-bold text-zinc-200">Intelligence Layers</h2>
+                <h2 className="text-sm font-bold text-zinc-200">Suggested Tasks</h2>
               </div>
               <span className="text-[10px] font-bold text-zinc-600 bg-zinc-900 px-2 py-1 rounded-full border border-zinc-800">
                 AUTO-DETECTED
@@ -223,7 +246,7 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meeting, onAddTask }) => {
             </div>
 
             <div className="space-y-4 overflow-y-auto pr-1 -mr-2 custom-scrollbar">
-              {suggestedTasks.map((task, idx) => (
+              {suggestedTasks.map((task: any, idx: number) => (
                 <SuggestedTask 
                   key={idx}
                   title={task.title}
@@ -233,6 +256,9 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meeting, onAddTask }) => {
                   onAdd={() => onAddTask({ ...task, sourceMeeting: meeting.title })}
                 />
               ))}
+              {suggestedTasks.length === 0 && (
+                <div className="text-center text-zinc-500 text-xs py-10">No suggested tasks detected.</div>
+              )}
             </div>
           </div>
         </div>

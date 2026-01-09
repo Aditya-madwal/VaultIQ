@@ -2,6 +2,7 @@
 import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/app/lib/db';
 import { Meeting } from '@/app/models/Meeting';
+import '@/app/models/Task'; // Ensure Task model is registered for population
 import { User } from '@/app/models/User';
 import { auth } from '@clerk/nextjs/server';
 

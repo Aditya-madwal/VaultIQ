@@ -1,19 +1,41 @@
 
-import React, { useState } from 'react';
+'use client';
+import React, { useEffect, useState } from 'react';
 import { Task, TaskStatus } from '../types';
 import KanbanColumn from '../microcomponents/KanbanColumn';
-import { Search, Filter } from 'lucide-react';
+import { Search, Filter, Loader } from 'lucide-react';
 import { Plus } from 'lucide-react';
-import StatusBadge from '../microcomponents/StatusBadge';
+import { getAllTasks } from '../services/api/tasks';
 
 interface KanbanViewProps {
-  tasks: Task[];
   onUpdateStatus: (id: string, status: TaskStatus) => void;
 }
 
-const KanbanView: React.FC<KanbanViewProps> = ({ tasks, onUpdateStatus }) => {
+const KanbanView: React.FC<KanbanViewProps> = ({ onUpdateStatus }) => {
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
   const [searchQuery, setSearchQuery] = useState('');
   const [priorityFilter, setPriorityFilter] = useState<string>('All');
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        setIsLoading(true);
+        const data = await getAllTasks();
+        const activeTasks = data.filter((t: any) => t.suggested === false);
+        setTasks(activeTasks);
+      } catch (err) {
+        console.error('Failed to fetch tasks:', err);
+        setError('Failed to load tasks');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTasks();
+  }, []);
 
   const columns: { title: TaskStatus; accent: string; bg: string }[] = [
     { title: 'Backlog', accent: 'bg-gray-300', bg: 'bg-brand-surface' },
@@ -21,6 +43,22 @@ const KanbanView: React.FC<KanbanViewProps> = ({ tasks, onUpdateStatus }) => {
     { title: 'Review', accent: 'bg-orange-500', bg: 'bg-brand-sky/50' },
     { title: 'Completed', accent: 'bg-emerald-500', bg: 'bg-brand-mint/50' }
   ];
+
+  if (isLoading) {
+    return (
+      <div className="flex h-64 items-center justify-center">
+        <Loader className="animate-spin text-zinc-500" size={24} />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex h-64 items-center justify-center text-red-500 text-sm font-bold">
+        {error}
+      </div>
+    );
+  }
 
   const filteredTasks = tasks.filter(t => {
     const matchesSearch = t.title.toLowerCase().includes(searchQuery.toLowerCase()) || 

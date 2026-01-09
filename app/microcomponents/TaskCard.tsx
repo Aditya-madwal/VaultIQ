@@ -54,7 +54,10 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, showMoveAction, onMove }) => 
             ))}
         </div>
       </div>
-      <span className="font-mono text-[10px] text-indigo-400 font-bold tracking-widest uppercase bg-indigo-900/20 px-2 py-0.5 rounded border border-indigo-800/30">Source Meeting: <br />{task.sourceMeeting}</span>
+      <span className="font-mono text-[10px] text-indigo-400 font-bold tracking-widest uppercase bg-indigo-900/20 px-2 py-0.5 rounded border border-indigo-800/30">
+        Source Meeting: <br />
+        {typeof task.sourceMeeting === 'string' ? task.sourceMeeting : task.sourceMeeting?.title || 'Unknown'}
+      </span>
     </div>
   );
 };
