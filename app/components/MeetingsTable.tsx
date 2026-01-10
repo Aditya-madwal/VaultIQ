@@ -47,60 +47,51 @@ const MeetingsTable: React.FC<MeetingsTableProps> = ({ onSelectMeeting }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 animate-in fade-in zoom-in-95 duration-500">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 animate-in fade-in zoom-in-95 duration-500">
       {meetings.map((meeting) => (
         <div 
           key={meeting.id} 
           onClick={() => onSelectMeeting(meeting)}
-          className="group relative h-[220px] w-full overflow-hidden rounded-3xl cursor-pointer"
+          className="group flex flex-col justify-between bg-zinc-900 border border-zinc-800 hover:border-zinc-700/80 rounded-2xl p-6 cursor-pointer hover:shadow-2xl hover:shadow-black/20 transition-all duration-300"
         >
-          {/* Background Image */}
-          <div className="absolute inset-0">
-            <img 
-              src={meeting.thumbnail || `https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`} 
-              alt={meeting.title}
-              className="h-full w-full object-cover transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+          <div className="space-y-4">
+             {/* Header */}
+             <div className="flex items-center justify-between">
+                <span className="px-2.5 py-1 rounded-md bg-zinc-800 text-zinc-400 text-[10px] font-bold uppercase tracking-wider border border-zinc-700/50">
+                  {meeting.category}
+                </span>
+                <span className="text-xs font-medium text-zinc-500 font-mono">
+                  {new Date(meeting.date).toLocaleDateString(undefined, { month: 'short', day: 'numeric'})}
+                </span>
+             </div>
+
+             {/* Content */}
+             <div>
+                <h3 className="text-lg font-bold text-zinc-100 leading-snug group-hover:text-indigo-400 transition-colors">
+                  {meeting.title}
+                </h3>
+                <p className="text-xs text-zinc-500 mt-2 line-clamp-2 leading-relaxed">
+                   {meeting.summary}
+                </p>
+             </div>
           </div>
 
-          {/* Top Badges */}
-          <div className="absolute top-4 left-4 right-4 flex justify-between items-start z-10">
-            <div className="px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-xs font-medium text-white shadow-lg">
-              {new Date(meeting.date).toLocaleDateString()}
-            </div>
-            <div className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/20 text-xs font-bold text-white shadow-lg uppercase tracking-wider">
-              {meeting.category}
-            </div>
-          </div>
-
-          {/* Bottom Blur Content */}
-          <div className="absolute bottom-0 left-0 right-0 z-20 p-5 bg-zinc-950/40 backdrop-blur-md border-t border-white/5 flex flex-col gap-3 transition-all duration-300 group-hover:bg-zinc-950/60 rounded-xl">
-            
-            {/* Title & Info */}
-            <div className="flex flex-col gap-1">
-              <h3 className="text-lg font-bold text-white leading-tight line-clamp-1 group-hover:text-indigo-300 transition-colors">
-                {meeting.title}
-              </h3>
-              <p className="text-xs text-zinc-400 font-medium line-clamp-1 flex items-center gap-2">
-                <span>{meeting.duration}</span>
-                <span className="w-1 h-1 rounded-full bg-zinc-600" />
-                <span>{meeting.tags.slice(0, 2).join(', ')}</span>
-              </p>
-            </div>
-
-            {/* Action Button */}
-            <button className="w-full py-2 rounded-lg bg-white/10 hover:bg-white text-white hover:text-black font-semibold text-xs transition-all flex items-center justify-center gap-2 group/btn border border-white/5">
-              View Details
-              <svg 
-                className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-0.5" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </button>
+          {/* Footer */}
+          <div className="mt-6 pt-4 border-t border-zinc-800/50 flex items-center justify-between">
+              <div className="flex gap-2">
+                 {meeting.tags.slice(0, 2).map((tag, i) => (
+                    <span key={i} className="text-[10px] text-zinc-500 font-medium">#{tag}</span>
+                 ))}
+              </div>
+              
+              <div className="flex items-center gap-2 text-zinc-500 group-hover:text-zinc-300 transition-colors">
+                   <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider">
+                      <span>View</span>
+                      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                   </div>
+              </div>
           </div>
         </div>
       ))}

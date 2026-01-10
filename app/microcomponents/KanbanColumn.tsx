@@ -9,9 +9,11 @@ interface KanbanColumnProps {
   bg: string;
   tasks: Task[];
   onUpdateStatus: (id: string, status: TaskStatus) => void;
+  onEdit: (task: Task) => void;
+  onDelete: (id: string) => void;
 }
 
-const KanbanColumn: React.FC<KanbanColumnProps> = ({ title, accent, bg, tasks, onUpdateStatus }) => {
+const KanbanColumn: React.FC<KanbanColumnProps> = ({ title, accent, bg, tasks, onUpdateStatus, onEdit, onDelete }) => {
   const statuses: TaskStatus[] = ['Backlog', 'In Progress', 'Review', 'Completed'];
   const curIdx = statuses.indexOf(title);
   const nextStatus = curIdx < statuses.length - 1 ? statuses[curIdx + 1] : null;
@@ -37,6 +39,8 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ title, accent, bg, tasks, o
             task={task} 
             showMoveAction={!!nextStatus}
             onMove={nextStatus ? (id) => onUpdateStatus(id, nextStatus) : undefined} 
+            onEdit={onEdit}
+            onDelete={onDelete}
           />
         ))}
 

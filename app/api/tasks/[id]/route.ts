@@ -5,33 +5,10 @@ import { Task } from '@/app/models/Task';
 import { User } from '@/app/models/User';
 import { auth } from '@clerk/nextjs/server';
 
-export async function GET() {
-  try {
-    const { userId: clerkId } = await auth();
-
-    if (!clerkId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    await connectToDatabase();
-
-    const user = await User.findOne({ clerkId });
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
-
-    const tasks = await Task.find({ user: user._id })
-      .sort({ createdAt: -1 })
-      .populate('sourceMeeting', 'title'); // Populate meeting title for context if needed
-
-    return NextResponse.json(tasks);
-  } catch (error) {
-    console.error('Error fetching tasks:', error);
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
-  }
-}
-
-export async function POST(req: Request) {
+export async function PATCH(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   try {
     const { userId: clerkId } = await auth();
 
@@ -47,28 +24,58 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { title, description, priority, status, tags, sourceMeeting, suggested } = body;
+    const { id } = await params;
 
-    if (!title) {
-      return NextResponse.json({ error: 'Title is required' }, { status: 400 });
+    const task = await Task.findOne({ _id: id, user: user._id });
+
+    if (!task) {
+      return NextResponse.json({ error: 'Task not found' }, { status: 404 });
     }
 
-    const newTask = await Task.create({
-      title,
-      description,
-      priority,
-      status,
-      tags,
-      sourceMeeting,
-      suggested,
-      user: user._id,
-    });
+    const updatedTask = await Task.findByIdAndUpdate(
+      id,
+      { $set: body },
+      { new: true } // Return the updated document
+    ).populate('sourceMeeting', 'title');
 
-    const populatedTask = await newTask.populate('sourceMeeting', 'title');
-
-    return NextResponse.json(populatedTask, { status: 201 });
+    return NextResponse.json(updatedTask);
   } catch (error) {
-    console.error('Error creating task:', error);
+    console.error('Error updating task:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { userId: clerkId } = await auth();
+
+    if (!clerkId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    await connectToDatabase();
+
+    const user = await User.findOne({ clerkId });
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
+    const { id } = await params;
+
+    const task = await Task.findOne({ _id: id, user: user._id });
+
+    if (!task) {
+      return NextResponse.json({ error: 'Task not found' }, { status: 404 });
+    }
+
+    await Task.findByIdAndDelete(id);
+
+    return NextResponse.json({ message: 'Task deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting task:', error);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
 }

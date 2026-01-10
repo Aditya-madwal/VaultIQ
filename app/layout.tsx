@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "sonner";
 import { Plus_Jakarta_Sans, JetBrains_Mono, Playfair_Display } from "next/font/google";
 import "@/styles/globals.css";
 
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body className="bg-black text-gray-100">
         <ClerkProvider>
             {children}
+            <Toaster richColors position="bottom-right" theme="dark" />
         </ClerkProvider>
       </body>
     </html>
