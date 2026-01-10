@@ -1,10 +1,11 @@
 
 'use client';
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Meeting, Task } from '../types';
 import SuggestedTask from '../microcomponents/SuggestedTask';
-import { Calendar, Clock, BarChart3, Shield, Play, Download, Share2, MoreHorizontal, Layers, FileText, Activity, Loader, HardDrive, FileVideo, ArrowRight } from 'lucide-react';
-import { getMeetingById } from '../services/api/meetings';
+import { Calendar, Clock, BarChart3, Shield, Play, Download, Layers, FileText, Activity, Loader, HardDrive, FileVideo, ArrowRight, Trash2 } from 'lucide-react';
+import { getMeetingById, deleteMeeting } from '../services/api/meetings';
 
 interface MeetingViewProps {
   meetingId: string;
@@ -12,10 +13,12 @@ interface MeetingViewProps {
 }
 
 const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
+  const router = useRouter();
   const [meeting, setMeeting] = useState<Meeting | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeContent, setActiveContent] = useState<'Transcript' | 'MOM'>('Transcript');
+  const [transcriptLimit, setTranscriptLimit] = useState<number>(0);
 
   const fetchMeeting = async (showLoading = true) => {
     try {
@@ -30,9 +33,27 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
     }
   };
 
+  const handleDelete = async () => {
+    if (!meeting) return;
+      try {
+        await deleteMeeting(meeting.id);
+        router.push('/meetings'); 
+        router.refresh();
+      } catch (err) {
+        console.error('Failed to delete meeting:', err);
+        alert('Failed to delete meeting. Please try again.');
+      }
+  };
+
   useEffect(() => {
     if (meetingId) fetchMeeting();
   }, [meetingId]);
+
+  useEffect(() => {
+    if (meeting?.transcript) {
+      setTranscriptLimit(meeting.transcript.length);
+    }
+  }, [meeting]);
 
   if (isLoading) {
     return (
@@ -89,14 +110,16 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
         </div>
         
         <div className="flex items-center gap-2">
-           <button className="p-2 hover:bg-zinc-800 text-zinc-400 hover:text-white rounded-lg transition-colors border border-transparent hover:border-zinc-700">
-             <Share2 size={16} />
+           <button className="px-5 py-2 bg-blue-900/30 text-blue-500 rounded-xl text-[12px] font-black uppercase tracking-wider transition-all active:scale-95 flex items-center gap-2 cursor-pointer">
+             <Download size={16} strokeWidth={2.5} />
+             Export
            </button>
-           <button className="p-2 hover:bg-zinc-800 text-zinc-400 hover:text-white rounded-lg transition-colors border border-transparent hover:border-zinc-700">
-             <Download size={16} />
-           </button>
-           <button className="p-2 hover:bg-zinc-800 text-zinc-400 hover:text-white rounded-lg transition-colors border border-transparent hover:border-zinc-700">
-             <MoreHorizontal size={16} />
+           <button 
+             onClick={handleDelete}
+             className="px-5 py-2 bg-red-900/30 text-red-500 rounded-xl text-[12px] font-black uppercase tracking-wider transition-all active:scale-95 flex items-center gap-2 cursor-pointer hover:bg-red-900/50"
+           >
+             <Trash2 size={16} strokeWidth={2.5} />
+             Delete
            </button>
         </div>
       </header>
@@ -133,6 +156,32 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
                      </button>
                    ))}
                  </div>
+                 
+                 {activeContent === 'Transcript' && meeting?.transcript && (
+                    <div className="flex items-center gap-3 animate-in fade-in slide-in-from-right-4 duration-500">
+                        <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider whitespace-nowrap">
+                            Count:
+                        </label>
+                        <div className="flex items-center gap-2 bg-zinc-950/40 rounded-lg border border-zinc-800/40 p-1">
+                            <input 
+                                type="number" 
+                                min="0" 
+                                max={meeting.transcript.length}
+                                value={transcriptLimit}
+                                onChange={(e) => {
+                                    const val = Number(e.target.value);
+                                    if (val >= 0 && val <= (meeting.transcript?.length || 0)) {
+                                        setTranscriptLimit(val);
+                                    }
+                                }}
+                                className="w-12 bg-transparent text-right text-xs font-mono font-bold text-zinc-200 focus:outline-none [-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                            />
+                            <span className="text-[10px] font-medium text-zinc-600 pr-2 border-l border-zinc-800 pl-2">
+                                / {meeting.transcript.length}
+                            </span>
+                        </div>
+                    </div>
+                 )}
             </div>
 
             {/* Scrollable Content */}
@@ -140,7 +189,7 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
               
               {activeContent === 'Transcript' && (
                 <div className="animate-in fade-in duration-300 space-y-3">
-                  {meeting.transcript && meeting.transcript.map((item, i) => (
+                  {meeting.transcript && meeting.transcript.slice(0, transcriptLimit).map((item, i) => (
                     <div key={i} className="p-4 border border-zinc-800/60 rounded-xl bg-zinc-800/20 hover:border-zinc-700 hover:bg-zinc-800/40 transition-all">
                       <div className="flex items-center justify-between mb-2">
                         <div className="flex items-center gap-3">
