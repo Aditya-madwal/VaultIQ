@@ -16,3 +16,7 @@ export const getMeetingById = async (id: string): Promise<Meeting> => {
   const response = await api.get(`/meetings/${id}`);
   return { ...response.data, id: response.data._id };
 };
+
+export const deleteMeeting = async (id: string): Promise<void> => {
+  await api.delete(`/meetings/${id}`);
+};

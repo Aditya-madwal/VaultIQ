@@ -22,6 +22,8 @@ export interface Meeting {
   transcript: { speakername: string; content: string; timestamp: string }[];
   mom: { type: 'action' | 'decision' | 'info'; content: string }[];
   videoUrl?: string;
+  transcriptUrl?: string;
+  confidenceLevel?: number;
   thumbnail?: string;
   tags: string[];
   category: string;

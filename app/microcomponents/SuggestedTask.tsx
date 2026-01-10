@@ -1,10 +1,13 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Priority } from '../types';
 import StatusBadge from './StatusBadge';
-import { Plus } from 'lucide-react';
+import { toast } from 'sonner';
+import { Plus, Loader2 } from 'lucide-react';
+import { convertSuggestedToActualTask } from '../services/api/tasks';
 
 interface SuggestedTaskProps {
+  taskId: string;
   title: string;
   description: string;
   priority: Priority;
@@ -12,7 +15,24 @@ interface SuggestedTaskProps {
   onAdd: () => void;
 }
 
-const SuggestedTask: React.FC<SuggestedTaskProps> = ({ title, description, priority, tags, onAdd }) => {
+const SuggestedTask: React.FC<SuggestedTaskProps> = ({ taskId, title, description, priority, tags, onAdd }) => {
+  const [isConverting, setIsConverting] = useState(false);
+
+  const handleConvert = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      setIsConverting(true);
+      await convertSuggestedToActualTask(taskId);
+      toast.success('Task added to Kanban board');
+      onAdd(); // Notify parent to refresh/update UI
+    } catch (error) {
+      console.error('Failed to convert task:', error);
+      toast.error('Failed to convert task');
+    } finally {
+      setIsConverting(false);
+    }
+  };
+
   return (
     <div className="group relative p-4 bg-zinc-950/40 hover:bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer flex flex-col gap-2">
       {/* Header: Title + Badges + Add Button */}
@@ -25,13 +45,15 @@ const SuggestedTask: React.FC<SuggestedTaskProps> = ({ title, description, prior
         </div>
 
         <button 
-            onClick={(e) => {
-                e.stopPropagation();
-                onAdd();
-            }}
-            className="text-zinc-600 hover:text-white transition-colors p-1 rounded-lg hover:bg-zinc-800 cursor-pointer"
+            onClick={handleConvert}
+            disabled={isConverting}
+            className="text-zinc-600 hover:text-white transition-colors p-1 rounded-lg hover:bg-zinc-800 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
         >
-            <Plus size={16} strokeWidth={2.5} />
+            {isConverting ? (
+                <Loader2 size={16} className="animate-spin" />
+            ) : (
+                <Plus size={16} strokeWidth={2.5} />
+            )}
         </button>
       </div>
       

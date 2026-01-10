@@ -2,8 +2,10 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { Meeting } from '../types';
-import { getAllMeetings } from '../services/api/meetings';
-import { Loader } from 'lucide-react';
+import { getAllMeetings, deleteMeeting } from '../services/api/meetings';
+import { Loader, Trash2 } from 'lucide-react';
+import { toast } from 'sonner';
+import { useRefresh } from '../context/RefreshContext';
 
 interface MeetingsTableProps {
   onSelectMeeting: (meeting: Meeting) => void;
@@ -13,6 +15,7 @@ const MeetingsTable: React.FC<MeetingsTableProps> = ({ onSelectMeeting }) => {
   const [meetings, setMeetings] = useState<Meeting[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { refreshKey } = useRefresh();
 
   useEffect(() => {
     const fetchMeetings = async () => {
@@ -28,7 +31,20 @@ const MeetingsTable: React.FC<MeetingsTableProps> = ({ onSelectMeeting }) => {
       }
     };
     fetchMeetings();
-  }, []);
+  }, [refreshKey]);
+
+  const handleDelete = async (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    
+    try {
+      await deleteMeeting(id);
+      setMeetings(prev => prev.filter(m => m.id !== id));
+      toast.success('Meeting deleted successfully');
+    } catch (err) {
+      console.error('Failed to delete meeting:', err);
+      toast.error('Failed to delete meeting');
+    }
+  };
 
   if (isLoading) {
     return (
@@ -52,7 +68,7 @@ const MeetingsTable: React.FC<MeetingsTableProps> = ({ onSelectMeeting }) => {
         <div 
           key={meeting.id} 
           onClick={() => onSelectMeeting(meeting)}
-          className="group flex flex-col justify-between bg-zinc-900 border border-zinc-800 hover:border-zinc-700/80 rounded-2xl p-6 cursor-pointer hover:shadow-2xl hover:shadow-black/20 transition-all duration-300"
+          className="group flex flex-col justify-between bg-zinc-900 border border-zinc-800 hover:border-zinc-700/80 rounded-2xl p-6 cursor-pointer hover:shadow-2xl hover:shadow-black/20 transition-all duration-300 relative"
         >
           <div className="space-y-4">
              {/* Header */}
@@ -84,8 +100,15 @@ const MeetingsTable: React.FC<MeetingsTableProps> = ({ onSelectMeeting }) => {
                  ))}
               </div>
               
-              <div className="flex items-center gap-2 text-zinc-500 group-hover:text-zinc-300 transition-colors">
-                   <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider">
+              <div className="flex items-center gap-3">
+                   <button 
+                      onClick={(e) => handleDelete(e, meeting.id)}
+                      className="p-1.5 text-zinc-600 hover:text-red-500 hover:bg-red-500/10 rounded-md transition-all opacity-0 group-hover:opacity-100"
+                      title="Delete Meeting"
+                   >
+                      <Trash2 size={14} />
+                   </button>
+                   <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-zinc-500 group-hover:text-zinc-300 transition-colors">
                       <span>View</span>
                       <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

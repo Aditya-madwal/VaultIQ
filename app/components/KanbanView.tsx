@@ -161,10 +161,10 @@ const KanbanView: React.FC<KanbanViewProps> = ({ onUpdateStatus }) => {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-white transition-colors" size={14} />
                 <input 
                   type="text" 
-                  placeholder="SEARCH_PROTOCOL..." 
+                  placeholder="SEARCH TASKS" 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 pr-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-[10px] font-bold text-gray-300 placeholder-gray-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 transition-all w-48 uppercase tracking-widest"
+                  className="pl-9 pr-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-[10px] font-bold text-gray-300 placeholder-gray-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 transition-all w-64 uppercase tracking-widest"
                 />
              </div>
 

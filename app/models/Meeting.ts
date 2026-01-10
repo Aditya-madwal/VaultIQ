@@ -8,6 +8,8 @@ export interface IMeeting {
   transcript: { speakername: string; content: string; timestamp: string }[];
   mom: { type: 'action' | 'decision' | 'info'; content: string }[];
   videoUrl?: string;
+  transcriptUrl?: string;
+  confidenceLevel?: number;
   tags: string[];
   category: string;
   tasks: mongoose.Types.ObjectId[];
@@ -30,6 +32,8 @@ const MeetingSchema = new Schema<IMeeting>(
       content: String
     }],
     videoUrl: { type: String },
+    transcriptUrl: { type: String },
+    confidenceLevel: { type: Number },
     tags: { type: [String], default: [] },
     category: { type: String },
     tasks: [{ type: Schema.Types.ObjectId, ref: 'Task' }],

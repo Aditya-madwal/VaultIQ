@@ -1,18 +1,21 @@
 
 import React, { useState, useRef } from 'react';
-import { X, Upload, FileText, Video as VideoIcon, Trash2 } from 'lucide-react';
+import { X, Upload, FileText, Video as VideoIcon, Trash2, Loader2 } from 'lucide-react';
+
 
 interface MeetingModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
-const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose }) => {
+const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess }) => {
   const [activeTab, setActiveTab] = useState<'transcript' | 'video'>('transcript');
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
   const [category, setCategory] = useState('General');
   const [transcriptText, setTranscriptText] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
 
   // Video State
   const [videoFile, setVideoFile] = useState<File | null>(null);
@@ -44,25 +47,57 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose }) => {
     setVideoDuration(e.currentTarget.duration);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (activeTab === 'video' && videoFile) {
+      // Placeholder for now
       alert(`Name: ${videoFile.name}\nSize: ${videoFile.size} bytes\nDuration: ${videoDuration.toFixed(2)} seconds`);
+      if (videoPreview) URL.revokeObjectURL(videoPreview);
+      onClose();
+      return;
     }
 
-    // Handle submission logic here
-    console.log({ 
-        title, 
-        date, 
-        category, 
-        type: activeTab, 
-        content: activeTab === 'transcript' ? transcriptText : videoFile 
-    });
-    
-    // Cleanup and close
-    if (videoPreview) URL.revokeObjectURL(videoPreview);
-    onClose();
+    if (activeTab === 'transcript' && transcriptText) {
+      try {
+        setIsProcessing(true);
+        const response = await fetch('/api/meetings/analyze', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            transcript: transcriptText,
+            title,
+            date,
+            category
+          }),
+        });
+
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.error || 'Failed to analyze transcript');
+        }
+
+        const analysisResult = await response.json();
+        console.log("Analysis Result:", analysisResult);
+        
+        // Cleanup and close on success
+        if (videoPreview) URL.revokeObjectURL(videoPreview);
+        if (onSuccess) onSuccess();
+        onClose();
+
+      } catch (error) {
+        console.error("Failed to analyze transcript:", error);
+        alert(error instanceof Error ? error.message : "Failed to analyze transcript");
+      } finally {
+        setIsProcessing(false);
+      }
+    } else {
+      // Cleanup and close for other cases
+      if (videoPreview) URL.revokeObjectURL(videoPreview);
+      onClose();
+    }
   };
 
   return (
@@ -222,9 +257,17 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose }) => {
             </button>
             <button 
                 onClick={handleSubmit}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg text-xs font-bold transition-all active:scale-95 flex items-center gap-2"
+                disabled={isProcessing}
+                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-600/50 disabled:cursor-not-allowed text-white rounded-lg text-xs font-bold transition-all active:scale-95 flex items-center gap-2"
             >
-                <span>Initiate Processing</span>
+                {isProcessing ? (
+                  <>
+                    <Loader2 size={14} className="animate-spin" />
+                    <span>Processing...</span>
+                  </>
+                ) : (
+                  <span>Initiate Processing</span>
+                )}
             </button>
         </div>
       </div>

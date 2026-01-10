@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Meeting, Task } from '../types';
 import SuggestedTask from '../microcomponents/SuggestedTask';
-import { Calendar, Clock, BarChart3, Shield, Play, Download, Share2, MoreHorizontal, Layers, FileText, Activity, Loader } from 'lucide-react';
+import { Calendar, Clock, BarChart3, Shield, Play, Download, Share2, MoreHorizontal, Layers, FileText, Activity, Loader, HardDrive, FileVideo, ArrowRight } from 'lucide-react';
 import { getMeetingById } from '../services/api/meetings';
 
 interface MeetingViewProps {
@@ -15,22 +15,22 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
   const [meeting, setMeeting] = useState<Meeting | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeContent, setActiveContent] = useState<'Summary' | 'Transcript' | 'MOM'>('Summary');
+  const [activeContent, setActiveContent] = useState<'Transcript' | 'MOM'>('Transcript');
+
+  const fetchMeeting = async (showLoading = true) => {
+    try {
+      if (showLoading) setIsLoading(true);
+      const data = await getMeetingById(meetingId);
+      setMeeting(data);
+    } catch (err) {
+      console.error('Failed to fetch meeting:', err);
+      setError('Failed to load meeting details');
+    } finally {
+      if (showLoading) setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchMeeting = async () => {
-      try {
-        setIsLoading(true);
-        const data = await getMeetingById(meetingId);
-        setMeeting(data);
-      } catch (err) {
-        console.error('Failed to fetch meeting:', err);
-        setError('Failed to load meeting details');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     if (meetingId) fetchMeeting();
   }, [meetingId]);
 
@@ -104,11 +104,21 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
       <div className="grid grid-cols-12 gap-6">
         {/* 2. Main Content Area */}
         <div className="col-span-12 lg:col-span-8 flex flex-col gap-6">
-          <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-xl overflow-hidden min-h-[400px] flex flex-col md:mr-4">
+          {/* AI Analysis Section (Always Visible) */}
+          <div className="w-full p-4 rounded-xl bg-green-900/20 border border-emerald-800/20">
+            <span className="block text-[12px] font-black text-emerald-500 uppercase tracking-widest mb-1.5">
+              AI Analysis
+            </span>
+            <p className="text-sm font-bold text-emerald-200/90 leading-relaxed">
+              {meeting.summary}
+            </p>
+          </div>
+
+          <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-xl overflow-hidden h-fit w-full flex flex-col md:mr-4">
             {/* Tabs Header */}
             <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800/60 bg-zinc-900/60 backdrop-blur-sm sticky top-0 z-10">
                  <div className="flex gap-1 p-1 bg-zinc-950/40 rounded-lg border border-zinc-800/40">
-                   {(['Summary', 'Transcript', 'MOM'] as const).map(tab => (
+                   {(['Transcript', 'MOM'] as const).map(tab => (
                      <button
                        key={tab}
                        onClick={() => setActiveContent(tab)}
@@ -123,44 +133,10 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
                      </button>
                    ))}
                  </div>
-                 <div className="hidden md:flex items-center gap-2 px-3 py-1 bg-indigo-900/10 border border-indigo-500/20 rounded-full">
-                    <Activity size={12} className="text-indigo-400" />
-                    <span className="text-[10px] font-bold text-indigo-300">HIGH_CONFIDENCE_SCORING</span>
-                 </div>
             </div>
 
             {/* Scrollable Content */}
             <div className="p-6 overflow-y-auto flex-1 custom-scrollbar">
-              {activeContent === 'Summary' && (
-                <div className="animate-in fade-in duration-300">
-                  <div className="flex flex-col md:flex-row items-start gap-8">
-                    <div className="flex-1 space-y-6">
-                      <div>
-                        <h3 className="text-sm font-bold text-zinc-200 mb-3 flex items-center gap-2">
-                           <FileText size={14} className="text-zinc-500" />
-                           Executive Synthesis
-                        </h3>
-                        <div className="space-y-4 text-zinc-400 font-medium leading-[1.7] text-[15px]">
-                          {meeting.summary.split('. ').map((s, i) => (
-                             s.length > 5 && <p key={i}>{s.trim()}.</p>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                    
-                    <div className="w-full md:w-64 shrink-0 space-y-3">
-                      <div className="p-4 rounded-xl bg-gradient-to-br from-emerald-900/10 to-transparent border border-emerald-800/20">
-                        <span className="block text-[9px] font-black text-emerald-500 uppercase tracking-widest mb-1.5">Sentiment</span>
-                        <p className="text-xs font-bold text-emerald-200/90 leading-relaxed">Constructive focus on Q2 scalability optimization.</p>
-                      </div>
-                      <div className="p-4 rounded-xl bg-gradient-to-br from-indigo-900/10 to-transparent border border-indigo-800/20">
-                        <span className="block text-[9px] font-black text-indigo-400 uppercase tracking-widest mb-1.5">Vector</span>
-                        <p className="text-xs font-bold text-indigo-200/90 leading-relaxed">AWS Architecture Optimization.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
               
               {activeContent === 'Transcript' && (
                 <div className="animate-in fade-in duration-300 space-y-3">
@@ -206,35 +182,102 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
         {/* 3. Right Sidebar - Utilities */}
         <div className="col-span-12 lg:col-span-4 space-y-6">
           
-          {/* Video Player Card */}
-          <div className="group rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950 relative shadow-lg">
-            <div className="aspect-video relative cursor-pointer">
-              <img 
-                src={meeting.videoUrl || `https://picsum.photos/seed/${meeting.id}/800/450`} 
-                alt="Thumbnail" 
-                className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-all duration-500" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-80" />
-              
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-14 h-14 bg-zinc-100/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 group-hover:scale-110 transition-all shadow-xl">
-                   <Play size={20} className="text-white fill-current ml-1" />
+          {/* Transcript File Card (shown if no video but transcript exists) */}
+          {!meeting.videoUrl && meeting.transcriptUrl && (
+            <div className="space-y-3">
+              <div className="group rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950/50 p-6 relative shadow-lg transition-all hover:bg-zinc-900/50">
+                <div className="flex flex-col items-center justify-center gap-4 text-center">
+                    <div className="w-14 h-14 rounded-2xl bg-zinc-900 shadow-xl flex items-center justify-center border border-zinc-800 group-hover:border-zinc-700 group-hover:scale-105 transition-all">
+                      <FileText size={28} className="text-zinc-400 group-hover:text-zinc-200" />
+                    </div>
+                    <div className="space-y-1">
+                        <h3 className="text-sm font-bold text-zinc-200">Raw Transcript</h3>
+                        <p className="text-xs text-zinc-500 max-w-[200px] mx-auto leading-relaxed">
+                            Full conversation logs available for viewing.
+                        </p>
+                    </div>
+                    
+                    {meeting.confidenceLevel && (
+                        <div className="flex items-center gap-1.5 px-2 py-1 bg-emerald-500/10 rounded border border-emerald-500/20">
+                            <Activity size={12} className="text-emerald-500" />
+                            <span className="text-[10px] font-bold text-emerald-400">
+                                {meeting.confidenceLevel}% AI Confidence
+                            </span>
+                        </div>
+                    )}
                 </div>
               </div>
-              <div className="absolute top-3 left-3">
-                 <div className="flex items-center gap-1.5 px-2 py-1 bg-black/60 backdrop-blur rounded text-[10px] font-bold text-white border border-white/10">
-                   <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
-                   REC
+              
+              <div className="flex items-center justify-between px-1">
+                 <div className="flex items-center gap-2">
+                    <FileText size={14} className="text-zinc-500" />
+                    <span className="text-xs font-bold text-zinc-400">Standard Text File</span>
                  </div>
-              </div>
-              <div className="absolute bottom-3 right-3 text-[10px] font-mono font-bold text-zinc-300 bg-black/60 px-1.5 py-0.5 rounded">
-                1080p
+                 <a 
+                   href={meeting.transcriptUrl} 
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 text-[10px] font-bold uppercase tracking-wider rounded-lg transition-all"
+                 >
+                   Open
+                   <ArrowRight size={12} /> 
+                 </a>
               </div>
             </div>
-          </div>
+          )}
+
+          {/* Video Player Card */}
+          {meeting.videoUrl && (
+            <div className="space-y-3">
+              <div className="group rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950 relative shadow-lg">
+                <div className="aspect-video relative cursor-pointer">
+                  <img 
+                    src={meeting.videoUrl || `https://picsum.photos/seed/${meeting.id}/800/450`} 
+                    alt="Thumbnail" 
+                    className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-all duration-500" 
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-80" />
+                  
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-14 h-14 bg-zinc-100/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 group-hover:scale-110 transition-all shadow-xl">
+                      <Play size={20} className="text-white fill-current ml-1" />
+                    </div>
+                  </div>
+                  <div className="absolute top-3 left-3">
+                    <div className="flex items-center gap-1.5 px-2 py-1 bg-black/60 backdrop-blur rounded text-[10px] font-bold text-white border border-white/10">
+                      <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
+                      REC
+                    </div>
+                  </div>
+                  <div className="absolute bottom-3 right-3 text-[10px] font-mono font-bold text-zinc-300 bg-black/60 px-1.5 py-0.5 rounded">
+                    1080p
+                  </div>
+                </div>
+              </div>
+              
+              <div className="px-1 space-y-2">
+                 <div className="flex items-center gap-2">
+                    <FileVideo size={14} className="text-zinc-500" />
+                    <h3 className="text-sm font-bold text-zinc-300 line-clamp-1" title={meeting.title + '.mp4'}>
+                        {meeting.title}.mp4
+                    </h3>
+                 </div>
+                 <div className="flex items-center gap-4 text-[11px] font-bold text-zinc-500 uppercase tracking-wider pl-6">
+                    <div className="flex items-center gap-1.5">
+                        <Clock size={12} className="text-zinc-600"/>
+                        <span>{meeting.duration}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                        <HardDrive size={12} className="text-zinc-600"/>
+                        <span>854 MB</span>
+                    </div>
+                 </div>
+              </div>
+            </div>
+          )}
 
           {/* Action Items Panel */}
-          <div className="bg-zinc-900/30 border border-zinc-800/60 rounded-xl p-5 flex flex-col h-fit max-h-[500px]">
+          <div className="bg-zinc-900/30 border border-zinc-800/60 rounded-xl p-5 flex flex-col h-fit">
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-2">
                 <Layers size={16} className="text-zinc-500"/>
@@ -249,11 +292,12 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
               {suggestedTasks.map((task: any, idx: number) => (
                 <SuggestedTask 
                   key={idx}
+                  taskId={task._id || task.id}
                   title={task.title}
                   description={task.description}
                   priority={task.priority}
                   tags={task.tags}
-                  onAdd={() => onAddTask({ ...task, sourceMeeting: meeting.title })}
+                  onAdd={() => fetchMeeting(false)}
                 />
               ))}
               {suggestedTasks.length === 0 && (
