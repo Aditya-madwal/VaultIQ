@@ -21,28 +21,56 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    const { transcript, title, date, category } = await req.json();
+    let transcriptText = '';
+    let transcriptUrl = '';
+    let requestTitle = '';
+    let requestDate: Date | null = null;
+    let requestCategory = '';
 
-    if (!transcript) {
+    const contentType = req.headers.get('content-type') || '';
+
+    if (contentType.includes('application/json')) {
+      const body = await req.json();
+      transcriptText = body.transcript || '';
+      requestTitle = body.title || '';
+      if (body.date) requestDate = new Date(body.date);
+      requestCategory = body.category || '';
+    } else if (contentType.includes('multipart/form-data')) {
+      const formData = await req.formData();
+      const file = formData.get('file') as File | null;
+      transcriptUrl = (formData.get('transcriptUrl') as string) || '';
+      
+      requestTitle = (formData.get('title') as string) || '';
+      const dateStr = formData.get('date') as string;
+      if (dateStr) requestDate = new Date(dateStr);
+      requestCategory = (formData.get('category') as string) || '';
+
+      if (file) {
+        transcriptText = await file.text();
+      }
+    }
+
+    if (!transcriptText) {
       return NextResponse.json({ error: 'Transcript text is required' }, { status: 400 });
     }
 
     // 1. Process transcript with AI
-    const analysisResult = await processMeetingTranscript(transcript);
+    const analysisResult = await processMeetingTranscript(transcriptText);
 
     // 2. Create Meeting
     // Note: We use the current date as default since transcript doesn't inherently have it
     const newMeeting = new Meeting({
-      title: title || analysisResult.title,
+      title: requestTitle || analysisResult.title,
       summary: analysisResult.summary,
-      date: date ? new Date(date) : new Date(),
+      date: requestDate ? requestDate : new Date(),
       duration: '0m', // Placeholder, could be calculated from transcript timestamps if sophisticated
       transcript: analysisResult.transcript,
       mom: analysisResult.mom,
       currentStatus: 'Completed', // Assuming analyzed meetings are done
       tags: analysisResult.tags,
-      category: category || analysisResult.category,
+      category: requestCategory || analysisResult.category,
       confidenceLevel: analysisResult.confidence_level,
+      transcriptUrl: transcriptUrl,
       user: user._id,
       tasks: [],
     });
