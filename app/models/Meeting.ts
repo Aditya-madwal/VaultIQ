@@ -7,8 +7,8 @@ export interface IMeeting {
   summary: string;
   transcript: { speakername: string; content: string; timestamp: string }[];
   mom: { type: 'action' | 'decision' | 'info'; content: string }[];
-  videoUrl?: string;
-  transcriptUrl?: string;
+  videoFile?: mongoose.Types.ObjectId;
+  transcriptFile?: mongoose.Types.ObjectId;
   confidenceLevel?: number;
   tags: string[];
   category: string;
@@ -31,8 +31,8 @@ const MeetingSchema = new Schema<IMeeting>(
       type: { type: String, enum: ['action', 'decision', 'info'] },
       content: String
     }],
-    videoUrl: { type: String },
-    transcriptUrl: { type: String },
+    videoFile: { type: Schema.Types.ObjectId, ref: 'File' },
+    transcriptFile: { type: Schema.Types.ObjectId, ref: 'File' },
     confidenceLevel: { type: Number },
     tags: { type: [String], default: [] },
     category: { type: String },

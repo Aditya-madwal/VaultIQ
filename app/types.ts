@@ -13,16 +13,26 @@ export interface Task {
   suggested: boolean;
 }
 
+export interface FileData {
+  _id: string;
+  gcsobjectkey: string;
+  filesize: number;
+  createdat: string;
+  filetype: 'text' | 'video' | 'image' | 'audio';
+  duration?: number;
+}
+
 export interface Meeting {
-  id: string;
+  _id: string;
+  id: string; 
   title: string;
   date: string;
   duration: string;
   summary: string;
   transcript: { speakername: string; content: string; timestamp: string }[];
   mom: { type: 'action' | 'decision' | 'info'; content: string }[];
-  videoUrl?: string;
-  transcriptUrl?: string;
+  videoFile?: FileData;
+  transcriptFile?: FileData;
   confidenceLevel?: number;
   thumbnail?: string;
   tags: string[];

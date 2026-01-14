@@ -5,6 +5,8 @@ import { Meeting } from '@/app/models/Meeting';
 import { User } from '@/app/models/User';
 import { auth } from '@clerk/nextjs/server';
 import mongoose from 'mongoose';
+import { FileModel } from '@/app/models/File';
+import { Task } from '@/app/models/Task';
 
 export async function GET(
   req: Request,
@@ -30,7 +32,9 @@ export async function GET(
     }
 
     const meeting = await Meeting.findOne({ _id: id, user: user._id })
-      .populate('tasks');
+      .populate('tasks')
+      .populate('videoFile')
+      .populate('transcriptFile');
 
     if (!meeting) {
       return NextResponse.json({ error: 'Meeting not found' }, { status: 404 });
@@ -72,7 +76,10 @@ export async function PUT(
       { _id: id, user: user._id },
       { $set: body },
       { new: true, runValidators: true }
-    );
+    )
+    .populate('tasks')
+    .populate('videoFile')
+    .populate('transcriptFile');
 
     if (!updatedMeeting) {
       return NextResponse.json({ error: 'Meeting not found' }, { status: 404 });

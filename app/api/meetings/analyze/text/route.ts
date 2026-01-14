@@ -21,56 +21,28 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    let transcriptText = '';
-    let transcriptUrl = '';
-    let requestTitle = '';
-    let requestDate: Date | null = null;
-    let requestCategory = '';
-
-    const contentType = req.headers.get('content-type') || '';
-
-    if (contentType.includes('application/json')) {
-      const body = await req.json();
-      transcriptText = body.transcript || '';
-      requestTitle = body.title || '';
-      if (body.date) requestDate = new Date(body.date);
-      requestCategory = body.category || '';
-    } else if (contentType.includes('multipart/form-data')) {
-      const formData = await req.formData();
-      const file = formData.get('file') as File | null;
-      transcriptUrl = (formData.get('transcriptUrl') as string) || '';
-      
-      requestTitle = (formData.get('title') as string) || '';
-      const dateStr = formData.get('date') as string;
-      if (dateStr) requestDate = new Date(dateStr);
-      requestCategory = (formData.get('category') as string) || '';
-
-      if (file) {
-        transcriptText = await file.text();
-      }
-    }
+    const body = await req.json();
+    const { transcript: transcriptText, title: requestTitle, date: requestDate, category: requestCategory } = body;
 
     if (!transcriptText) {
-      return NextResponse.json({ error: 'Transcript text is required' }, { status: 400 });
+      return NextResponse.json({ error: 'Transcript content is missing' }, { status: 400 });
     }
 
     // 1. Process transcript with AI
     const analysisResult = await processMeetingTranscript(transcriptText);
 
     // 2. Create Meeting
-    // Note: We use the current date as default since transcript doesn't inherently have it
     const newMeeting = new Meeting({
       title: requestTitle || analysisResult.title,
       summary: analysisResult.summary,
-      date: requestDate ? requestDate : new Date(),
-      duration: '0m', // Placeholder, could be calculated from transcript timestamps if sophisticated
+      date: requestDate ? new Date(requestDate) : new Date(),
+      duration: '0m',
       transcript: analysisResult.transcript,
       mom: analysisResult.mom,
-      currentStatus: 'Completed', // Assuming analyzed meetings are done
+      currentStatus: 'Completed',
       tags: analysisResult.tags,
       category: requestCategory || analysisResult.category,
       confidenceLevel: analysisResult.confidence_level,
-      transcriptUrl: transcriptUrl,
       user: user._id,
       tasks: [],
     });
@@ -78,15 +50,15 @@ export async function POST(req: Request) {
     const savedMeeting = await newMeeting.save();
 
     // 3. Create Tasks
-    const taskPromises = analysisResult.tasks.map(async (taskItem) => {
+    const taskPromises = (analysisResult.tasks || []).map(async (taskItem: any) => {
       const newTask = new Task({
         title: taskItem.title,
         description: taskItem.description,
         priority: taskItem.priority || 'Medium',
         tags: taskItem.tags,
-        status: 'Backlog', // Default status
+        status: 'Backlog',
         sourceMeeting: savedMeeting._id,
-        suggested: true, // Mark as AI suggested
+        suggested: true,
         user: user._id,
       });
       return newTask.save();
@@ -95,7 +67,7 @@ export async function POST(req: Request) {
     const savedTasks = await Promise.all(taskPromises);
 
     // 4. Link Tasks to Meeting
-    savedMeeting.tasks = savedTasks.map((t) => t._id);
+    savedMeeting.tasks = savedTasks.map((t: any) => t._id);
     await savedMeeting.save();
 
     return NextResponse.json({
@@ -104,7 +76,7 @@ export async function POST(req: Request) {
     }, { status: 201 });
 
   } catch (error) {
-    console.error('Error analyzing transcript and creating entries:', error);
+    console.error('Error in Text Analysis API:', error);
     return NextResponse.json(
       { error: 'Internal Server Error', details: error instanceof Error ? error.message : String(error) },
       { status: 500 }

@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDownloadUrl } from "@/app/services/logic/gcs_upload";
+import { connectToDatabase } from "@/app/lib/db";
+import { FileModel } from "@/app/models/File";
 
 export async function GET(req: NextRequest) {
   try {
@@ -13,11 +15,23 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const downloadUrl = await getDownloadUrl(fileId);
+    await connectToDatabase();
+    
+    // Find the file document
+    const fileDoc = await FileModel.findById(fileId);
+
+    if (!fileDoc) {
+      return NextResponse.json(
+        { error: "File record not found" },
+        { status: 404 }
+      );
+    }
+
+    const downloadUrl = await getDownloadUrl(fileDoc.gcsobjectkey);
 
     if (!downloadUrl) {
       return NextResponse.json(
-        { error: "File not found or could not generate download URL" },
+        { error: "GCS File not found or could not generate download URL" },
         { status: 404 }
       );
     }
@@ -32,3 +46,4 @@ export async function GET(req: NextRequest) {
     );
   }
 }
+
