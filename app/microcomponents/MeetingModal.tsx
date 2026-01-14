@@ -15,6 +15,7 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess 
   const [category, setCategory] = useState('General');
   const [transcriptText, setTranscriptText] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const [transcriptFile, setTranscriptFile] = useState<File | null>(null);
 
@@ -36,17 +37,14 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess 
     }
 
     try {
-      setIsProcessing(true);
       let response;
 
       if (transcriptFile) {
+        setIsUploading(true);
         // 1. Upload File first
         const uploadFormData = new FormData();
         uploadFormData.append('file', transcriptFile);
-        
-        // Optional: you can calculate duration if it was audio, 
-        // but for text files duration is not relevant or 0.
-        
+                
         const uploadResponse = await fetch('/api/documents/upload', {
             method: 'POST',
             body: uploadFormData,
@@ -58,10 +56,10 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess 
         }
 
         const { fileId } = await uploadResponse.json();
+        setIsUploading(false); // Upload done
 
         // 2. Use File Analysis API with the returned fileId
-        // We still send the file because the current analyze API implementation 
-        // reads the text directly from the form file.
+        setIsProcessing(true); // Analysis start
         const formData = new FormData();
         formData.append('file', transcriptFile);
         formData.append('fileId', fileId);
@@ -75,6 +73,7 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess 
         });
       } else {
         // Use Text Analysis API
+        setIsProcessing(true);
         response = await fetch('/api/meetings/analyze/text', {
           method: 'POST',
           headers: {
@@ -112,6 +111,7 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess 
       alert(error instanceof Error ? error.message : "Failed to analyze transcript");
     } finally {
       setIsProcessing(false);
+      setIsUploading(false);
     }
   };
 
@@ -182,10 +182,11 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess 
                         rows={6}
                         value={transcriptText}
                         onChange={e => setTranscriptText(e.target.value)}
-                        className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 resize-none font-mono"
-                        placeholder="Paste meeting transcript here..."
+                        disabled={!!transcriptFile}
+                        className={`w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 resize-none font-mono ${transcriptFile ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        placeholder={transcriptFile ? "File selected. Remove file to paste text." : "Paste meeting transcript here..."}
                       />
-                      <div className="flex items-center gap-3">
+                      <div className={`flex items-center gap-3 ${transcriptText ? 'opacity-50 pointer-events-none' : ''}`}>
                         <span className="text-[10px] text-zinc-500 font-bold uppercase">{transcriptFile ? 'Selected:' : 'Or upload txt/md'}</span>
                         {transcriptFile ? (
                            <div className="flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded px-2 py-1">
@@ -197,7 +198,8 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess 
                              type="file" 
                              accept=".txt,.md" 
                              onChange={handleTranscriptFileChange}
-                             className="text-xs text-zinc-400 file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-zinc-800 file:text-zinc-300 hover:file:bg-zinc-700 cursor-pointer"
+                             disabled={!!transcriptText}
+                             className="text-xs text-zinc-400 file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-zinc-800 file:text-zinc-300 hover:file:bg-zinc-700 cursor-pointer disabled:cursor-not-allowed"
                            />
                         )}
                       </div>
@@ -217,10 +219,15 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess 
             </button>
             <button 
                 onClick={handleSubmit}
-                disabled={isProcessing}
+                disabled={isProcessing || isUploading || (!transcriptText && !transcriptFile)}
                 className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-600/50 disabled:cursor-not-allowed text-white rounded-lg text-xs font-bold transition-all active:scale-95 flex items-center gap-2"
             >
-                {isProcessing ? (
+                {isUploading ? (
+                  <>
+                    <Loader2 size={14} className="animate-spin" />
+                    <span>Uploading file...</span>
+                  </>
+                ) : isProcessing ? (
                   <>
                     <Loader2 size={14} className="animate-spin" />
                     <span>Processing...</span>
