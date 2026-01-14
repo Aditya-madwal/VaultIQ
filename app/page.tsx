@@ -307,53 +307,70 @@ const App: React.FC = () => {
 
               {result && (
                 <div className="space-y-6 animate-fade-in p-2">
-                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10 shadow-xl">
-                    <h4 className="text-white text-xs font-bold uppercase tracking-[0.2em] mb-4">Summary Analysis</h4>
-                    <p className="text-neutral-300 text-base leading-relaxed font-light italic">"{result.summary}"</p>
+                  
+                  {/* AI Analysis */}
+                  <div className="w-full p-4 rounded-xl bg-green-900/20 border border-emerald-800/20">
+                    <span className="block text-[12px] font-black text-emerald-500 uppercase tracking-widest mb-1.5">
+                      AI Analysis
+                    </span>
+                    <p className="text-sm font-bold text-emerald-200/90 leading-relaxed">
+                      {result.summary}
+                    </p>
                   </div>
 
                   <div className="grid grid-cols-1 gap-6">
                     <div className="p-6 rounded-2xl bg-neutral-900/60 border border-white/10">
                       <h4 className="text-neutral-500 text-xs font-bold uppercase tracking-[0.2em] mb-6">Minutes of Meeting</h4>
-                      <ul className="space-y-4">
-                        {result.mom.map((item, i) => (
-                          <li key={i} className="flex gap-3 text-sm text-neutral-300">
-                            <span className={`text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded ${
-                               item.type === 'decision' ? 'bg-indigo-500/20 text-indigo-300' :
-                               item.type === 'action' ? 'bg-emerald-500/20 text-emerald-300' : 'bg-zinc-500/20 text-zinc-300'
-                            }`}>
-                              {item.type}
-                            </span>
-                            <span className="flex-1">{item.content}</span>
-                          </li>
-                        ))}
-                      </ul>
+                      <div className="animate-in fade-in duration-300 grid grid-cols-1 gap-3">
+                        {result.mom.map((item, i) => {
+                          const isDecision = item.type === 'decision';
+                          const isAction = item.type === 'action';
+                          return (
+                            <div key={i} className={`px-4 py-3 rounded-xl border flex items-start gap-4 transition-all hover:bg-zinc-800/30
+                              ${isDecision ? 'bg-indigo-500/5 border-indigo-500/20' : isAction ? 'bg-emerald-500/5 border-emerald-500/20' : 'bg-transparent border-zinc-800/50'}`}>
+                              <div className={`mt-0.5 shrink-0 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider rounded
+                                  ${isDecision ? 'bg-indigo-500/10 text-indigo-400' : isAction ? 'bg-emerald-500/10 text-emerald-400' : 'bg-zinc-800 text-zinc-400'}`}>
+                                  {item.type}
+                              </div>
+                              <p className="text-[13px] font-medium text-zinc-300 leading-snug pt-0.5">{item.content}</p>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                     
                     <div className="p-6 rounded-2xl bg-neutral-900/60 border border-white/10">
                       <h4 className="text-neutral-500 text-xs font-bold uppercase tracking-[0.2em] mb-6">Generated Task Board</h4>
-                      <ul className="space-y-3">
-                        {result.tasks.map((item, i) => (
-                          <li key={i} className="flex items-center gap-4 p-4 rounded-xl bg-white/2 border border-white/5 hover:border-white/10 transition-all cursor-pointer group">
-                            <div className="w-5 h-5 rounded border-2 border-white/30 group-hover:border-white transition-colors"></div>
-                            <span className="text-sm text-neutral-200 font-medium">{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
+                      <div className="flex flex-col gap-2">
+                        {result.tasks.map((taskTitle, i) => (
+                           <div key={i} className="group relative p-4 bg-zinc-950/40 hover:bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer flex flex-col gap-2">
+                             <div className="flex items-center justify-between gap-3">
+                               <div className="flex items-center gap-2 flex-wrap min-w-0">
+                                 <h4 className="text-sm font-bold text-zinc-200 truncate group-hover:text-white transition-colors">
+                                   {taskTitle}
+                                 </h4>
+                                 <span className="text-[9px] font-bold text-white px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/20">
+                                     MEDIUM
+                                 </span>
+                               </div>
+                             </div>
+                             
+                             <p className="text-[11px] text-zinc-500 line-clamp-2 font-medium leading-relaxed mb-1">
+                               Auto-generated task from meeting analysis.
+                             </p>
 
-                  <div className="p-6 rounded-2xl bg-neutral-900/60 border border-white/10">
-                    <h4 className="text-neutral-500 text-xs font-bold uppercase tracking-[0.2em] mb-6">Extracted Schedule</h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {result.schedule.map((item, i) => (
-                        <div key={i} className="flex flex-col gap-1 px-5 py-4 bg-white/5 rounded-xl border border-white/10">
-                          <span className="text-neutral-400 font-bold text-xs uppercase tracking-wider">{item.time}</span>
-                          <span className="text-sm font-bold text-white leading-tight">{item.event}</span>
-                        </div>
-                      ))}
+                             <div className="flex items-center justify-between pt-2">
+                                <div className="flex flex-wrap gap-1.5">
+                                    <span className="text-[9px] font-bold text-zinc-600 px-2 py-0.5 bg-zinc-900 rounded-full border border-zinc-800">
+                                        #auto-generated
+                                    </span>
+                                </div>
+                             </div>
+                           </div>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  </div>                  
                 </div>
               )}
             </div>
