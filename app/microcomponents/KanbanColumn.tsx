@@ -19,7 +19,7 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ title, accent, bg, tasks, o
   const nextStatus = curIdx < statuses.length - 1 ? statuses[curIdx + 1] : null;
 
   return (
-    <div className={`flex flex-col gap-6 p-4 rounded-3xl border border-zinc-800 h-fit ${bg} bg-zinc-900/30`}>
+    <div className={`flex flex-col gap-6 p-4 rounded-3xl max-w-[300px] h-fit ${bg}`}>
       <div className="flex items-center justify-between px-2">
         <div className="flex items-center gap-3">
           <div className={`w-1 h-3.5 rounded-full ${accent}`}></div>

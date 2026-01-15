@@ -4,6 +4,7 @@ import { connectToDatabase } from '@/app/lib/db';
 import { Task } from '@/app/models/Task';
 import { User } from '@/app/models/User';
 import { auth } from '@clerk/nextjs/server';
+import '@/app/models/Meeting';
 
 export async function GET() {
   try {

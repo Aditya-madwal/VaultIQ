@@ -150,32 +150,32 @@ const KanbanView: React.FC<KanbanViewProps> = ({ onUpdateStatus }) => {
 
   return (
     <>
-      <div className="space-y-10 pt-4">
+      <div className="space-y-10 pt-4 h-full px-8">
         {/* 1. Protocol Metadata Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between px-2 gap-6 pb-8 mb-4">
+        <div className="flex flex-col xl:flex-row xl:items-end justify-between px-2 gap-6 pb-4 mb-2 md:pb-8 md:mb-4">
           <div className="space-y-2">
             <h1 className="text-4xl font-extrabold text-gray-100 tracking-tighter leading-none">Stuff ToDo</h1>
           </div>
-          <div className="flex items-center gap-3">
-             <div className="relative group">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full xl:w-auto">
+             <div className="relative group w-full sm:w-auto">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-white transition-colors" size={14} />
                 <input 
                   type="text" 
                   placeholder="SEARCH TASKS" 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-9 pr-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-[10px] font-bold text-gray-300 placeholder-gray-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 transition-all w-64 uppercase tracking-widest"
+                  className="w-full sm:w-64 pl-9 pr-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-[10px] font-bold text-gray-300 placeholder-gray-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 transition-all uppercase tracking-widest"
                 />
              </div>
 
-             <div className="relative">
+             <div className="relative w-full sm:w-auto">
                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
                   <Filter size={12} className="text-gray-500" />
                </div>
                <select 
                  value={priorityFilter}
                  onChange={(e) => setPriorityFilter(e.target.value)}
-                 className="pl-9 pr-8 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-[10px] font-black text-gray-300 uppercase tracking-widest focus:outline-none focus:border-indigo-500 hover:bg-zinc-800 transition-all appearance-none cursor-pointer"
+                 className="w-full sm:w-auto pl-9 pr-8 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-[10px] font-black text-gray-300 uppercase tracking-widest focus:outline-none focus:border-indigo-500 hover:bg-zinc-800 transition-all appearance-none cursor-pointer"
                >
                  <option value="All">All Priorities</option>
                  <option value="High">High Priority</option>
@@ -186,26 +186,27 @@ const KanbanView: React.FC<KanbanViewProps> = ({ onUpdateStatus }) => {
 
              <button 
               onClick={openCreateModal}
-              className="px-5 py-2.5 bg-blue-900/30 text-blue-500 rounded-xl text-[12px] font-black uppercase tracking-wider hover:bg-blue-800 hover:text-white transition-all active:scale-95 flex items-center gap-2"
+              className="w-full sm:w-auto justify-center px-5 py-2.5 bg-blue-900/30 text-blue-500 rounded-xl text-[12px] font-black uppercase tracking-wider hover:bg-blue-800 hover:text-white transition-all active:scale-95 flex items-center gap-2"
             >
               <Plus size={16} strokeWidth={2.5} />New Task
             </button>
           </div>
         </div>
 
-        {/* 2. Fluid Grid System */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* 2. Horizontal Scrollable Layout */}
+        <div className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory">
           {columns.map(col => (
-            <KanbanColumn 
-              key={col.title}
-              title={col.title}
-              accent={col.accent}
-              bg={col.bg}
-              tasks={filteredTasks.filter(t => t.status === col.title)}
-              onUpdateStatus={handleMoveStatus}
-              onEdit={openEditModal}
-              onDelete={handleDeleteTask}
-            />
+            <div key={col.title} className="shrink-0 snap-center first:pl-2 last:pr-2">
+              <KanbanColumn 
+                title={col.title}
+                accent={col.accent}
+                bg={col.bg}
+                tasks={filteredTasks.filter(t => t.status === col.title)}
+                onUpdateStatus={handleMoveStatus}
+                onEdit={openEditModal}
+                onDelete={handleDeleteTask}
+              />
+            </div>
           ))}
         </div>
       </div>

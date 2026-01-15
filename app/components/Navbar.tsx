@@ -11,10 +11,10 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ activeTab, onTabChange, onNewCapture }) => {
   return (
-    <header className="fixed top-0 left-0 right-0 z-[60] px-8 pt-6 pointer-events-none">
-      <div className="max-w-[1440px] mx-auto flex items-center justify-between bg-zinc-900/90 backdrop-blur-xl py-3 px-6 rounded-2xl border border-zinc-800 pointer-events-auto">
+    <header className="fixed top-0 left-0 right-0 z-[60] px-4 pt-4 md:px-8 md:pt-6 pointer-events-none transition-all duration-300">
+      <div className="max-w-[1440px] mx-auto flex items-center justify-between bg-zinc-900/90 backdrop-blur-xl py-2 px-3 md:py-3 md:px-6 rounded-2xl border border-zinc-800 pointer-events-auto">
         {/* Brand & Context */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-3 md:gap-6">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 bg-zinc-100 rounded-lg flex items-center justify-center transform -rotate-2">
                <svg className="w-4 h-4 text-zinc-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -22,21 +22,14 @@ const Navbar: React.FC<NavbarProps> = ({ activeTab, onTabChange, onNewCapture })
               </svg>
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold text-sm tracking-tighter text-white leading-none">WORKNEST</span>
-              <span className="font-mono text-[9px] text-zinc-500 mt-1 uppercase tracking-widest">Turn meetings into momentum.</span>
+              <span className="font-extrabold text-sm tracking-tighter text-white leading-none hidden sm:block">WORKNEST</span>
+              <span className="font-mono text-[9px] text-zinc-500 mt-1 uppercase tracking-widest hidden md:block">Turn meetings into momentum.</span>
             </div>
           </div>
-          {/* <div className="hidden lg:flex h-6 w-px bg-zinc-800"></div> */}
-          {/* <div className="hidden lg:flex items-center gap-3">
-             <div className="flex items-center gap-1.5 px-2 py-0.5 bg-emerald-900/20 rounded-md border border-emerald-800/30">
-               <div className="w-1 h-1 rounded-full bg-emerald-500"></div>
-               <span className="text-[9px] font-black text-emerald-400 uppercase">Synced</span>
-             </div>
-          </div> */}
         </div>
 
         {/* Navigation Tabs */}
-        <nav className="relative flex items-center bg-zinc-950/50 p-1 rounded-xl border border-zinc-800/50 w-[240px]">
+        <nav className="relative flex items-center bg-zinc-950/50 p-1 rounded-xl border border-zinc-800/50 w-[160px] md:w-[240px] mx-2">
           {/* Sliding Background Pill */}
           <div
             className={`
@@ -52,7 +45,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeTab, onTabChange, onNewCapture })
               key={tab}
               onClick={() => onTabChange(tab)}
               className={`
-                relative z-10 flex-1 py-1.5 text-[10px] font-black uppercase tracking-[0.15em]
+                relative z-10 flex-1 py-1.5 text-[9px] md:text-[10px] font-black uppercase tracking-[0.15em]
                 transition-colors duration-200
                 ${activeTab === tab ? 'text-white' : 'text-zinc-500 hover:text-zinc-300'}
               `}
@@ -63,18 +56,19 @@ const Navbar: React.FC<NavbarProps> = ({ activeTab, onTabChange, onNewCapture })
         </nav>
  
         {/* Global Controls */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2 md:gap-4">
           <button 
             onClick={onNewCapture}
-            className="px-5 py-2 bg-green-900/30 text-green-500 rounded-xl text-[12px] font-black uppercase tracking-wider hover:bg-green-800 hover:text-white transition-all active:scale-95 flex items-center gap-2"
+            className="p-2 md:px-5 md:py-2 bg-green-900/30 text-green-500 rounded-xl text-[12px] font-black uppercase tracking-wider hover:bg-green-800 hover:text-white transition-all active:scale-95 flex items-center gap-2"
           >
-            <Plus size={16} strokeWidth={2.5} />New Meeting
+            <Plus size={16} strokeWidth={2.5} />
+            <span className="hidden md:inline">New Meeting</span>
           </button>
-          <div className="h-8 w-px bg-zinc-800 mx-1"></div>
+          <div className="hidden md:block h-8 w-px bg-zinc-800 mx-1"></div>
           <UserButton 
             appearance={{
               elements: {
-                userButtonAvatarBox: "w-9 h-9 border border-zinc-700 rounded-xl",
+                userButtonAvatarBox: "w-8 h-8 md:w-9 md:h-9 border border-zinc-700 rounded-xl",
                 userButtonPopoverCard: "bg-zinc-900 border border-zinc-800 text-white",
                 userButtonPopoverActions: "text-zinc-200",
                 userButtonPopoverActionButton: "hover:bg-zinc-800 text-zinc-200",

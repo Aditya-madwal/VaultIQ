@@ -5,8 +5,8 @@ import { Meeting } from '@/app/models/Meeting';
 import { User } from '@/app/models/User';
 import { auth } from '@clerk/nextjs/server';
 import mongoose from 'mongoose';
-import { FileModel } from '@/app/models/File';
-import { Task } from '@/app/models/Task';
+import '@/app/models/File';
+import '@/app/models/Task';
 
 export async function GET(
   req: Request,

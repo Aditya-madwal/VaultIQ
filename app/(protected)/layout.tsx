@@ -35,7 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           onNewCapture={() => setIsModalOpen(true)}
         />
         
-        <main className="max-w-[1440px] mx-auto px-8 pt-28 mb-10">
+        <main className="mx-auto pt-28 mb-10">
           <div className="animate-in fade-in duration-700">
             {children}
           </div>
