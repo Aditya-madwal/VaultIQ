@@ -9,6 +9,7 @@ interface FeatureProps {
   title: string;
   description: string;
   icon: React.ReactNode;
+  className?: string;
 }
 
 interface SummaryResult {
@@ -97,54 +98,40 @@ const Navbar: React.FC = () => (
   </nav>
 );
 
-const FeatureCard: React.FC<FeatureProps> = ({ title, description, icon }) => (
-  <div className="p-6 rounded-2xl bg-neutral-900/40 border border-white/5 hover:border-white/10 transition-all group">
-    <div className="mb-4 w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
-      {icon}
+const FeatureCard: React.FC<FeatureProps> = ({ title, description, icon, className }) => (
+  <div className={`relative p-8 rounded-3xl bg-white/[0.03] border border-white/5 overflow-hidden group hover:bg-white/[0.06] transition-all duration-500 ${className}`}>
+    <div className="absolute inset-0 bg-gradient-to-br from-white/[0.05] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+    <div className="relative z-10 flex flex-col h-full justify-between">
+      <div>
+        <div className="mb-6 w-12 h-12 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center text-white/90 group-hover:scale-110 group-hover:text-white transition-all duration-500 shadow-lg shadow-black/20">
+          {icon}
+        </div>
+        <h3 className="text-xl font-semibold mb-3 tracking-tight text-white/90 group-hover:text-white transition-colors">{title}</h3>
+        <p className="text-neutral-500 group-hover:text-neutral-400 text-sm leading-relaxed font-medium transition-colors">{description}</p>
+      </div>
     </div>
-    <h3 className="text-xl font-bold mb-3 tracking-tight">{title}</h3>
-    <p className="text-neutral-400 text-sm leading-relaxed">{description}</p>
   </div>
 );
 
 const Footer: React.FC = () => (
-  <footer className="border-t border-white/5 py-20 px-6 bg-black">
-    <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
-      <div className="col-span-1 md:col-span-2">
-        <div className="flex items-center gap-2 mb-6">
-          <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center font-bold text-xl text-black">C</div>
-          <span className="text-xl font-bold tracking-tight text-white">Chronos AI</span>
-        </div>
-        <p className="text-neutral-400 text-sm max-w-sm leading-relaxed">
-          The next generation of meeting intelligence. Automated, accurate, and deeply integrated into your workflow.
-        </p>
+    <footer className="border-t border-white/5 py-12 px-6 bg-[#050505]">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 bg-white rounded flex items-center justify-center font-bold text-sm text-black">C</div>
+            <span className="text-base font-bold tracking-tight text-white/80">Chronos AI</span>
+          </div>
+          <div className="flex items-center gap-8 text-xs font-medium text-neutral-500">
+             <a href="#" className="hover:text-white transition-colors">Privacy</a>
+             <a href="#" className="hover:text-white transition-colors">Terms</a>
+             <a href="#" className="hover:text-white transition-colors">Twitter</a>
+             <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
+          </div>
+          <p className="text-neutral-600 text-xs">
+            &copy; {new Date().getFullYear()} Chronos AI Inc.
+          </p>
       </div>
-      <div>
-        <h4 className="font-bold text-white mb-6 text-sm">Product</h4>
-        <ul className="space-y-3 text-sm text-neutral-400">
-          <li><a href="#" className="hover:text-white transition-colors">Meeting Summary</a></li>
-          <li><a href="#" className="hover:text-white transition-colors">Team Calendar</a></li>
-          <li><a href="#" className="hover:text-white transition-colors">Action Items</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 className="font-bold text-white mb-6 text-sm">Company</h4>
-        <ul className="space-y-3 text-sm text-neutral-400">
-          <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-          <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-          <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-        </ul>
-      </div>
-    </div>
-    <div className="max-w-7xl mx-auto mt-20 pt-8 border-t border-white/5 text-neutral-600 text-xs flex flex-col md:flex-row justify-between items-center gap-4">
-      <span>&copy; {new Date().getFullYear()} Chronos AI Inc. Crafted for productivity.</span>
-      <div className="flex gap-6">
-        <a href="#" className="hover:text-neutral-400 transition-colors">Twitter</a>
-        <a href="#" className="hover:text-neutral-400 transition-colors">LinkedIn</a>
-      </div>
-    </div>
-  </footer>
-);
+    </footer>
+  );
 
 // --- Main Application ---
 
@@ -218,27 +205,41 @@ const App: React.FC = () => {
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-white/5 blur-[120px] -z-10 rounded-full pointer-events-none"></div>
       </section>
 
-      {/* Features Grid */}
-      <section id="features" className="py-24 px-6">
+{/* Features & Tech Stack */}
+      <section id="features" className="py-20 px-6 relative z-20">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-16 text-center md:text-left">
-            <h2 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight">The Modern AI Stack.</h2>
-            <p className="text-xl text-neutral-400 max-w-3xl leading-relaxed">Everything your team needs to transform unstructured conversations into clear, actionable data points.</p>
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div>
+              <h2 className="text-3xl md:text-5xl font-bold mb-4 tracking-tight text-white">Intelligence, refined.</h2>
+              <p className="text-neutral-400 max-w-xl text-sm md:text-base leading-relaxed">
+                Powered by <span className="text-white font-semibold">Gemini 1.5 Flash</span> and built on <span className="text-white font-semibold">Next.js 14</span>, 
+                Chronos transforms raw audio into structured business intelligence in milliseconds.
+              </p>
+            </div>
+            {/* Tech Stack Badges */}
+            <div className="flex gap-3 flex-wrap">
+               {['Next.js 14', 'Gemini AI', 'Tailwind', 'TypeScript'].map(tech => (
+                 <span key={tech} className="px-3 py-1 rounded-full border border-white/10 bg-white/5 text-[10px] font-bold tracking-wider text-neutral-300 uppercase">
+                    {tech}
+                 </span>
+               ))}
+            </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <FeatureCard 
               title="MOM Generator" 
-              description="Automatically generate professional Minutes of Meeting with key decisions and discussion points captured instantly."
+              description="Instantly draft minutes with distinct separation of actions, decisions, and informational nodes."
               icon={<svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>}
             />
             <FeatureCard 
               title="Smart Scheduler" 
-              description="Chronos detects potential follow-ups and automatically suggests the best times for your team to regroup."
+              description="Context-aware scheduling suggestions based on discussed timelines and deadlines."
               icon={<svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>}
             />
             <FeatureCard 
               title="Task Extraction" 
-              description="Action items are intelligently identified and assigned to team members based on the meeting context."
+              description="Zero-shot task identification and assignment from natural language conversations."
               icon={<svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" /></svg>}
             />
           </div>
@@ -246,152 +247,142 @@ const App: React.FC = () => {
       </section>
 
       {/* Interactive Demo */}
-      <section id="demo" className="py-24 px-6">
+      <section id="demo" className="py-20 px-6 bg-white/[0.02] border-y border-white/5">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-            <div className="sticky top-24">
-              <h2 className="text-4xl md:text-6xl font-bold mb-8 tracking-tight leading-[1.1]">Experience the intelligence.</h2>
-              <p className="text-lg text-neutral-400 mb-8 leading-relaxed">
-                Paste a meeting transcript snippet to see our proprietary engine extract meaningful, structured data in seconds.
-              </p>
-              <div className="p-1 rounded-2xl bg-neutral-900 border border-white/10 shadow-3xl overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:h-[600px]">
+            
+            {/* Left Col: Input */}
+            <div className="lg:col-span-5 flex flex-col h-full">
+              <h3 className="text-2xl font-bold mb-6 text-white flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"/>
+                Live Demo
+              </h3>
+              <div className="flex-1 flex flex-col p-1 rounded-3xl bg-neutral-900 border border-white/10 shadow-2xl overflow-hidden relative group hover:border-white/20 transition-colors">
                 <textarea 
-                  className="w-full h-48 bg-transparent p-6 text-neutral-300 resize-none outline-none font-mono text-base leading-relaxed"
+                  className="flex-1 w-full bg-transparent p-6 text-neutral-300 resize-none outline-none font-mono text-sm leading-relaxed scrollbar-hide"
                   value={transcript}
                   onChange={(e) => setTranscript(e.target.value)}
-                  placeholder="Paste meeting transcript here..."
+                  placeholder="Paste your meeting transcript here..."
                 />
-                <div className="p-4 border-t border-white/5 bg-neutral-900/50 flex justify-between items-center">
-                  <span className="text-[10px] text-neutral-500 font-mono">ENHANCED BY GEMINI FLASH</span>
-                  <button 
+                <div className="p-4 bg-black/40 backdrop-blur-md border-t border-white/5 flex justify-between items-center">
+                   <div className="flex items-center gap-1.5">
+                      <div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div>
+                      <span className="text-[10px] font-bold text-neutral-500 tracking-wider">GEMINI FLASH</span>
+                   </div>
+                   <button 
                     onClick={handleSummarize}
-                    disabled={loading}
-                    className="flex items-center gap-2 px-6 py-3 bg-white text-black hover:bg-neutral-200 disabled:opacity-50 rounded-full font-bold transition-all shadow-xl shadow-white/5 text-sm"
+                    disabled={loading || !transcript.trim()}
+                    className="flex items-center gap-2 px-5 py-2.5 bg-white text-black hover:bg-neutral-200 disabled:opacity-50 disabled:cursor-not-allowed rounded-full font-bold transition-all shadow-lg text-xs"
                   >
-                    {loading ? (
-                      <>
-                        <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        Analyzing...
-                      </>
-                    ) : 'Generate Results'}
+                    {loading ? 'Processing...' : 'Analyze Text'}
+                    {!loading && <span className="text-xs">→</span>}
                   </button>
                 </div>
               </div>
-              {error && <p className="mt-4 text-red-400 text-sm font-medium bg-red-400/10 p-3 rounded-xl border border-red-400/20">{error}</p>}
+              {error && (
+                <div className="mt-4 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-medium flex items-center gap-2">
+                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                   {error}
+                </div>
+              )}
             </div>
 
-            <div className="lg:mt-0 min-h-[400px]">
-              {!result && !loading && (
-                <div className="h-[400px] flex flex-col items-center justify-center p-10 border-2 border-dashed border-white/5 rounded-3xl text-neutral-600 group hover:border-white/20 transition-colors">
-                  <div className="w-16 h-16 bg-white/2 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/5 transition-colors">
-                    <svg className="w-8 h-8 opacity-30 group-hover:opacity-60 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                    </svg>
-                  </div>
-                  <p className="text-center text-lg font-medium">Ready for input. <br/>Paste a transcript to begin extraction.</p>
-                </div>
-              )}
+            {/* Right Col: Output */}
+            <div className="lg:col-span-7 h-full flex flex-col">
+              <div className="h-full rounded-3xl bg-neutral-900/50 border border-white/5 p-1 relative overflow-hidden">
+                 
+                 {!result && !loading && (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-neutral-600">
+                      <div className="w-16 h-16 rounded-2xl bg-white/[0.03] border border-white/5 flex items-center justify-center mb-4">
+                        <svg className="w-6 h-6 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.384-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+                      </div>
+                      <p className="text-sm font-medium">Awaiting Input</p>
+                    </div>
+                 )}
 
-              {loading && (
-                <div className="space-y-6 animate-pulse p-8 border border-white/5 rounded-3xl bg-neutral-900/30">
-                  <div className="h-6 bg-white/5 rounded-full w-2/3"></div>
-                  <div className="h-4 bg-white/5 rounded-full w-full"></div>
-                  <div className="h-4 bg-white/5 rounded-full w-5/6"></div>
-                  <div className="h-32 bg-white/5 rounded-xl w-full"></div>
-                  <div className="h-6 bg-white/5 rounded-full w-1/2"></div>
-                </div>
-              )}
+                 {loading && (
+                   <div className="absolute inset-0 flex items-center justify-center">
+                     <div className="flex flex-col items-center gap-3">
+                       <div className="w-8 h-8 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
+                       <p className="text-xs text-neutral-500 font-medium tracking-wide animate-pulse">EXTRACTING INSIGHTS</p>
+                     </div>
+                   </div>
+                 )}
+                 
+                 {result && (
+                   <div className="h-full overflow-y-auto custom-scrollbar p-6 space-y-6">
+                      {/* Summary Block */}
+                      <div className="animate-fade-in">
+                        <h4 className="text-[10px] items-center flex gap-2 font-bold text-neutral-500 uppercase tracking-widest mb-3">
+                           <span className="w-1 h-1 rounded-full bg-white"></span>
+                           Executive Summary
+                        </h4>
+                        <p className="text-sm text-neutral-200 leading-relaxed font-light">{result.summary}</p>
+                      </div>
+                      
+                      <div className="h-px bg-white/5 w-full"></div>
 
-              {result && (
-                <div className="space-y-6 animate-fade-in p-2">
-                  
-                  {/* AI Analysis */}
-                  <div className="w-full p-4 rounded-xl bg-green-900/20 border border-emerald-800/20">
-                    <span className="block text-[12px] font-black text-emerald-500 uppercase tracking-widest mb-1.5">
-                      AI Analysis
-                    </span>
-                    <p className="text-sm font-bold text-emerald-200/90 leading-relaxed">
-                      {result.summary}
-                    </p>
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-6">
-                    <div className="p-6 rounded-2xl bg-neutral-900/60 border border-white/10">
-                      <h4 className="text-neutral-500 text-xs font-bold uppercase tracking-[0.2em] mb-6">Minutes of Meeting</h4>
-                      <div className="animate-in fade-in duration-300 grid grid-cols-1 gap-3">
-                        {result.mom.map((item, i) => {
-                          const isDecision = item.type === 'decision';
-                          const isAction = item.type === 'action';
-                          return (
-                            <div key={i} className={`px-4 py-3 rounded-xl border flex items-start gap-4 transition-all hover:bg-zinc-800/30
-                              ${isDecision ? 'bg-indigo-500/5 border-indigo-500/20' : isAction ? 'bg-emerald-500/5 border-emerald-500/20' : 'bg-transparent border-zinc-800/50'}`}>
-                              <div className={`mt-0.5 shrink-0 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider rounded
-                                  ${isDecision ? 'bg-indigo-500/10 text-indigo-400' : isAction ? 'bg-emerald-500/10 text-emerald-400' : 'bg-zinc-800 text-zinc-400'}`}>
-                                  {item.type}
-                              </div>
-                              <p className="text-[13px] font-medium text-zinc-300 leading-snug pt-0.5">{item.content}</p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 animate-fade-in delay-75">
+                         {/* MOM */}
+                         <div>
+                            <h4 className="text-[10px] items-center flex gap-2 font-bold text-neutral-500 uppercase tracking-widest mb-3">
+                               <span className="w-1 h-1 rounded-full bg-indigo-500"></span>
+                               Minutes & Points
+                            </h4>
+                            <div className="space-y-2">
+                               {result.mom.map((item, i) => (
+                                 <div key={i} className="flex gap-3 text-xs p-3 rounded-lg bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors">
+                                    <span className={`shrink-0 mt-0.5 w-1.5 h-1.5 rounded-sm ${
+                                      item.type === 'decision' ? 'bg-indigo-400' : 
+                                      item.type === 'action' ? 'bg-emerald-400' : 'bg-neutral-500'
+                                    }`} />
+                                    <span className="text-neutral-300 leading-snug">{item.content}</span>
+                                 </div>
+                               ))}
                             </div>
-                          );
-                        })}
+                         </div>
+                         
+                         {/* Tasks */}
+                         <div>
+                            <h4 className="text-[10px] items-center flex gap-2 font-bold text-neutral-500 uppercase tracking-widest mb-3">
+                               <span className="w-1 h-1 rounded-full bg-emerald-500"></span>
+                               Detected Tasks
+                            </h4>
+                            <div className="space-y-2">
+                               {result.tasks.map((task, i) => (
+                                 <div key={i} className="group flex items-start justify-between gap-3 text-xs p-3 rounded-lg bg-neutral-900 border border-neutral-800 hover:border-neutral-700 transition-all cursor-default">
+                                    <div className="flex gap-2">
+                                        <div className="mt-0.5 w-3 h-3 rounded border border-neutral-600 group-hover:border-emerald-500 transition-colors flex items-center justify-center">
+                                          <div className="w-1.5 h-1.5 bg-emerald-500 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                        </div>
+                                        <span className="text-neutral-300 line-clamp-2">{task}</span>
+                                    </div>
+                                    
+                                 </div>
+                               ))}
+                            </div>
+                         </div>
                       </div>
-                    </div>
-                    
-                    <div className="p-6 rounded-2xl bg-neutral-900/60 border border-white/10">
-                      <h4 className="text-neutral-500 text-xs font-bold uppercase tracking-[0.2em] mb-6">Generated Task Board</h4>
-                      <div className="flex flex-col gap-2">
-                        {result.tasks.map((taskTitle, i) => (
-                           <div key={i} className="group relative p-4 bg-zinc-950/40 hover:bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer flex flex-col gap-2">
-                             <div className="flex items-center justify-between gap-3">
-                               <div className="flex items-center gap-2 flex-wrap min-w-0">
-                                 <h4 className="text-sm font-bold text-zinc-200 truncate group-hover:text-white transition-colors">
-                                   {taskTitle}
-                                 </h4>
-                                 <span className="text-[9px] font-bold text-white px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/20">
-                                     MEDIUM
-                                 </span>
-                               </div>
-                             </div>
-                             
-                             <p className="text-[11px] text-zinc-500 line-clamp-2 font-medium leading-relaxed mb-1">
-                               Auto-generated task from meeting analysis.
-                             </p>
-
-                             <div className="flex items-center justify-between pt-2">
-                                <div className="flex flex-wrap gap-1.5">
-                                    <span className="text-[9px] font-bold text-zinc-600 px-2 py-0.5 bg-zinc-900 rounded-full border border-zinc-800">
-                                        #auto-generated
-                                    </span>
-                                </div>
-                             </div>
-                           </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>                  
-                </div>
-              )}
+                   </div>
+                 )}
+              </div>
+              
             </div>
+
           </div>
         </div>
       </section>
 
-      {/* CTA Final */}
-      <section className="py-32 px-6">
-        <div className="max-w-7xl mx-auto p-16 rounded-[2.5rem] bg-neutral-900 border border-white/10 text-center relative overflow-hidden shadow-3xl">
-          <div className="relative z-10">
-            <h2 className="text-4xl md:text-7xl font-extrabold mb-8 tracking-tight leading-[1] text-white">Ready to focus on <br /> the conversation?</h2>
-            <p className="text-lg text-neutral-400 mb-10 max-w-xl mx-auto leading-relaxed">Join the most efficient teams on the planet using Chronos AI to automate their administrative heavy lifting.</p>
-            <button className="px-10 py-4 bg-white text-black hover:bg-neutral-200 rounded-full text-xl font-black transition-all shadow-3xl hover:scale-105 active:scale-95">
-              Start Free Trial Now
-            </button>
-          </div>
-          {/* Decorative shapes */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-[80px]"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full -ml-32 -mb-32 blur-[80px]"></div>
-        </div>
+      {/* Simplified CTA */}
+      <section className="py-24 px-6 relative overflow-hidden">
+         <div className="max-w-3xl mx-auto text-center relative z-10">
+           <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-white mb-8">Stop organizing.<br/>Start executing.</h2>
+           <button className="group relative inline-flex h-12 items-center justify-center overflow-hidden rounded-full bg-white px-8 font-medium text-neutral-950 transition-all duration-300 hover:bg-white/90 hover:w-40 hover:px-0 w-auto">
+              <span className="mr-2">Get Started</span>
+              <span className="group-hover:translate-x-1 transition-transform">→</span>
+           </button>
+           <p className="mt-6 text-xs text-neutral-500 uppercase tracking-widest font-semibold">No credit card required</p>
+         </div>
       </section>
 
       <Footer />
