@@ -4,21 +4,17 @@ import { connectToDatabase } from '@/app/lib/db';
 import { Meeting } from '@/app/models/Meeting';
 import '@/app/models/Task'; // Ensure Task model is registered for population
 import { User } from '@/app/models/User';
-import { auth } from '@clerk/nextjs/server';
+import { ensureUserSynced } from '@/app/lib/syncUser';
 
 export async function GET() {
   try {
-    const { userId: clerkId } = await auth();
 
-    if (!clerkId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
 
     await connectToDatabase();
 
-    const user = await User.findOne({ clerkId });
+    const user = await ensureUserSynced();
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const meetings = await Meeting.find({ user: user._id })
@@ -34,16 +30,11 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const { userId: clerkId } = await auth();
-    if (!clerkId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
     await connectToDatabase();
 
-    const user = await User.findOne({ clerkId });
+    const user = await ensureUserSynced();
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await req.json();

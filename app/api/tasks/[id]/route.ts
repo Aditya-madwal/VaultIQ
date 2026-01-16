@@ -3,25 +3,20 @@ import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/app/lib/db';
 import { Task } from '@/app/models/Task';
 import { User } from '@/app/models/User';
-import { auth } from '@clerk/nextjs/server';
+import { ensureUserSynced } from '@/app/lib/syncUser';
 
 export async function PATCH(
   req: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { userId: clerkId } = await auth();
+    const user = await ensureUserSynced();
 
-    if (!clerkId) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     await connectToDatabase();
-
-    const user = await User.findOne({ clerkId });
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
 
     const body = await req.json();
     const { id } = await params;
@@ -50,18 +45,13 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { userId: clerkId } = await auth();
+    const user = await ensureUserSynced();
 
-    if (!clerkId) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     await connectToDatabase();
-
-    const user = await User.findOne({ clerkId });
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
 
     const { id } = await params;
 

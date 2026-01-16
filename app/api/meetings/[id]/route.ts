@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 import { connectToDatabase } from '@/app/lib/db';
 import { Meeting } from '@/app/models/Meeting';
 import { User } from '@/app/models/User';
-import { auth } from '@clerk/nextjs/server';
+import { ensureUserSynced } from '@/app/lib/syncUser';
 import mongoose from 'mongoose';
 import '@/app/models/File';
 import '@/app/models/Task';
@@ -13,8 +13,8 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> } // Correct type for Next.js App Router dynamic routes
 ) {
   try {
-    const { userId: clerkId } = await auth();
-    if (!clerkId) {
+    const user = await ensureUserSynced();
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -25,11 +25,6 @@ export async function GET(
     }
 
     await connectToDatabase();
-
-    const user = await User.findOne({ clerkId });
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
 
     const meeting = await Meeting.findOne({ _id: id, user: user._id })
       .populate('tasks')
@@ -52,8 +47,8 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { userId: clerkId } = await auth();
-    if (!clerkId) {
+    const user = await ensureUserSynced();
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -64,11 +59,6 @@ export async function PUT(
     }
 
     await connectToDatabase();
-
-    const user = await User.findOne({ clerkId });
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
 
     const body = await req.json();
 
@@ -97,8 +87,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { userId: clerkId } = await auth();
-    if (!clerkId) {
+     const user = await ensureUserSynced();
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -109,11 +99,6 @@ export async function DELETE(
     }
 
     await connectToDatabase();
-
-    const user = await User.findOne({ clerkId });
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
 
     const deletedMeeting = await Meeting.findOneAndDelete({
       _id: id,

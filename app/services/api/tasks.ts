@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Task } from '@/app/types';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL || 'http://localhost:3000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL || '/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
