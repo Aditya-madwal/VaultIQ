@@ -21,7 +21,7 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: "WorkNest - Turn meetings into momentum.",
-  description: "Secure document management and collaboration platform",
+  description: "Work and productivity platform",
 };
 
 export default function RootLayout({

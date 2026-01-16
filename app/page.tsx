@@ -21,70 +21,23 @@ interface SummaryResult {
     time: string;
   }[];
 }
-
-import { Playfair_Display } from 'next/font/google';
-
-const playfair = Playfair_Display({ subsets: ['latin'] });
-
-// --- Global Styles Injected via Component ---
-
-const GlobalStyles: React.FC = () => (
-  <style dangerouslySetInnerHTML={{ __html: `
-    body {
-        font-family: 'Inter', sans-serif;
-        background-color: #050505;
-        color: #ffffff;
-        margin: 0;
-        overflow-x: hidden;
-    }
-    h1, h2, h3, h4, h5, h6 {
-        font-family: ${playfair.style.fontFamily}, serif;
-    }
-    .dotted-bg {
-        background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-        background-size: 24px 24px;
-    }
-    .gradient-text {
-        background: linear-gradient(to right, #ffffff, #a1a1aa);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    ::-webkit-scrollbar {
-        width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-        background: #050505;
-    }
-    ::-webkit-scrollbar-thumb {
-        background: #222;
-        border-radius: 10px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-        background: #333;
-    }
-    @keyframes fade-in {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-in {
-        animation: fade-in 0.8s ease-out forwards;
-    }
-  `}} />
-);
-
 // --- Sub-Components ---
 
 const Navbar: React.FC = () => (
-  <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] md:w-[80%] max-w-7xl border border-white/10 bg-black/70 backdrop-blur-xl rounded-2xl shadow-2xl transition-all">
+  <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[90%] md:w-[80%] max-w-7xl border border-white/10 bg-black/70 backdrop-blur-xl rounded-full shadow-2xl transition-all">
     <div className="w-full px-6 h-16 flex items-center justify-between">
       <div className="flex items-center gap-2">
-        <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center font-bold text-xl text-black">C</div>
-        <span className="text-lg font-bold tracking-tight">Chronos AI</span>
+        {/* <div className="w-8 h-8 bg-white rounded-lg flex items-center justify-center font-bold text-xl text-black">W</div> */}
+        <div className="w-8 h-8 bg-zinc-100 rounded-lg flex items-center justify-center">
+               <svg className="w-4 h-4 text-zinc-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+        <span className="text-lg font-bold tracking-tight">WorkNest</span>
       </div>
       <div className="hidden md:flex items-center gap-8 text-sm font-medium text-neutral-400">
         <a href="#features" className="hover:text-white transition-colors">Features</a>
         <a href="#demo" className="hover:text-white transition-colors">Demo</a>
-        <a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
       </div>
       <div className="flex items-center gap-3">
         <Link href="/sign-in" className="text-neutral-300 hover:text-white text-xs font-semibold transition-colors">
@@ -117,8 +70,12 @@ const Footer: React.FC = () => (
     <footer className="border-t border-white/5 py-12 px-6 bg-[#050505]">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-white rounded flex items-center justify-center font-bold text-sm text-black">C</div>
-            <span className="text-base font-bold tracking-tight text-white/80">Chronos AI</span>
+            <div className="w-8 h-8 bg-zinc-100 rounded-lg flex items-center justify-center">
+               <svg className="w-4 h-4 text-zinc-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <span className="text-base font-bold tracking-tight text-white/80">WorkNest</span>
           </div>
           <div className="flex items-center gap-8 text-xs font-medium text-neutral-500">
              <a href="#" className="hover:text-white transition-colors">Privacy</a>
@@ -127,7 +84,7 @@ const Footer: React.FC = () => (
              <a href="#" className="hover:text-white transition-colors">LinkedIn</a>
           </div>
           <p className="text-neutral-600 text-xs">
-            &copy; {new Date().getFullYear()} Chronos AI Inc.
+            &copy; {new Date().getFullYear()} WorkNest Inc.
           </p>
       </div>
     </footer>
@@ -159,7 +116,6 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen dotted-bg selection:bg-neutral-500 selection:text-white">
-      <GlobalStyles />
       <Navbar />
 
       {/* Hero Section */}
@@ -170,19 +126,16 @@ const App: React.FC = () => {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neutral-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-neutral-500"></span>
             </span>
-            Meet Chronos Intelligence v2.0
+            Turn Your Meeting into Action.
           </div>
           <h1 className="text-5xl md:text-8xl font-extrabold tracking-tighter gradient-text mb-2 leading-tight md:px-20 pb-4">
             Meetings into Action.
           </h1>
           <p className="text-lg md:text-2xl text-neutral-400 max-w-4xl mx-auto mb-10 leading-relaxed font-light">
-            AI-powered summaries, automated MOM generation, and smart team scheduling. Stop taking notes, start taking action.
+            AI-powered summaries, automated MOM generation, and smart task extraction. Stop taking notes, start taking action.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20">
-            <button className="w-full sm:w-auto px-8 py-3 bg-white text-black hover:bg-neutral-200 rounded-full text-lg font-bold transition-all shadow-xl shadow-white/10">
-              Get Started
-            </button>
-            <button className="w-full sm:w-auto px-8 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full text-lg font-bold transition-all backdrop-blur-md flex items-center justify-center gap-2">
+            <button className="w-full sm:w-auto px-8 py-3 bg-green-500/20 hover:bg-green-600/20 border border-green-500/40 rounded-full text-lg font-bold transition-all backdrop-blur-md flex items-center justify-center gap-2 text-green-400 cursor-pointer">
               Try For Free <span className="text-lg">›</span>
             </button>
           </div>

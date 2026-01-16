@@ -18,7 +18,7 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ title, accent, bg, tasks, o
   const nextStatus = curIdx < statuses.length - 1 ? statuses[curIdx + 1] : null;
 
   return (
-    <div className={`flex flex-col gap-4 p-4 rounded-3xl min-w-[280px] w-full h-full ${bg} transition-all`}>
+    <div className={`flex flex-col gap-4 p-4 rounded-3xl min-w-[280px] w-full h-full ${bg} transition-all border border-zinc-800 bg-zinc-900/20`}>
       {/* Column Header */}
       <div className="flex items-center justify-between px-2 shrink-0">
         <div className="flex items-center gap-3">

@@ -16,7 +16,7 @@ const Navbar: React.FC<NavbarProps> = ({ activeTab, onTabChange, onNewCapture })
         {/* Brand & Context */}
         <div className="flex items-center gap-3 md:gap-6">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-zinc-100 rounded-lg flex items-center justify-center transform -rotate-2">
+            <div className="w-8 h-8 bg-zinc-100 rounded-lg flex items-center justify-center">
                <svg className="w-4 h-4 text-zinc-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
