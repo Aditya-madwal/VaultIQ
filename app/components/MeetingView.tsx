@@ -1,10 +1,9 @@
-
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Meeting, Task } from '../types';
 import SuggestedTask from '../microcomponents/SuggestedTask';
-import { Calendar, Clock, BarChart3, Shield, Play, Download, Layers, FileText, Activity, Loader, HardDrive, FileVideo, ArrowRight, Trash2 } from 'lucide-react';
+import { Calendar, Clock, Download, FileText, Loader, ArrowLeft, Trash2, Maximize2, MoreHorizontal } from 'lucide-react';
 import { getMeetingById, deleteMeeting } from '../services/api/meetings';
 
 interface MeetingViewProps {
@@ -109,153 +108,148 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
   const suggestedTasks = meeting.tasks ? meeting.tasks.filter((t: any) => t.suggested === true) : [];
 
   return (
-    <div className="h-full flex flex-col gap-5 max-w-[1600px] mx-auto pt-2 pb-10">
+    <div className="h-[calc(100vh-6rem)] w-full flex flex-col gap-4 pt-2 px-2 md:px-0">
       
-      {/* 1. Compact Header */}
-      <header className="flex flex-col md:flex-row md:items-start justify-between gap-4 border-b border-zinc-800/60 pb-5">
-        <div className="space-y-2">
+      {/* 1. Slim Header */}
+      <header className="shrink-0 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800/60 pb-3 px-4">
+        <div className="space-y-1">
           <div className="flex items-center gap-3">
-             <span className="bg-zinc-800/40 text-zinc-400 border border-zinc-700/50 rounded px-1.5 py-0.5 text-[10px] font-mono font-medium">
-                ID: {meeting.id}
-             </span>
-             <span className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-500 uppercase tracking-wider">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"/>
+             <button onClick={() => router.back()} className="text-zinc-500 hover:text-zinc-300 md:hidden">
+               <ArrowLeft size={16} />
+             </button>
+             <h1 className="text-xl md:text-2xl font-bold text-zinc-100 tracking-tight truncate max-w-md">
+               {meeting.title}
+             </h1>
+             <span className="hidden md:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase tracking-wide border border-emerald-500/20">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"/>
                 Processed
              </span>
           </div>
-          <h1 className="text-2xl lg:text-3xl font-bold text-zinc-100 tracking-tight leading-tight">
-            {meeting.title}
-          </h1>
-          <div className="flex items-center gap-4 text-xs text-zinc-500 font-medium pt-1">
-              <div className="flex items-center gap-1.5">
-                  <Calendar size={13} className="text-zinc-600"/>
-                  {new Date(meeting.date).toLocaleDateString()}
-              </div>
-              <div className="flex items-center gap-1.5">
-                  <Clock size={13} className="text-zinc-600"/>
-                  {meeting.duration}
-              </div>
-              <div className="w-px h-3 bg-zinc-800" />
+          <div className="flex items-center gap-3 text-[11px] text-zinc-500 font-medium pl-1 md:pl-0">
+              <span className="flex items-center gap-1"><Calendar size={12}/> {new Date(meeting.date).toLocaleDateString()}</span>
+              <span className="w-px h-3 bg-zinc-800" />
+              <span className="flex items-center gap-1"><Clock size={12}/> {meeting.duration}</span>
+              <span className="w-px h-3 bg-zinc-800" />
               <div className="flex gap-2">
-                  {meeting.tags.map(tag => (
-                      <span key={tag} className="hover:text-zinc-300 transition-colors cursor-pointer">#{tag}</span>
+                  {meeting.tags.slice(0, 3).map(tag => (
+                      <span key={tag} className="text-zinc-400">#{tag}</span>
                   ))}
               </div>
           </div>
         </div>
         
-        <div className="flex items-center gap-2">
-           <button className="px-5 py-2 bg-blue-900/30 text-blue-500 rounded-xl text-[12px] font-black uppercase tracking-wider transition-all active:scale-95 flex items-center gap-2 cursor-pointer">
-             <Download size={16} strokeWidth={2.5} />
-             Export
-           </button>
+        <div className="flex items-center gap-2 self-end md:self-auto">
            <button 
              onClick={handleDeleteClick}
-             className="px-5 py-2 bg-red-900/30 text-red-500 rounded-xl text-[12px] font-black uppercase tracking-wider transition-all active:scale-95 flex items-center gap-2 cursor-pointer hover:bg-red-900/50"
+             className="px-3 md:px-4 py-2 bg-red-950/30 text-red-500 border border-red-900/50 rounded-lg text-[11px] font-black uppercase tracking-wider hover:bg-red-900/50 transition-all flex items-center gap-2"
            >
-             <Trash2 size={16} strokeWidth={2.5} />
-             Delete
+             <Trash2 size={14} />
+             <span className="hidden md:inline">Delete</span>
+           </button>
+           <button className="px-3 md:px-4 py-2 bg-zinc-800 text-zinc-300 border border-zinc-700/50 rounded-lg text-[11px] font-black uppercase tracking-wider hover:bg-zinc-700 transition-all flex items-center gap-2">
+             <Download size={14} />
+             <span className="hidden md:inline">Export</span>
            </button>
         </div>
       </header>
 
-      <div className="grid grid-cols-12 gap-6">
-        {/* 2. Main Content Area */}
-        <div className="col-span-12 lg:col-span-8 flex flex-col gap-6">
-          {/* AI Analysis Section (Always Visible) */}
-          <div className="w-full p-4 rounded-xl bg-green-900/20 border border-emerald-800/20">
-            <span className="block text-[12px] font-black text-emerald-500 uppercase tracking-widest mb-1.5">
-              AI Analysis
-            </span>
-            <p className="text-sm font-bold text-emerald-200/90 leading-relaxed">
-              {meeting.summary}
-            </p>
+      {/* 2. Main Content - Fixed Height with Independent Scroll */}
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6 px-1 md:px-4 pb-2">
+        {/* LEFT COLUMN: Analysis & Transcript */}
+        <div className="col-span-1 lg:col-span-8 flex flex-col gap-4 h-full overflow-hidden">
+          
+          {/* AI Summary - Collapsible or Scrollable if too long, usually short */}
+          <div className="shrink-0 p-4 rounded-xl bg-gradient-to-br from-green-900/20 to-emerald-900/10 border border-emerald-800/20 relative overflow-hidden group">
+             <div className="absolute top-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                <Maximize2 size={14} className="text-emerald-500/50" />
+             </div>
+             <div className="flex items-center gap-2 mb-2">
+                <div className="p-1 rounded bg-emerald-500/10 text-emerald-400">
+                   <MoreHorizontal size={14} />
+                </div>
+                <span className="text-[11px] font-black text-emerald-500 uppercase tracking-widest">Executive Summary</span>
+             </div>
+             <p className="text-[13px] md:text-sm font-medium text-emerald-100/80 leading-relaxed line-clamp-3 hover:line-clamp-none transition-all cursor-default">
+               {meeting.summary}
+             </p>
           </div>
 
-          <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-xl overflow-hidden h-fit w-full flex flex-col md:mr-4">
-            {/* Tabs Header */}
-            <div className="flex items-center justify-between px-4 py-3 border-b border-zinc-800/60 bg-zinc-900/60 backdrop-blur-sm sticky top-0 z-10">
-                 <div className="flex gap-1 p-1 bg-zinc-950/40 rounded-lg border border-zinc-800/40">
-                   {(['Transcript', 'MOM'] as const).map(tab => (
-                     <button
-                       key={tab}
-                       onClick={() => setActiveContent(tab)}
-                       className={`px-4 py-1.5 text-[11px] font-bold uppercase tracking-wider rounded-md transition-all
-                         ${activeContent === tab 
-                           ? 'bg-zinc-800 text-white shadow-sm border border-zinc-700' 
-                           : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-900/50'
-                         }
-                       `}
-                     >
-                       {tab}
-                     </button>
-                   ))}
+          {/* Transcript / MOM Tabs */}
+          <div className="flex-1 flex flex-col min-h-0 bg-zinc-900/30 border border-zinc-800/60 rounded-xl overflow-hidden">
+            {/* Tab Header */}
+            <div className="flex items-center justify-between px-2 md:px-4 py-2 border-b border-zinc-800/60 bg-zinc-950/30">
+               <div className="flex gap-1">
+                 {(['Transcript', 'MOM'] as const).map(tab => (
+                   <button
+                     key={tab}
+                     onClick={() => setActiveContent(tab)}
+                     className={`px-4 py-1.5 text-[10px] md:text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all
+                       ${activeContent === tab 
+                         ? 'bg-zinc-800 text-white shadow-sm ring-1 ring-zinc-700' 
+                         : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50'
+                       }
+                     `}
+                   >
+                     {tab}
+                   </button>
+                 ))}
+               </div>
+
+               {activeContent === 'Transcript' && (
+                 <div className="flex items-center gap-2">
+                    <span className="text-[10px] hidden md:inline font-bold text-zinc-600 uppercase">Limit:</span>
+                    <input 
+                      type="number" 
+                      value={transcriptLimit}
+                      onChange={(e) => setTranscriptLimit(Math.max(0, parseInt(e.target.value)))}
+                      className="w-12 bg-zinc-900 border border-zinc-800 rounded text-center text-xs font-mono text-zinc-400 focus:border-zinc-600 focus:outline-none py-1"
+                    />
                  </div>
-                 
-                 {activeContent === 'Transcript' && meeting?.transcript && (
-                    <div className="flex items-center gap-3 animate-in fade-in slide-in-from-right-4 duration-500">
-                        <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider whitespace-nowrap">
-                            Count:
-                        </label>
-                        <div className="flex items-center gap-2 bg-zinc-950/40 rounded-lg border border-zinc-800/40 p-1">
-                            <input 
-                                type="number" 
-                                min="0" 
-                                max={meeting.transcript.length}
-                                value={transcriptLimit}
-                                onChange={(e) => {
-                                    const val = Number(e.target.value);
-                                    if (val >= 0 && val <= (meeting.transcript?.length || 0)) {
-                                        setTranscriptLimit(val);
-                                    }
-                                }}
-                                className="w-12 bg-transparent text-right text-xs font-mono font-bold text-zinc-200 focus:outline-none [-moz-appearance:_textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                            />
-                            <span className="text-[10px] font-medium text-zinc-600 pr-2 border-l border-zinc-800 pl-2">
-                                / {meeting.transcript.length}
-                            </span>
-                        </div>
-                    </div>
-                 )}
+               )}
             </div>
 
-            {/* Scrollable Content */}
-            <div className="p-6 overflow-y-auto flex-1 custom-scrollbar">
-              
+            {/* Content Area */}
+            <div className="flex-1 overflow-y-auto p-4 custom-scrollbar bg-black/20">
               {activeContent === 'Transcript' && (
-                <div className="animate-in fade-in duration-300 space-y-3">
-                  {meeting.transcript && meeting.transcript.slice(0, transcriptLimit).map((item, i) => (
-                    <div key={i} className="p-4 border border-zinc-800/60 rounded-xl bg-zinc-800/20 hover:border-zinc-700 hover:bg-zinc-800/40 transition-all">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="flex items-center gap-3">
-                          <div className="w-6 h-6 rounded-full bg-zinc-700/50 flex items-center justify-center border border-zinc-600/30 text-[10px] font-black text-zinc-300 shadow-inner">
-                             {item.speakername.charAt(0)}
-                          </div>
-                          <span className="text-[13px] font-bold text-zinc-200">{item.speakername}</span>
-                        </div>
-                        <span className="text-[10px] font-mono font-medium text-zinc-600 bg-zinc-900/50 px-1.5 py-0.5 rounded">{item.timestamp}</span>
-                      </div>
-                      <p className="text-[13px] font-medium text-zinc-400 leading-relaxed pl-9">{item.content}</p>
-                    </div>
-                  ))}
-                </div>
+                 <div className="space-y-3">
+                   {meeting.transcript && meeting.transcript.slice(0, transcriptLimit).map((item, i) => (
+                     <div key={i} className="group p-3 md:p-4 rounded-xl border border-zinc-800/40 bg-zinc-800/10 hover:bg-zinc-800/30 transition-colors">
+                       <div className="flex items-baseline gap-3 mb-1">
+                         <span className="text-xs font-bold text-indigo-300 min-w-[3rem]">{item.speakername}</span>
+                         <span className="text-[10px] font-mono text-zinc-600">{item.timestamp}</span>
+                       </div>
+                       <p className="text-[13px] text-zinc-300 leading-relaxed">{item.content}</p>
+                     </div>
+                   ))}
+                   {(!meeting.transcript || meeting.transcript.length === 0) && (
+                     <div className="text-center py-20 text-zinc-600 font-mono text-xs">No Transcript available</div>
+                   )}
+                 </div>
               )}
 
               {activeContent === 'MOM' && (
-                  <div className="animate-in fade-in duration-300 grid grid-cols-1 gap-3">
+                  <div className="grid gap-2">
                     {meeting.mom && meeting.mom.map((item, i) => {
-                      const isDecision = item.type === 'decision';
-                      const isAction = item.type === 'action';
-                      return (
-                        <div key={i} className={`px-4 py-3 rounded-xl border flex items-start gap-4 transition-all hover:bg-zinc-800/30
-                          ${isDecision ? 'bg-indigo-500/5 border-indigo-500/20' : isAction ? 'bg-emerald-500/5 border-emerald-500/20' : 'bg-transparent border-zinc-800/50'}`}>
-                          <div className={`mt-0.5 shrink-0 px-2 py-0.5 text-[9px] font-black uppercase tracking-wider rounded
-                              ${isDecision ? 'bg-indigo-500/10 text-indigo-400' : isAction ? 'bg-emerald-500/10 text-emerald-400' : 'bg-zinc-800 text-zinc-400'}`}>
-                              {item.type}
-                          </div>
-                          <p className="text-[13px] font-medium text-zinc-300 leading-snug pt-0.5">{item.content}</p>
+                       const colors = item.type === 'decision' 
+                         ? 'bg-purple-500/5 border-purple-500/20 hover:border-purple-500/30' 
+                         : item.type === 'action'
+                         ? 'bg-emerald-500/5 border-emerald-500/20 hover:border-emerald-500/30'
+                         : 'bg-zinc-800/20 border-zinc-800/50';
+                         
+                       const badge = item.type === 'decision'
+                         ? 'text-purple-400 bg-purple-500/10'
+                         : item.type === 'action'
+                         ? 'text-emerald-400 bg-emerald-500/10'
+                         : 'text-zinc-400 bg-zinc-800';
+
+                       return (
+                        <div key={i} className={`p-3 rounded-xl border ${colors} transition-all flex gap-3`}>
+                           <div className={`mt-0.5 shrink-0 px-1.5 py-0.5 text-[9px] font-black uppercase rounded ${badge}`}>
+                              {item.type.charAt(0)}
+                           </div>
+                           <p className="text-sm font-medium text-zinc-300">{item.content}</p>
                         </div>
-                      );
+                       )
                     })}
                   </div>
               )}
@@ -263,168 +257,93 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
           </div>
         </div>
 
-        {/* 3. Right Sidebar - Utilities */}
-        <div className="col-span-12 lg:col-span-4 space-y-6">
-          
-          {/* Transcript File Card (shown if no video but transcript exists) */}
-          {!meeting.videoFile && meeting.transcriptFile && (
-            <div className="group rounded-xl border border-zinc-800/60 bg-zinc-900/20 hover:bg-zinc-900/40 hover:border-zinc-700/80 transition-all overflow-hidden shadow-sm hover:shadow-md">
-              <div className="p-3.5 flex items-start gap-3.5">
-                {/* Icon Section */}
-                <div className="shrink-0 w-10 h-10 rounded-lg bg-zinc-950/80 border border-zinc-800 flex items-center justify-center text-zinc-400 group-hover:text-emerald-400 group-hover:border-emerald-500/30 transition-colors shadow-inner">
-                   <FileText size={18} strokeWidth={2} />
-                </div>
-                
-                {/* Text Info */}
-                <div className="min-w-0 flex-1 space-y-0.5 pt-0.5">
-                   <h4 className="text-[13px] font-bold text-zinc-200 truncate leading-snug" title={meeting.transcriptFile.gcsobjectkey}>
-                      {meeting.transcriptFile.gcsobjectkey}
-                   </h4>
-                   <div className="flex items-center gap-2 text-[11px] text-zinc-500 font-medium">
-                      <span className="font-mono">{meeting.transcriptFile.filesize ? (meeting.transcriptFile.filesize / 1024).toFixed(1) + ' KB' : 'Unknown'}</span>
+        {/* RIGHT COLUMN: Utilities - Independent Scroll */}
+        <div className="col-span-1 lg:col-span-4 h-full flex flex-col gap-4 overflow-hidden mt-6 lg:mt-0">
+           
+           {/* File Attachment Card */}
+           {(!meeting.videoFile && meeting.transcriptFile) && (
+             <div className="shrink-0 p-3 rounded-xl border border-zinc-800 bg-zinc-900/40 flex items-center justify-between group hover:border-zinc-700 transition-all">
+                <div className="flex items-center gap-3">
+                   <div className="w-10 h-10 rounded-lg bg-zinc-950 flex items-center justify-center border border-zinc-800 text-zinc-500 group-hover:text-zinc-300 group-hover:border-zinc-600 transition-all">
+                      <FileText size={18} />
+                   </div>
+                   <div className="space-y-0.5">
+                      <div className="text-xs font-bold text-zinc-300 line-clamp-1 max-w-[150px]" title={meeting.transcriptFile.gcsobjectkey}>
+                        {meeting.transcriptFile.gcsobjectkey}
+                      </div>
+                      <div className="text-[10px] text-zinc-500 font-mono">
+                         {(meeting.transcriptFile.filesize ? (meeting.transcriptFile.filesize / 1024).toFixed(1) + ' KB' : 'TXT')}
+                      </div>
                    </div>
                 </div>
+                {transcriptSignedUrl && (
+                  <a href={transcriptSignedUrl} target="_blank" rel="noreferrer" className="p-2 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-white transition-colors">
+                     <Download size={16} />
+                  </a>
+                )}
+             </div>
+           )}
+
+           {/* Tasks Panel */}
+           <div className="flex-1 flex flex-col min-h-0 bg-zinc-900/20 border border-zinc-800/60 rounded-xl overflow-hidden">
+              <div className="shrink-0 px-4 py-3 border-b border-zinc-800/60 flex items-center justify-between bg-zinc-950/20">
+                 <h3 className="text-xs font-black text-zinc-400 uppercase tracking-wider">Action Items</h3>
+                 <span className="text-[10px] font-bold text-zinc-600 bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">
+                    {suggestedTasks.length} DETECTED
+                 </span>
               </div>
-
-              {/* Download Action */}
-              {transcriptSignedUrl ? (
-                 <a 
-                   href={transcriptSignedUrl}
-                   target="_blank"
-                   rel="noopener noreferrer" 
-                   className="flex items-center justify-center gap-2 w-full py-2.5 bg-zinc-950/30 border-t border-zinc-800/50 text-[10px] font-bold uppercase tracking-widest text-zinc-400 hover:bg-emerald-500/10 hover:text-emerald-400 hover:border-emerald-500/20 transition-all active:bg-emerald-500/20"
-                 >
-                    <Download size={12} strokeWidth={2.5} />
-                    Download Transcript
-                 </a>
-              ) : (
-                 <div className="w-full py-2.5 border-t border-zinc-800/50 flex justify-center bg-zinc-950/30">
-                    <Loader size={12} className="text-zinc-600 animate-spin" />
-                 </div>
-              )}
-            </div>
-          )}
-
-          {/* Video Player Card */}
-          {/* {meeting.videoFile && (
-            <div className="space-y-3">
-              <div className="group rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950 relative shadow-lg">
-                <div className="aspect-video relative cursor-pointer">
-                  {videoSignedUrl ? (
-                    <video 
-                      src={videoSignedUrl} 
-                      className="absolute inset-0 w-full h-full object-cover" 
-                      controls
+              <div className="flex-1 overflow-y-auto p-4 space-y-3 custom-scrollbar">
+                 {suggestedTasks.map((task: any, idx: number) => (
+                    <SuggestedTask 
+                      key={idx}
+                      taskId={task._id || task.id}
+                      title={task.title}
+                      description={task.description}
+                      priority={task.priority}
+                      tags={task.tags}
+                      onAdd={() => fetchMeeting(false)}
                     />
-                  ) : (
-                    <>
-                      <img 
-                        src={`https://picsum.photos/seed/${meeting.id}/800/450`} 
-                        alt="Thumbnail" 
-                        className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-all duration-500" 
-                      />
-                       <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-transparent to-transparent opacity-80" />
-                       <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-14 h-14 bg-zinc-100/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 animate-pulse shadow-xl">
-                          <Loader size={20} className="text-white animate-spin" />
-                        </div>
-                      </div>
-                    </>
-                  )}
-                 
-                  {!videoSignedUrl && (
-                    <div className="absolute top-3 left-3">
-                       <div className="flex items-center gap-1.5 px-2 py-1 bg-black/60 backdrop-blur rounded text-[10px] font-bold text-white border border-white/10">
-                         <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></div>
-                         LOADING VIDEO...
-                       </div>
+                 ))}
+                 {suggestedTasks.length === 0 && (
+                    <div className="h-full flex flex-col items-center justify-center opacity-40">
+                       <MoreHorizontal size={24} className="mb-2" />
+                       <span className="text-xs font-bold">No tasks detected</span>
                     </div>
-                  )}
-                </div>
+                 )}
               </div>
-              
-              <div className="px-1 space-y-2">
-                 <div className="flex items-center gap-2">
-                    <FileVideo size={14} className="text-zinc-500" />
-                    <h3 className="text-sm font-bold text-zinc-300 line-clamp-1" title={meeting.videoFile.gcsobjectkey}>
-                        {meeting.videoFile.gcsobjectkey}
-                    </h3>
-                 </div>
-                 <div className="flex items-center gap-4 text-[11px] font-bold text-zinc-500 uppercase tracking-wider pl-6">
-                    <div className="flex items-center gap-1.5">
-                        <Clock size={12} className="text-zinc-600"/>
-                        <span>{meeting.duration}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                        <HardDrive size={12} className="text-zinc-600"/>
-                        <span>{meeting.videoFile.filesize ? (meeting.videoFile.filesize / (1024 * 1024)).toFixed(1) + ' MB' : 'Unknown Size'}</span>
-                    </div>
-                 </div>
-              </div>
-            </div>
-          )} */}
-
-          {/* Action Items Panel */}
-          <div className="bg-zinc-900/30 border border-zinc-800/60 rounded-xl p-5 flex flex-col h-fit">
-            <div className="flex items-center justify-between mb-5">
-              <div className="flex items-center gap-2">
-                <Layers size={16} className="text-zinc-500"/>
-                <h2 className="text-sm font-bold text-zinc-200">Suggested Tasks</h2>
-              </div>
-              <span className="text-[10px] font-bold text-zinc-600 bg-zinc-900 px-2 py-1 rounded-full border border-zinc-800">
-                AUTO-DETECTED
-              </span>
-            </div>
-
-            <div className="space-y-4 overflow-y-auto pr-1 -mr-2 custom-scrollbar">
-              {suggestedTasks.map((task: any, idx: number) => (
-                <SuggestedTask 
-                  key={idx}
-                  taskId={task._id || task.id}
-                  title={task.title}
-                  description={task.description}
-                  priority={task.priority}
-                  tags={task.tags}
-                  onAdd={() => fetchMeeting(false)}
-                />
-              ))}
-              {suggestedTasks.length === 0 && (
-                <div className="text-center text-zinc-500 text-xs py-10">No suggested tasks detected.</div>
-              )}
-            </div>
-          </div>
+           </div>
         </div>
+
       </div>
 
       {/* Delete Confirmation Modal */}
       {isDeleteConfirmOpen && meeting && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="w-full max-w-md bg-zinc-950 border border-zinc-800 rounded-2xl shadow-2xl p-6 space-y-6 animate-in zoom-in-95 duration-200 ring-1 ring-white/5">
-            <div className="space-y-3">
-              <div className="w-12 h-12 rounded-full bg-red-500/10 flex items-center justify-center border border-red-500/20 mb-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-[2px] animate-in fade-in duration-200">
+          <div className="w-full max-w-sm bg-zinc-950 border border-zinc-800 rounded-2xl shadow-2xl p-6 space-y-6 ring-1 ring-white/10">
+            <div className="space-y-2 text-center">
+              <div className="w-14 h-14 mx-auto rounded-full bg-red-500/10 flex items-center justify-center border border-red-500/20 mb-2">
                   <Trash2 size={24} className="text-red-500" />
               </div>
-              <h3 className="text-xl font-bold text-zinc-100">Delete Meeting?</h3>
-              <p className="text-sm text-zinc-400 leading-relaxed">
-                Are you sure you want to delete <span className="text-zinc-200 font-semibold">{meeting.title}</span>? This action cannot be undone and all associated data including transcripts and tasks will be permanently removed.
+              <h3 className="text-lg font-bold text-zinc-100">Delete Meeting?</h3>
+              <p className="text-xs text-zinc-400 leading-relaxed px-4">
+                This will permanently delete <span className="text-zinc-200">{meeting.title}</span> and all associated data.
               </p>
             </div>
             
-            <div className="flex items-center justify-end gap-3 pt-2">
+            <div className="grid grid-cols-2 gap-3">
               <button 
                 onClick={() => setIsDeleteConfirmOpen(false)}
                 disabled={isDeleting}
-                className="px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-zinc-400 hover:text-zinc-200 bg-zinc-900 border border-zinc-800 hover:bg-zinc-800 rounded-xl transition-colors"
+                className="py-2.5 text-xs font-bold uppercase tracking-wider text-zinc-400 hover:text-zinc-200 bg-zinc-900 hover:bg-zinc-800 rounded-xl transition-colors"
               >
                 Cancel
               </button>
               <button 
                 onClick={confirmDelete}
                 disabled={isDeleting}
-                className="px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-white bg-red-600/90 hover:bg-red-600 border border-red-500 rounded-xl transition-colors flex items-center gap-2 shadow-lg shadow-red-900/20"
+                className="py-2.5 text-xs font-bold uppercase tracking-wider text-white bg-red-600 hover:bg-red-500 rounded-xl transition-colors"
               >
-                {isDeleting && <Loader size={12} className="animate-spin" />}
-                {isDeleting ? 'Deleting...' : 'Delete Meeting'}
+                {isDeleting ? 'Deleting...' : 'Confirm'}
               </button>
             </div>
           </div>
