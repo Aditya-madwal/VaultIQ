@@ -196,7 +196,7 @@ const KanbanView: React.FC<KanbanViewProps> = ({ onUpdateStatus }) => {
         {/* 2. Horizontal Scrollable Layout */}
         <div className="flex gap-6 overflow-x-auto pb-6 snap-x snap-mandatory">
           {columns.map(col => (
-            <div key={col.title} className="shrink-0 snap-center first:pl-2 last:pr-2">
+            <div key={col.title} className="shrink-0 grow snap-center first:pl-2 last:pr-2">
               <KanbanColumn 
                 title={col.title}
                 accent={col.accent}
