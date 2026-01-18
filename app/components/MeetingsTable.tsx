@@ -77,7 +77,7 @@ const MeetingsTable: React.FC<MeetingsTableProps> = ({ onSelectMeeting }) => {
        {/* Responsive Header */}
        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-6 px-1">
           <div className="space-y-1">
-             <h1 className="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Analyzed Meetings</h1>
+             <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">Analyzed Meetings</h1>
              <p className="text-zinc-500 text-xs md:text-sm font-medium">Archived meeting intelligence and transcripts.</p>
           </div>
           
@@ -104,7 +104,7 @@ const MeetingsTable: React.FC<MeetingsTableProps> = ({ onSelectMeeting }) => {
             <div 
               key={meeting.id} 
               onClick={() => onSelectMeeting(meeting)}
-              className="group relative flex flex-col justify-between p-5 rounded-2xl bg-gradient-to-br from-zinc-900/40 to-black border border-zinc-800/60 hover:border-indigo-500/40 transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-900/10 cursor-pointer overflow-hidden backdrop-blur-sm"
+              className="group relative flex flex-col justify-between p-5 rounded-2xl border border-zinc-800/70 hover:border-indigo-500/40 transition-all duration-300 cursor-pointer overflow-hidden"
             >
               {/* Subtle Glow Background */}
               <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />

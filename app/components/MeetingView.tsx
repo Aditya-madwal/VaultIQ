@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Meeting, Task } from '../types';
 import SuggestedTask from '../microcomponents/SuggestedTask';
-import { Calendar, Clock, Download, FileText, Loader, ArrowLeft, Trash2, Maximize2, MoreHorizontal } from 'lucide-react';
+import { Calendar, Clock, Download, FileText, Loader, ArrowLeft, Trash2, Maximize2, MoreHorizontal, Sparkles } from 'lucide-react';
 import { getMeetingById, deleteMeeting } from '../services/api/meetings';
 
 interface MeetingViewProps {
@@ -109,21 +109,12 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
 
   return (
     <div className="h-[calc(100vh-6rem)] w-full flex flex-col gap-4 pt-2 px-2 md:px-0">
-      
-      {/* 1. Slim Header */}
       <header className="shrink-0 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800/60 pb-3 px-4">
         <div className="space-y-1">
           <div className="flex items-center gap-3">
-             <button onClick={() => router.back()} className="text-zinc-500 hover:text-zinc-300 md:hidden">
-               <ArrowLeft size={16} />
-             </button>
-             <h1 className="text-xl md:text-2xl font-bold text-zinc-100 tracking-tight truncate max-w-md">
+             <h1 className="text-2xl md:text-4xl font-bold text-zinc-100 tracking-tight mb-2">
                {meeting.title}
              </h1>
-             <span className="hidden md:inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase tracking-wide border border-emerald-500/20">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"/>
-                Processed
-             </span>
           </div>
           <div className="flex items-center gap-3 text-[11px] text-zinc-500 font-medium pl-1 md:pl-0">
               <span className="flex items-center gap-1"><Calendar size={12}/> {new Date(meeting.date).toLocaleDateString()}</span>
@@ -153,30 +144,21 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
         </div>
       </header>
 
-      {/* 2. Main Content - Fixed Height with Independent Scroll */}
       <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6 px-1 md:px-4 pb-2">
-        {/* LEFT COLUMN: Analysis & Transcript */}
         <div className="col-span-1 lg:col-span-8 flex flex-col gap-4 h-full overflow-hidden">
-          
-          {/* AI Summary - Collapsible or Scrollable if too long, usually short */}
           <div className="shrink-0 p-4 rounded-xl bg-gradient-to-br from-green-900/20 to-emerald-900/10 border border-emerald-800/20 relative overflow-hidden group">
-             <div className="absolute top-0 right-0 p-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                <Maximize2 size={14} className="text-emerald-500/50" />
-             </div>
              <div className="flex items-center gap-2 mb-2">
                 <div className="p-1 rounded bg-emerald-500/10 text-emerald-400">
-                   <MoreHorizontal size={14} />
+                   <Sparkles size={14} />
                 </div>
-                <span className="text-[11px] font-black text-emerald-500 uppercase tracking-widest">Executive Summary</span>
+                <span className="text-[11px] font-black text-emerald-500 uppercase tracking-widest">AI Summary</span>
              </div>
-             <p className="text-[13px] md:text-sm font-medium text-emerald-100/80 leading-relaxed line-clamp-3 hover:line-clamp-none transition-all cursor-default">
+             <p className="text-[13px] md:text-sm font-medium text-emerald-100/80 leading-relaxed">
                {meeting.summary}
              </p>
           </div>
 
-          {/* Transcript / MOM Tabs */}
           <div className="flex-1 flex flex-col min-h-0 bg-zinc-900/30 border border-zinc-800/60 rounded-xl overflow-hidden">
-            {/* Tab Header */}
             <div className="flex items-center justify-between px-2 md:px-4 py-2 border-b border-zinc-800/60 bg-zinc-950/30">
                <div className="flex gap-1">
                  {(['Transcript', 'MOM'] as const).map(tab => (
