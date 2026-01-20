@@ -6,11 +6,7 @@ import TaskModal from '../microcomponents/TaskModal';
 import { Search, Filter, Loader, Plus } from 'lucide-react';
 import { getAllTasks, createTask, updateTask, deleteTask } from '../services/api/tasks';
 
-interface KanbanViewProps {
-  onUpdateStatus: (id: string, status: TaskStatus) => void;
-}
-
-const KanbanView: React.FC<KanbanViewProps> = ({ onUpdateStatus }) => {
+const KanbanView: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
