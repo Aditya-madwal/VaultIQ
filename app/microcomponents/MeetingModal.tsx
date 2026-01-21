@@ -117,14 +117,14 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess 
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="bg-zinc-950 border border-zinc-800 rounded-2xl w-full max-w-lg shadow-2xl flex flex-col max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-200">
+      <div className="bg-background border border-border rounded-2xl w-full max-w-lg shadow-2xl flex flex-col max-h-[90vh] overflow-hidden animate-in zoom-in-95 duration-200">
         
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-zinc-900 bg-zinc-950">
-          <h2 className="text-lg font-bold text-zinc-100">
+        <div className="flex items-center justify-between p-4 border-b border-border bg-background">
+          <h2 className="text-lg font-bold text-foreground">
             New Session Capture
           </h2>
-          <button onClick={onClose} className="text-zinc-500 hover:text-white transition-colors">
+          <button onClick={onClose} className="text-muted-foreground hover:text-foreground transition-colors">
             <X size={20} />
           </button>
         </div>
@@ -134,13 +134,13 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess 
           
           {/* Title */}
           <div className="space-y-1">
-             <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Meeting Title</label>
+             <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Meeting Title</label>
              <input 
                type="text"
                required
                value={title}
                onChange={e => setTitle(e.target.value)}
-               className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20"
+               className="w-full bg-muted/50 border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
                placeholder="e.g. Q3 Roadmap Discussion"
              />
           </div>
@@ -148,23 +148,23 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess 
           <div className="grid grid-cols-2 gap-4">
             {/* Date */}
             <div className="space-y-1">
-              <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Date</label>
+              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Date</label>
               <input 
                 type="date"
                 required
                 value={date}
                 onChange={e => setDate(e.target.value)}
-                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20"
+                className="w-full bg-muted/50 border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20"
               />
             </div>
 
             {/* Category */}
              <div className="space-y-1">
-              <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Category</label>
+              <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Category</label>
               <select 
                 value={category}
                 onChange={e => setCategory(e.target.value)}
-                className="w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 appearance-none"
+                className="w-full bg-muted/50 border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 appearance-none"
               >
                 <option value="General">General</option>
                 <option value="Engineering">Engineering</option>
@@ -183,15 +183,15 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess 
                         value={transcriptText}
                         onChange={e => setTranscriptText(e.target.value)}
                         disabled={!!transcriptFile}
-                        className={`w-full bg-zinc-900/50 border border-zinc-800 rounded-lg px-3 py-2 text-sm text-zinc-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 resize-none font-mono ${transcriptFile ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        className={`w-full bg-muted/50 border border-border rounded-lg px-3 py-2 text-sm text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 resize-none font-mono ${transcriptFile ? 'opacity-50 cursor-not-allowed' : ''}`}
                         placeholder={transcriptFile ? "File selected. Remove file to paste text." : "Paste meeting transcript here..."}
                       />
                       <div className={`flex items-center gap-3 ${transcriptText ? 'opacity-50 pointer-events-none' : ''}`}>
-                        <span className="text-[10px] text-zinc-500 font-bold uppercase">{transcriptFile ? 'Selected:' : 'Or upload txt/md'}</span>
+                        <span className="text-[10px] text-muted-foreground font-bold uppercase">{transcriptFile ? 'Selected:' : 'Or upload txt/md'}</span>
                         {transcriptFile ? (
-                           <div className="flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded px-2 py-1">
-                                <span className="text-xs text-zinc-300 font-bold truncate max-w-[150px]">{transcriptFile.name}</span>
-                                <button type="button" onClick={() => setTranscriptFile(null)} className="text-zinc-500 hover:text-white"><X size={12}/></button>
+                           <div className="flex items-center gap-2 bg-muted border border-border rounded px-2 py-1">
+                                <span className="text-xs text-foreground font-bold truncate max-w-[150px]">{transcriptFile.name}</span>
+                                <button type="button" onClick={() => setTranscriptFile(null)} className="text-muted-foreground hover:text-foreground"><X size={12}/></button>
                            </div>
                         ) : (
                            <input 
@@ -199,7 +199,7 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess 
                              accept=".txt,.md" 
                              onChange={handleTranscriptFileChange}
                              disabled={!!transcriptText}
-                             className="text-xs text-zinc-400 file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-zinc-800 file:text-zinc-300 hover:file:bg-zinc-700 cursor-pointer disabled:cursor-not-allowed"
+                             className="text-xs text-muted-foreground file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-bold file:bg-muted file:text-foreground hover:file:bg-muted/80 cursor-pointer disabled:cursor-not-allowed"
                            />
                         )}
                       </div>
@@ -209,10 +209,10 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess 
         </form>
 
         {/* Footer */}
-        <div className="p-4 border-t border-zinc-900 bg-zinc-950 flex justify-end gap-2">
+        <div className="p-4 border-t border-border bg-background flex justify-end gap-2">
             <button 
                 onClick={onClose}
-                className="px-4 py-2 text-xs font-bold text-zinc-400 hover:text-white transition-colors"
+                className="px-4 py-2 text-xs font-bold text-muted-foreground hover:text-foreground transition-colors"
                 type="button"
             >
                 Cancel
@@ -220,7 +220,7 @@ const MeetingModal: React.FC<MeetingModalProps> = ({ isOpen, onClose, onSuccess 
             <button 
                 onClick={handleSubmit}
                 disabled={isProcessing || isUploading || (!transcriptText && !transcriptFile)}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-600/50 disabled:cursor-not-allowed text-white rounded-lg text-xs font-bold transition-all active:scale-95 flex items-center gap-2"
+                className="px-4 py-2 bg-primary hover:bg-primary/90 disabled:bg-primary/50 disabled:cursor-not-allowed text-primary-foreground rounded-lg text-xs font-bold transition-all active:scale-95 flex items-center gap-2"
             >
                 {isUploading ? (
                   <>

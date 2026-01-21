@@ -151,32 +151,32 @@ const KanbanView: React.FC = () => {
         {/* 1. Controller Header */}
         <div className="shrink-0 flex flex-col xl:flex-row xl:items-end justify-between gap-4">
           <div className="space-y-1">
-            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-100 tracking-tighter leading-none">Stuff ToDo</h1>
-            <p className="hidden md:block text-zinc-500 text-xs font-medium">Manage your tasks flow.</p>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-foreground tracking-tighter leading-none">Stuff ToDo</h1>
+            <p className="hidden md:block text-muted-foreground text-xs font-medium">Manage your tasks flow.</p>
           </div>
 
           <div className="grid grid-cols-2 md:flex items-center gap-3 w-full xl:w-auto">
              {/* Search: Full width on mobile/grid */}
              <div className="col-span-2 md:col-span-1 relative group w-full md:w-auto">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-white transition-colors" size={14} />
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-foreground transition-colors" size={14} />
                 <input 
                   type="text" 
                   placeholder="SEARCH TASKS" 
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full md:w-64 pl-9 pr-4 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-[10px] font-bold text-gray-300 placeholder-gray-600 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500/20 transition-all uppercase tracking-widest"
+                  className="w-full md:w-64 pl-9 pr-4 py-2.5 bg-muted/50 border border-border rounded-xl text-[10px] font-bold text-foreground placeholder-muted-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary/20 transition-all uppercase tracking-widest"
                 />
              </div>
 
              {/* Filter */}
              <div className="relative w-full md:w-auto">
                <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <Filter size={12} className="text-gray-500" />
+                  <Filter size={12} className="text-muted-foreground" />
                </div>
                <select 
                  value={priorityFilter}
                  onChange={(e) => setPriorityFilter(e.target.value)}
-                 className="w-full md:w-auto pl-9 pr-8 py-2.5 bg-zinc-900 border border-zinc-800 rounded-xl text-[10px] font-black text-gray-300 uppercase tracking-widest focus:outline-none focus:border-indigo-500 hover:bg-zinc-800 transition-all appearance-none cursor-pointer"
+                 className="w-full md:w-auto pl-9 pr-8 py-2.5 bg-muted/50 border border-border rounded-xl text-[10px] font-black text-foreground uppercase tracking-widest focus:outline-none focus:border-primary hover:bg-muted transition-all appearance-none cursor-pointer"
                >
                  <option value="All">All Levels</option>
                  <option value="High">High</option>
@@ -188,7 +188,7 @@ const KanbanView: React.FC = () => {
              {/* New Task Button */}
              <button 
               onClick={openCreateModal}
-              className="w-full md:w-auto justify-center px-4 py-2.5 bg-blue-900/30 text-blue-500 rounded-xl text-[11px] font-black uppercase tracking-wider hover:bg-blue-800 hover:text-white transition-all active:scale-95 flex items-center gap-1.5 whitespace-nowrap"
+              className="w-full md:w-auto justify-center px-4 py-2.5 bg-primary/10 text-primary rounded-xl text-[11px] font-black uppercase tracking-wider hover:bg-primary/20 hover:text-primary transition-all active:scale-95 flex items-center gap-1.5 whitespace-nowrap"
             >
               <Plus size={14} strokeWidth={3} /> New Task
             </button>

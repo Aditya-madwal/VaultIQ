@@ -13,11 +13,11 @@ interface TaskCardProps {
 
 const TaskCard: React.FC<TaskCardProps> = ({ task, showMoveAction, onMove, onEdit, onDelete }) => {
   return (
-    <div className="group relative p-4 bg-zinc-950/40 hover:bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer flex flex-col gap-2">
+    <div className="group relative p-4 bg-card hover:bg-muted/20 border border-border hover:border-primary/20 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer flex flex-col gap-2">
       {/* Header: Title + Badges + Actions */}
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2 flex-wrap min-w-0">
-          <h4 className="text-sm font-bold text-zinc-200 truncate group-hover:text-white transition-colors">
+          <h4 className="text-sm font-bold text-foreground truncate group-hover:text-primary transition-colors">
             {task.title}
           </h4>
           <StatusBadge label={task.priority} type="priority" variant={task.priority} />
@@ -54,7 +54,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, showMoveAction, onMove, onEdi
                         e.stopPropagation();
                         onMove(task.id);
                     }}
-                    className="p-1 text-zinc-600 hover:text-white hover:bg-zinc-800 rounded transition-colors"
+                    className="p-1 text-muted-foreground hover:text-foreground hover:bg-muted rounded transition-colors"
                     title="Move to next status"
                 >
                     <ChevronRight size={16} strokeWidth={2.5} />
@@ -64,7 +64,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, showMoveAction, onMove, onEdi
       </div>
       
       {/* Content: Description */}
-      <p className="text-[11px] text-zinc-500 line-clamp-2 font-medium leading-relaxed mb-1">
+      <p className="text-[11px] text-muted-foreground line-clamp-2 font-medium leading-relaxed mb-1">
         {task.description}
       </p>
 
@@ -72,7 +72,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, showMoveAction, onMove, onEdi
       <div className="flex items-center justify-between pt-2">
          <div className="flex flex-wrap gap-1.5">
             {task.tags.map((tag, i) => (
-                <span key={i} className="text-[9px] font-bold text-zinc-600 px-2 py-0.5 bg-zinc-900 rounded-full border border-zinc-800">
+                <span key={i} className="text-[9px] font-bold text-muted-foreground px-2 py-0.5 bg-muted rounded-full border border-border">
                     #{tag}
                 </span>
             ))}

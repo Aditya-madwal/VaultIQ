@@ -92,7 +92,7 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
   if (isLoading) {
     return (
       <div className="flex h-full items-center justify-center min-h-[500px]">
-        <Loader className="animate-spin text-zinc-600" size={32} />
+        <Loader className="animate-spin text-muted-foreground" size={32} />
       </div>
     );
   }
@@ -109,21 +109,21 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
 
   return (
     <div className="h-[calc(100vh-6rem)] w-full flex flex-col gap-4 pt-2 px-2 md:px-0">
-      <header className="shrink-0 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-800/60 pb-3 px-4">
+      <header className="shrink-0 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border pb-3 px-4">
         <div className="space-y-1">
           <div className="flex items-center gap-3">
-             <h1 className="text-2xl md:text-4xl font-bold text-zinc-100 tracking-tight mb-2">
+             <h1 className="text-2xl md:text-4xl font-bold text-foreground tracking-tight mb-2">
                {meeting.title}
              </h1>
           </div>
-          <div className="flex items-center gap-3 text-[11px] text-zinc-500 font-medium pl-1 md:pl-0">
+          <div className="flex items-center gap-3 text-[11px] text-muted-foreground font-medium pl-1 md:pl-0">
               <span className="flex items-center gap-1"><Calendar size={12}/> {new Date(meeting.date).toLocaleDateString()}</span>
-              <span className="w-px h-3 bg-zinc-800" />
+              <span className="w-px h-3 bg-border" />
               <span className="flex items-center gap-1"><Clock size={12}/> {meeting.duration}</span>
-              <span className="w-px h-3 bg-zinc-800" />
+              <span className="w-px h-3 bg-border" />
               <div className="flex gap-2">
                   {meeting.tags.slice(0, 3).map(tag => (
-                      <span key={tag} className="text-zinc-400">#{tag}</span>
+                      <span key={tag} className="text-muted-foreground">#{tag}</span>
                   ))}
               </div>
           </div>
@@ -132,12 +132,12 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
         <div className="flex items-center gap-2 self-end md:self-auto">
            <button 
              onClick={handleDeleteClick}
-             className="px-3 md:px-4 py-2 bg-red-950/30 text-red-500 border border-red-900/50 rounded-lg text-[11px] font-black uppercase tracking-wider hover:bg-red-900/50 transition-all flex items-center gap-2"
+             className="px-3 md:px-4 py-2 bg-red-500/10 text-red-600 dark:text-red-500 border border-red-500/20 rounded-lg text-[11px] font-black uppercase tracking-wider hover:bg-red-500/20 transition-all flex items-center gap-2"
            >
              <Trash2 size={14} />
              <span className="hidden md:inline">Delete</span>
            </button>
-           <button className="px-3 md:px-4 py-2 bg-zinc-800 text-zinc-300 border border-zinc-700/50 rounded-lg text-[11px] font-black uppercase tracking-wider hover:bg-zinc-700 transition-all flex items-center gap-2">
+           <button className="px-3 md:px-4 py-2 bg-muted text-muted-foreground border border-border rounded-lg text-[11px] font-black uppercase tracking-wider hover:bg-muted/80 hover:text-foreground transition-all flex items-center gap-2">
              <Download size={14} />
              <span className="hidden md:inline">Export</span>
            </button>
@@ -145,21 +145,21 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
       </header>
 
       <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6 px-1 md:px-4 pb-2">
-        <div className="col-span-1 lg:col-span-8 flex flex-col gap-4 h-full overflow-hidden">
-          <div className="shrink-0 p-4 rounded-xl bg-gradient-to-br from-green-900/20 to-emerald-900/10 border border-emerald-800/20 relative overflow-hidden group">
+        <div className="col-span-1 lg:col-span-8 flex flex-col gap-4 h-fit overflow-hidden">
+          <div className="shrink-0 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 relative overflow-hidden group">
              <div className="flex items-center gap-2 mb-2">
-                <div className="p-1 rounded bg-emerald-500/10 text-emerald-400">
+                <div className="p-1 rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
                    <Sparkles size={14} />
                 </div>
-                <span className="text-[11px] font-black text-emerald-500 uppercase tracking-widest">AI Summary</span>
+                <span className="text-[11px] font-black text-emerald-600 dark:text-emerald-500 uppercase tracking-widest">AI Summary</span>
              </div>
-             <p className="text-[13px] md:text-sm font-medium text-emerald-100/80 leading-relaxed">
+             <p className="text-[13px] md:text-sm font-medium text-foreground dark:text-emerald-100/80 leading-relaxed">
                {meeting.summary}
              </p>
           </div>
 
-          <div className="flex-1 flex flex-col min-h-0 bg-zinc-900/30 border border-zinc-800/60 rounded-xl overflow-hidden">
-            <div className="flex items-center justify-between px-2 md:px-4 py-2 border-b border-zinc-800/60 bg-zinc-950/30">
+          <div className="flex-1 flex flex-col min-h-0 bg-muted/30 border border-border rounded-xl overflow-hidden">
+            <div className="flex items-center justify-between px-2 md:px-4 py-2 border-b border-border bg-muted/50">
                <div className="flex gap-1">
                  {(['Transcript', 'MOM'] as const).map(tab => (
                    <button
@@ -167,8 +167,8 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
                      onClick={() => setActiveContent(tab)}
                      className={`px-4 py-1.5 text-[10px] md:text-[11px] font-bold uppercase tracking-wider rounded-lg transition-all
                        ${activeContent === tab 
-                         ? 'bg-zinc-800 text-white shadow-sm ring-1 ring-zinc-700' 
-                         : 'text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50'
+                         ? 'bg-background text-foreground shadow-sm ring-1 ring-border' 
+                         : 'text-muted-foreground hover:text-foreground hover:bg-background/50'
                        }
                      `}
                    >
@@ -179,32 +179,32 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
 
                {activeContent === 'Transcript' && (
                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] hidden md:inline font-bold text-zinc-600 uppercase">Limit:</span>
+                    <span className="text-[10px] hidden md:inline font-bold text-muted-foreground uppercase">Limit:</span>
                     <input 
                       type="number" 
                       value={transcriptLimit}
                       onChange={(e) => setTranscriptLimit(Math.max(0, parseInt(e.target.value)))}
-                      className="w-12 bg-zinc-900 border border-zinc-800 rounded text-center text-xs font-mono text-zinc-400 focus:border-zinc-600 focus:outline-none py-1"
+                      className="w-12 bg-muted border border-border rounded text-center text-xs font-mono text-foreground focus:border-foreground/50 focus:outline-none py-1"
                     />
                  </div>
                )}
             </div>
 
             {/* Content Area */}
-            <div className="flex-1 overflow-y-auto p-4 custom-scrollbar bg-black/20">
+            <div className="flex-1 overflow-y-auto p-4 custom-scrollbar bg-background/50">
               {activeContent === 'Transcript' && (
                  <div className="space-y-3">
                    {meeting.transcript && meeting.transcript.slice(0, transcriptLimit).map((item, i) => (
-                     <div key={i} className="group p-3 md:p-4 rounded-xl border border-zinc-800/40 bg-zinc-800/10 hover:bg-zinc-800/30 transition-colors">
+                     <div key={i} className="group p-3 md:p-4 rounded-xl border border-border/40 bg-card hover:bg-muted/50 transition-colors">
                        <div className="flex items-baseline gap-3 mb-1">
-                         <span className="text-xs font-bold text-indigo-300 min-w-[3rem]">{item.speakername}</span>
-                         <span className="text-[10px] font-mono text-zinc-600">{item.timestamp}</span>
+                         <span className="text-xs font-bold text-primary min-w-[3rem]">{item.speakername}</span>
+                         <span className="text-[10px] font-mono text-muted-foreground">{item.timestamp}</span>
                        </div>
-                       <p className="text-[13px] text-zinc-300 leading-relaxed">{item.content}</p>
+                       <p className="text-[13px] text-foreground leading-relaxed">{item.content}</p>
                      </div>
                    ))}
                    {(!meeting.transcript || meeting.transcript.length === 0) && (
-                     <div className="text-center py-20 text-zinc-600 font-mono text-xs">No Transcript available</div>
+                     <div className="text-center py-20 text-muted-foreground font-mono text-xs">No Transcript available</div>
                    )}
                  </div>
               )}
@@ -216,20 +216,20 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
                          ? 'bg-purple-500/5 border-purple-500/20 hover:border-purple-500/30' 
                          : item.type === 'action'
                          ? 'bg-emerald-500/5 border-emerald-500/20 hover:border-emerald-500/30'
-                         : 'bg-zinc-800/20 border-zinc-800/50';
+                         : 'bg-muted/30 border-border/50';
                          
                        const badge = item.type === 'decision'
-                         ? 'text-purple-400 bg-purple-500/10'
+                         ? 'text-purple-600 dark:text-purple-400 bg-purple-500/10'
                          : item.type === 'action'
-                         ? 'text-emerald-400 bg-emerald-500/10'
-                         : 'text-zinc-400 bg-zinc-800';
+                         ? 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10'
+                         : 'text-muted-foreground bg-muted';
 
                        return (
                         <div key={i} className={`p-3 rounded-xl border ${colors} transition-all flex gap-3`}>
                            <div className={`mt-0.5 shrink-0 px-1.5 py-0.5 text-[9px] font-black uppercase rounded ${badge}`}>
                               {item.type.charAt(0)}
                            </div>
-                           <p className="text-sm font-medium text-zinc-300">{item.content}</p>
+                           <p className="text-sm font-medium text-foreground">{item.content}</p>
                         </div>
                        )
                     })}
@@ -240,26 +240,26 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
         </div>
 
         {/* RIGHT COLUMN: Utilities - Independent Scroll */}
-        <div className="col-span-1 lg:col-span-4 h-full flex flex-col gap-4 overflow-hidden mt-6 lg:mt-0">
+        <div className="col-span-1 lg:col-span-4 h-fit flex flex-col gap-4 overflow-hidden mt-6 lg:mt-0">
            
            {/* File Attachment Card */}
            {(!meeting.videoFile && meeting.transcriptFile) && (
-             <div className="shrink-0 p-3 rounded-xl border border-zinc-800 bg-zinc-900/40 flex items-center justify-between group hover:border-zinc-700 transition-all">
+             <div className="shrink-0 p-3 rounded-xl border border-border bg-card flex items-center justify-between group hover:border-border/80 transition-all">
                 <div className="flex items-center gap-3">
-                   <div className="w-10 h-10 rounded-lg bg-zinc-950 flex items-center justify-center border border-zinc-800 text-zinc-500 group-hover:text-zinc-300 group-hover:border-zinc-600 transition-all">
+                   <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center border border-border text-muted-foreground group-hover:text-foreground group-hover:border-foreground/20 transition-all">
                       <FileText size={18} />
                    </div>
                    <div className="space-y-0.5">
-                      <div className="text-xs font-bold text-zinc-300 line-clamp-1 max-w-[150px]" title={meeting.transcriptFile.gcsobjectkey}>
+                      <div className="text-xs font-bold text-foreground line-clamp-1 max-w-[150px]" title={meeting.transcriptFile.gcsobjectkey}>
                         {meeting.transcriptFile.gcsobjectkey}
                       </div>
-                      <div className="text-[10px] text-zinc-500 font-mono">
+                      <div className="text-[10px] text-muted-foreground font-mono">
                          {(meeting.transcriptFile.filesize ? (meeting.transcriptFile.filesize / 1024).toFixed(1) + ' KB' : 'TXT')}
                       </div>
                    </div>
                 </div>
                 {transcriptSignedUrl && (
-                  <a href={transcriptSignedUrl} target="_blank" rel="noreferrer" className="p-2 rounded-lg hover:bg-zinc-800 text-zinc-500 hover:text-white transition-colors">
+                  <a href={transcriptSignedUrl} target="_blank" rel="noreferrer" className="p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors">
                      <Download size={16} />
                   </a>
                 )}
@@ -267,10 +267,10 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
            )}
 
            {/* Tasks Panel */}
-           <div className="flex-1 flex flex-col min-h-0 bg-zinc-900/20 border border-zinc-800/60 rounded-xl overflow-hidden">
-              <div className="shrink-0 px-4 py-3 border-b border-zinc-800/60 flex items-center justify-between bg-zinc-950/20">
-                 <h3 className="text-xs font-black text-zinc-400 uppercase tracking-wider">Action Items</h3>
-                 <span className="text-[10px] font-bold text-zinc-600 bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">
+           <div className="flex-1 flex flex-col min-h-0 bg-muted/30 border border-border rounded-xl overflow-hidden">
+              <div className="shrink-0 px-4 py-3 border-b border-border flex items-center justify-between bg-muted/50">
+                 <h3 className="text-xs font-black text-muted-foreground uppercase tracking-wider">Action Items</h3>
+                 <span className="text-[10px] font-bold text-foreground bg-background px-2 py-0.5 rounded border border-border">
                     {suggestedTasks.length} DETECTED
                  </span>
               </div>
@@ -301,14 +301,14 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
       {/* Delete Confirmation Modal */}
       {isDeleteConfirmOpen && meeting && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-[2px] animate-in fade-in duration-200">
-          <div className="w-full max-w-sm bg-zinc-950 border border-zinc-800 rounded-2xl shadow-2xl p-6 space-y-6 ring-1 ring-white/10">
+          <div className="w-full max-w-sm bg-background border border-border rounded-2xl shadow-2xl p-6 space-y-6 ring-1 ring-white/10">
             <div className="space-y-2 text-center">
               <div className="w-14 h-14 mx-auto rounded-full bg-red-500/10 flex items-center justify-center border border-red-500/20 mb-2">
-                  <Trash2 size={24} className="text-red-500" />
+                  <Trash2 size={24} className="text-red-600 dark:text-red-500" />
               </div>
-              <h3 className="text-lg font-bold text-zinc-100">Delete Meeting?</h3>
-              <p className="text-xs text-zinc-400 leading-relaxed px-4">
-                This will permanently delete <span className="text-zinc-200">{meeting.title}</span> and all associated data.
+              <h3 className="text-lg font-bold text-foreground">Delete Meeting?</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed px-4">
+                This will permanently delete <span className="text-foreground">{meeting.title}</span> and all associated data.
               </p>
             </div>
             
@@ -316,7 +316,7 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
               <button 
                 onClick={() => setIsDeleteConfirmOpen(false)}
                 disabled={isDeleting}
-                className="py-2.5 text-xs font-bold uppercase tracking-wider text-zinc-400 hover:text-zinc-200 bg-zinc-900 hover:bg-zinc-800 rounded-xl transition-colors"
+                className="py-2.5 text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground bg-muted hover:bg-muted/80 rounded-xl transition-colors"
               >
                 Cancel
               </button>

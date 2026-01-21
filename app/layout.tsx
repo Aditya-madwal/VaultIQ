@@ -3,6 +3,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import { Plus_Jakarta_Sans, JetBrains_Mono, Playfair_Display } from "next/font/google";
 import "@/styles/globals.css";
+import { ThemeProvider } from "./context/ThemeProvider";
 
 const sans = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -30,11 +31,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable} ${playfair.variable} antialiased dark`} suppressHydrationWarning>
-      <body className="bg-black text-gray-100">
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${sans.variable} ${mono.variable} ${playfair.variable} antialiased bg-background text-foreground`}>
         <ClerkProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
             {children}
-            <Toaster richColors position="bottom-right" theme="dark" />
+            <Toaster richColors position="bottom-right" />
+          </ThemeProvider>
         </ClerkProvider>
       </body>
     </html>

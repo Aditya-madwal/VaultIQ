@@ -18,16 +18,16 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ title, accent, bg, tasks, o
   const nextStatus = curIdx < statuses.length - 1 ? statuses[curIdx + 1] : null;
 
   return (
-    <div className={`flex flex-col gap-4 p-4 rounded-3xl min-w-[280px] w-full h-full ${bg} transition-all border border-zinc-800 bg-zinc-900/20`}>
+    <div className={`flex flex-col gap-4 p-4 rounded-3xl min-w-[280px] w-full h-full ${bg} transition-all border border-border bg-muted/20`}>
       {/* Column Header */}
       <div className="flex items-center justify-between px-2 shrink-0">
         <div className="flex items-center gap-3">
           <div className={`w-1 h-3.5 rounded-full ${accent}`}></div>
-          <span className="font-black text-[10px] uppercase tracking-[0.3em] text-zinc-100">
+          <span className="font-black text-[10px] uppercase tracking-[0.3em] text-foreground">
             {title}
           </span>
         </div>
-        <div className="px-1.5 py-0.5 bg-zinc-900 border border-zinc-800 rounded font-mono text-[9px] font-bold text-zinc-600">
+        <div className="px-1.5 py-0.5 bg-muted border border-border rounded font-mono text-[9px] font-bold text-muted-foreground">
           {tasks.length.toString().padStart(2, '0')}
         </div>
       </div>
@@ -46,8 +46,8 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ title, accent, bg, tasks, o
         ))}
 
         {tasks.length === 0 && (
-          <div className="h-24 border border-dashed border-zinc-800 rounded-2xl flex items-center justify-center bg-zinc-900/10">
-            <span className="text-zinc-700 text-[9px] font-black uppercase tracking-[0.4em]">Empty</span>
+          <div className="h-24 border border-dashed border-border rounded-2xl flex items-center justify-center bg-muted/10">
+            <span className="text-muted-foreground text-[9px] font-black uppercase tracking-[0.4em]">Empty</span>
           </div>
         )}
       </div>
