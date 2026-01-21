@@ -17,7 +17,9 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeContent, setActiveContent] = useState<'Transcript' | 'MOM'>('Transcript');
-  const [transcriptLimit, setTranscriptLimit] = useState<number>(0);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
 
   const [videoSignedUrl, setVideoSignedUrl] = useState<string | null>(null);
   const [transcriptSignedUrl, setTranscriptSignedUrl] = useState<string | null>(null);
@@ -60,9 +62,10 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
   }, [meetingId]);
 
   useEffect(() => {
-    if (meeting?.transcript) {
-      setTranscriptLimit(meeting.transcript.length >= 10 ? 10 : meeting.transcript.length);
-    }
+    // Transcript limit logic removed in favor of pagination
+    // if (meeting?.transcript) {
+    //   setTranscriptLimit(meeting.transcript.length >= 10 ? 10 : meeting.transcript.length);
+    // }
     
     // Fetch signed URLs when meeting data is available
     if (meeting?.videoFile?._id) {
@@ -144,8 +147,8 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
         </div>
       </header>
 
-      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6 px-1 md:px-4 pb-2">
-        <div className="col-span-1 lg:col-span-8 flex flex-col gap-4 h-fit overflow-hidden">
+      <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-6 px-1 md:px-4 pb-2 overflow-y-auto lg:overflow-hidden">
+        <div className="col-span-1 lg:col-span-8 flex flex-col gap-4 h-auto lg:h-full lg:overflow-hidden">
           <div className="shrink-0 p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 relative overflow-hidden group">
              <div className="flex items-center gap-2 mb-2">
                 <div className="p-1 rounded bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
@@ -158,7 +161,7 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
              </p>
           </div>
 
-          <div className="flex-1 flex flex-col min-h-0 bg-muted/30 border border-border rounded-xl overflow-hidden">
+          <div className="h-auto lg:h-full lg:flex-1 flex flex-col min-h-0 bg-muted/30 border border-border rounded-xl lg:overflow-hidden">
             <div className="flex items-center justify-between px-2 md:px-4 py-2 border-b border-border bg-muted/50">
                <div className="flex gap-1">
                  {(['Transcript', 'MOM'] as const).map(tab => (
@@ -177,24 +180,37 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
                  ))}
                </div>
 
-               {activeContent === 'Transcript' && (
+               {activeContent === 'Transcript' && meeting?.transcript && (
                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] hidden md:inline font-bold text-muted-foreground uppercase">Limit:</span>
-                    <input 
-                      type="number" 
-                      value={transcriptLimit}
-                      onChange={(e) => setTranscriptLimit(Math.max(0, parseInt(e.target.value)))}
-                      className="w-12 bg-muted border border-border rounded text-center text-xs font-mono text-foreground focus:border-foreground/50 focus:outline-none py-1"
-                    />
+                    <span className="text-[10px] font-mono text-muted-foreground mr-1">
+                      {Math.min((currentPage - 1) * itemsPerPage + 1, meeting.transcript.length)}-
+                      {Math.min(currentPage * itemsPerPage, meeting.transcript.length)} of {meeting.transcript.length}
+                    </span>
+                    <div className="flex items-center border border-border rounded-md bg-background overflow-hidden">
+                        <button 
+                          onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                          disabled={currentPage === 1}
+                          className="px-2 py-1 hover:bg-muted disabled:opacity-50 border-r border-border transition-colors"
+                        >
+                            <ArrowLeft size={10} />
+                        </button>
+                        <button 
+                          onClick={() => setCurrentPage(p => Math.min(Math.ceil(meeting.transcript.length / itemsPerPage), p + 1))}
+                          disabled={currentPage >= Math.ceil(meeting.transcript.length / itemsPerPage)}
+                          className="px-2 py-1 hover:bg-muted disabled:opacity-50 transition-colors"
+                        >
+                            <ArrowLeft size={10} className="rotate-180" />
+                        </button>
+                    </div>
                  </div>
                )}
             </div>
 
             {/* Content Area */}
-            <div className="flex-1 overflow-y-auto p-4 custom-scrollbar bg-background/50">
+            <div className="flex-1 overflow-visible lg:overflow-y-auto p-4 custom-scrollbar bg-background/50">
               {activeContent === 'Transcript' && (
                  <div className="space-y-3">
-                   {meeting.transcript && meeting.transcript.slice(0, transcriptLimit).map((item, i) => (
+                   {meeting.transcript && meeting.transcript.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((item, i) => (
                      <div key={i} className="group p-3 md:p-4 rounded-xl border border-border/40 bg-card hover:bg-muted/50 transition-colors">
                        <div className="flex items-baseline gap-3 mb-1">
                          <span className="text-xs font-bold text-primary min-w-[3rem]">{item.speakername}</span>
@@ -240,7 +256,7 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
         </div>
 
         {/* RIGHT COLUMN: Utilities - Independent Scroll */}
-        <div className="col-span-1 lg:col-span-4 h-fit flex flex-col gap-4 overflow-hidden mt-6 lg:mt-0">
+        <div className="col-span-1 lg:col-span-4 h-auto lg:h-full flex flex-col gap-4 lg:overflow-hidden mt-0 lg:mt-0">
            
            {/* File Attachment Card */}
            {(!meeting.videoFile && meeting.transcriptFile) && (
@@ -267,7 +283,7 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
            )}
 
            {/* Tasks Panel */}
-           <div className="flex-1 flex flex-col min-h-0 bg-muted/30 border border-border rounded-xl overflow-hidden">
+           <div className="h-auto lg:h-full lg:flex-1 flex flex-col min-h-0 bg-muted/30 border border-border rounded-xl lg:overflow-hidden">
               <div className="shrink-0 px-4 py-3 border-b border-border flex items-center justify-between bg-muted/50">
                  <h3 className="text-xs font-black text-muted-foreground uppercase tracking-wider">Action Items</h3>
                  <span className="text-[10px] font-bold text-foreground bg-background px-2 py-0.5 rounded border border-border">
