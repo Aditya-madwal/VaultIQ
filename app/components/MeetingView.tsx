@@ -153,7 +153,7 @@ const MeetingView: React.FC<MeetingViewProps> = ({ meetingId, onAddTask }) => {
                 </div>
                 <span className="text-[11px] font-black text-emerald-600 dark:text-emerald-500 uppercase tracking-widest">AI Summary</span>
              </div>
-             <p className="text-[13px] md:text-sm font-medium text-foreground dark:text-emerald-100/80 leading-relaxed">
+             <p className="text-[13px] md:text-sm font-medium text-[#022c22] text-green-600 leading-relaxed">
                {meeting.summary}
              </p>
           </div>
